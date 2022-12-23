@@ -1,0 +1,136 @@
+import logging
+import pygame
+import time
+
+from chunk import Chunk
+from player import Player
+
+
+def sign(num):
+    if num > 0:
+        return 1
+    return -1
+
+
+class Environment:
+    def __init__(self):
+        logging.info("Initing pygame")
+        pygame.init()
+        logging.info("Pygame inited")
+
+        logging.info("Initing window")
+        self.screen = pygame.display.set_mode([800, 600], pygame.RESIZABLE)
+        self.window_height = self.screen.get_height()
+        self.window_width = self.screen.get_width()
+        logging.info("Window inited")
+
+        self.grid_step = 50
+        self.chunk_width = 11
+        self.chunk_height = 13
+
+        self.available_chunks = {}
+        self.active_chunks = []
+        for i in range(-1, 2):
+            for j in range(-1, 2):
+                new_chunk = Chunk(
+                    self,
+                    [
+                        self.grid_step*self.chunk_width*i,
+                        self.grid_step*self.chunk_height*j
+                    ]
+                )
+                self.available_chunks[(i, j)] = new_chunk
+                self.active_chunks.append(new_chunk)
+        self.current_chunk_coord = [0, 0]
+
+        self.running = True
+        self.bg_color = (0, 0, 0)
+        self.camera_position = [0, 0]
+        self.time = time.time()
+
+        self.player = Player(self)
+
+    def updateScreen(self):
+        # Handle events
+        for event in pygame.event.get():
+            if event.type == pygame.VIDEORESIZE:
+                self.window_height = event.h
+                self.window_width = event.w
+            if event.type == pygame.QUIT:
+                self.running = False
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_UP:
+                    self.player.pos[1] -= self.grid_step
+                if event.key == pygame.K_DOWN:
+                    self.player.pos[1] += self.grid_step
+                if event.key == pygame.K_LEFT:
+                    self.player.pos[0] -= self.grid_step
+                if event.key == pygame.K_RIGHT:
+                    self.player.pos[0] += self.grid_step
+
+        # Check chunks
+
+        self.active_chunks = [
+            ch if
+                abs(ch.pos[0] - self.player.pos[0]) < 1.5 * self.chunk_width * self.grid_step and
+                abs(ch.pos[1] - self.player.pos[1]) < 1.5 * self.chunk_height * self.grid_step
+            else
+                self.load_chunk(
+                    (
+                        ch.pos[0] - 3*self.grid_step*self.chunk_width*sign(ch.pos[0] - self.player.pos[0])
+                        if
+                            abs(ch.pos[0] - self.player.pos[0]) > 1.5 * self.chunk_width * self.grid_step
+                        else
+                            ch.pos[0]
+                        ,
+                        ch.pos[1] - 3*self.grid_step*self.chunk_height*sign(ch.pos[1] - self.player.pos[1])
+                        if
+                            abs(ch.pos[1] - self.player.pos[1]) > 1.5 * self.chunk_height * self.grid_step
+                        else
+                            ch.pos[1]
+                    )
+                )
+            for
+                ch
+            in
+                self.active_chunks
+        ]
+
+        # Do updates
+
+        dt = time.time() - self.time
+        self.time = time.time()
+
+        self.player.update(dt)
+
+        if self.player.pos[0] - self.camera_position[0] < self.window_width/3:
+            self.camera_position[0] = self.player.pos[0] - self.window_width/3
+        if self.player.pos[0] - self.camera_position[0] > self.window_width*2/3:
+            self.camera_position[0] = self.player.pos[0] - self.window_width*2/3
+        if self.player.pos[1] - self.camera_position[1] < self.window_width/3:
+            self.camera_position[1] = self.player.pos[1] - self.window_width/3
+        if self.player.pos[1] - self.camera_position[1] > self.window_width*2/3:
+            self.camera_position[1] = self.player.pos[1] - self.window_width*2/3
+
+        # print("Cam: " + str(self.camera_position) + ", Pos: " + str(self.player.pos))
+
+        # Do draw
+
+        self.screen.fill(self.bg_color)
+
+        for chunk in self.active_chunks:
+            chunk.draw(self.screen, self.camera_position)
+
+        self.player.draw(self.screen, self.camera_position)
+
+        pygame.display.flip()
+
+    def addChunk(self, pos, chunk):
+        self.chunks[pos] = chunk
+
+    def load_chunk(self, pos):
+        if self.available_chunks.__contains__(pos):
+            return self.available_chunks[pos]
+        new_chunk = Chunk(self, pos)
+        self.available_chunks[pos] = new_chunk
+        return new_chunk
