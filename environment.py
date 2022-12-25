@@ -2,6 +2,7 @@ import logging
 import pygame
 import time
 
+from entity import Entity
 from chunk import Chunk
 from player import Player
 
@@ -11,12 +12,15 @@ def sign(num):
         return 1
     return -1
 
+FRAMERATE = 60
 
 class Environment:
     def __init__(self):
         logging.info("Initing pygame")
         pygame.init()
         logging.info("Pygame inited")
+
+        self.clock = pygame.time.Clock()
 
         logging.info("Initing window")
         self.screen = pygame.display.set_mode([800, 600], pygame.RESIZABLE)
@@ -124,6 +128,8 @@ class Environment:
         self.player.draw(self.screen, self.camera_position)
 
         pygame.display.flip()
+        pygame.display.update()
+        self.clock.tick(FRAMERATE)
 
     def addChunk(self, pos, chunk):
         self.chunks[pos] = chunk

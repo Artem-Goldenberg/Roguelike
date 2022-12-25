@@ -1,9 +1,12 @@
 import pygame
 import random
 
+import typing as tp
+from entity import Entity
+
 
 class Chunk:
-    def __init__(self, _env, _pos=[0, 0]):
+    def __init__(self, _env, _pos=[0, 0], _entities: tp.List[Entity] = []):
         self.env = _env
         self.ceil = pygame.Surface((46, 46))
         self.ceil.fill((
@@ -11,6 +14,7 @@ class Chunk:
             random.randint(50, 250),
             random.randint(50, 250)))
         self.pos = _pos
+        self.entities = _entities
 
     def draw(self, screen, camera_position):
         for i in range(-5, 6):
@@ -22,3 +26,6 @@ class Chunk:
                         self.pos[1] - 23 + 50*j - camera_position[1]
                     ]
                 )
+        
+        for entity in self.entities:
+            entity.draw(self.pos)

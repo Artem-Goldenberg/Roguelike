@@ -2,6 +2,7 @@ import typing as tp
 from abc import ABC, abstractmethod
 from data import EntityData, EntityState
 
+Point = tp.List[int]
 
 class Sprite:
     @abstractmethod
@@ -13,7 +14,7 @@ class Sprite:
         ...
 
     @abstractmethod
-    def getPosition(self, time: int) -> tp.List[int]:
+    def getPosition(self, time: int) -> Point:
         ...
 
 
@@ -22,3 +23,7 @@ class EntityView(ABC):
     def __init__(self, data: EntityData, sprites: tp.Dict[EntityState, Sprite]):
         self.data = data
         self.sprites = sprites
+
+    @abstractmethod
+    def draw(self, origin: Point):
+        ...
