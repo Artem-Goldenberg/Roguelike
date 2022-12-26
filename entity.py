@@ -1,21 +1,27 @@
 import typing as tp
-Point = tp.List[int]
 
-from logic import EntityLogic
-from graphics import EntityView
-from data import EntityState, EntityData, Inventory
+from entityLogic import EntityLogic
+from entityGraphics import EntityGraphics
+from entityData import EntityData
+
+Point = tp.List[int]
 
 
 class Entity:
     """ Main class for all objects in the game """
 
-    def __init__(self, position: Point, logic: EntityLogic, view: EntityView):
-        inventory = Inventory([])
-        self.data = EntityData(EntityState.idle, position, inventory)
-        self.logic = logic
-        self.view = view
-    
-    def draw(self, origin: Point):
-        self.view.draw(origin)
+    def __init__(
+            self,
+            _env,
+            _position: Point,
+            _entity_data: EntityData,
+            _entity_logic: EntityLogic,
+            _entity_graphics: EntityGraphics
+    ):
+        self.env = _env
+        self.data = _entity_data
+        self.logic = _entity_logic
+        self.graphics = _entity_graphics
 
-
+    def draw(self, _time: int, _screen, _camera_position):
+        self.graphics.draw(_time, _screen, _camera_position)

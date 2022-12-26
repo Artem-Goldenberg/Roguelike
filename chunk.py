@@ -16,16 +16,17 @@ class Chunk:
         self.pos = _pos
         self.entities = _entities
 
-    def draw(self, screen, camera_position):
+    def drawChunk(self, _screen, _camera_position):
         for i in range(-5, 6):
             for j in range(-6, 7):
-                screen.blit(
+                _screen.blit(
                     self.ceil,
                     [
-                        self.pos[0] - 23 + 50*i - camera_position[0],
-                        self.pos[1] - 23 + 50*j - camera_position[1]
+                        self.pos[0] - 23 + 50*i - _camera_position[0],
+                        self.pos[1] - 23 + 50*j - _camera_position[1]
                     ]
                 )
-        
+
+    def drawEntities(self, _time, _screen, _camera_position):
         for entity in self.entities:
-            entity.draw(self.pos)
+            entity.draw(_time, _screen, _camera_position)

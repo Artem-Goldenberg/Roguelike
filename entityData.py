@@ -1,12 +1,12 @@
 import random
 import typing as tp
 from uuid import UUID
-from enum import Enum, auto
+# from enum import Enum, auto
 from dataclasses import dataclass, field
 
 
-class EntityState(Enum):
-    idle = auto()
+# class EntityState(Enum):
+#     idle = auto()
 
 
 @dataclass
@@ -34,7 +34,7 @@ class Inventory:
 
 @dataclass
 class EntityData:
-    state: EntityState
+    state: str
     position: tp.List[int]
     inventory: Inventory
     custom: str = ""

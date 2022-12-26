@@ -2,9 +2,10 @@ import logging
 import pygame
 import time
 
-from entity import Entity
+# from entity import Entity
 from chunk import Chunk
 from player import Player
+from eventSystem import EventSystem, KeyboardEventSystem
 
 
 def sign(num):
@@ -12,7 +13,6 @@ def sign(num):
         return 1
     return -1
 
-FRAMERATE = 60
 
 class Environment:
     def __init__(self):
@@ -28,10 +28,17 @@ class Environment:
         self.window_width = self.screen.get_width()
         logging.info("Window inited")
 
+        logging.info("Initing constants")
         self.grid_step = 50
         self.chunk_width = 11
         self.chunk_height = 13
+        self.running = True
+        self.bg_color = (0, 0, 0)
+        self.camera_position = [0, 0]
+        # self.time = time.time()
+        logging.info("Constants inited")
 
+        logging.info("Initing chunks")
         self.available_chunks = {}
         self.active_chunks = []
         for i in range(-1, 2):
@@ -45,51 +52,60 @@ class Environment:
                 )
                 self.available_chunks[(i, j)] = new_chunk
                 self.active_chunks.append(new_chunk)
-        self.current_chunk_coord = [0, 0]
+        logging.info("Chunks inited")
 
-        self.running = True
-        self.bg_color = (0, 0, 0)
-        self.camera_position = [0, 0]
-        self.time = time.time()
+        logging.info("Initing event systems")
+        self.pastEvents = EventSystem()
+        self.futureEvents = EventSystem()
+        self.keyboardEvents = KeyboardEventSystem()
+        logging.info("Event systems inited")
 
+        logging.info("Initing player")
         self.player = Player(self)
+        logging.info("Player inited")
 
     def updateScreen(self):
-        # Handle events
+
+        #    ____                    __
+        #   / __/ _  __ ___   ___   / /_  ___
+        #  / _/  | |/ // -_) / _ \ / __/ (_-<
+        # /___/  |___/ \__/ /_//_/ \__/ /___/
+
         for event in pygame.event.get():
             if event.type == pygame.VIDEORESIZE:
                 self.window_height = event.h
                 self.window_width = event.w
             if event.type == pygame.QUIT:
                 self.running = False
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_UP:
-                    self.player.pos[1] -= self.grid_step
-                if event.key == pygame.K_DOWN:
-                    self.player.pos[1] += self.grid_step
-                if event.key == pygame.K_LEFT:
-                    self.player.pos[0] -= self.grid_step
-                if event.key == pygame.K_RIGHT:
-                    self.player.pos[0] += self.grid_step
 
-        # Check chunks
+        self.keyboardEvents.updateKeysPresed()
+
+        #   _____  __                 __              __                 __
+        #  / ___/ / /   __ __  ___   / /__  ___      / /  ___  ___ _ ___/ /
+        # / /__  / _ \ / // / / _ \ /  '_/ (_-<     / /__/ _ \/ _ `// _  /
+        # \___/ /_//_/ \_,_/ /_//_//_/\_\ /___/    /____/\___/\_,_/ \_,_/
+
+        def sign(num):
+            if num > 0:
+                return 1
+            return -1
 
         self.active_chunks = [
             ch if
-                abs(ch.pos[0] - self.player.pos[0]) < 1.5 * self.chunk_width * self.grid_step and
-                abs(ch.pos[1] - self.player.pos[1]) < 1.5 * self.chunk_height * self.grid_step
+                abs(ch.pos[0] - self.player.data.position[0]) < 1.5 * self.chunk_width * self.grid_step and
+                abs(ch.pos[1] - self.player.data.position[1]) < 1.5 * self.chunk_height * self.grid_step
             else
                 self.load_chunk(
                     (
-                        ch.pos[0] - 3*self.grid_step*self.chunk_width*sign(ch.pos[0] - self.player.pos[0])
+                        ch.pos[0] - 3*self.grid_step*self.chunk_width*sign(ch.pos[0] - self.player.data.position[0])
                         if
-                            abs(ch.pos[0] - self.player.pos[0]) > 1.5 * self.chunk_width * self.grid_step
+                            abs(ch.pos[0] - self.player.data.position[0]) > 1.5 * self.chunk_width * self.grid_step
                         else
                             ch.pos[0]
                         ,
-                        ch.pos[1] - 3*self.grid_step*self.chunk_height*sign(ch.pos[1] - self.player.pos[1])
+                        ch.pos[1] - 3*self.grid_step*self.chunk_height*sign(ch.pos[1] - self.player.data.position[1])
                         if
-                            abs(ch.pos[1] - self.player.pos[1]) > 1.5 * self.chunk_height * self.grid_step
+                            abs(ch.pos[1] - self.player.data.position[1]) > 1.5 * self.chunk_height * self.grid_step
                         else
                             ch.pos[1]
                     )
@@ -100,36 +116,65 @@ class Environment:
                 self.active_chunks
         ]
 
-        # Do updates
+        #   __  __           __        __                   __       _
+        #  / / / / ___   ___/ / ___ _ / /_ ___       ___   / /      (_)
+        # / /_/ / / _ \ / _  / / _ `// __// -_)     / _ \ / _ \    / /
+        # \____/ / .__/ \_,_/  \_,_/ \__/ \__/      \___//_.__/ __/ /
+        #       /_/                                            |___/
 
-        dt = time.time() - self.time
-        self.time = time.time()
+        self.player.logic.handleEvents()
 
-        self.player.update(dt)
+        for chunk in self.active_chunks:
+            for entity in chunk.entities:
+                entity.logic.handleEvents()
 
-        if self.player.pos[0] - self.camera_position[0] < self.window_width/3:
-            self.camera_position[0] = self.player.pos[0] - self.window_width/3
-        if self.player.pos[0] - self.camera_position[0] > self.window_width*2/3:
-            self.camera_position[0] = self.player.pos[0] - self.window_width*2/3
-        if self.player.pos[1] - self.camera_position[1] < self.window_width/3:
-            self.camera_position[1] = self.player.pos[1] - self.window_width/3
-        if self.player.pos[1] - self.camera_position[1] > self.window_width*2/3:
-            self.camera_position[1] = self.player.pos[1] - self.window_width*2/3
+        self.pastEvents = self.futureEvents
+        self.futureEvents = EventSystem()
 
-        # print("Cam: " + str(self.camera_position) + ", Pos: " + str(self.player.pos))
+        #   _____
+        #  / ___/ ___ _  __ _   ___   ____ ___ _
+        # / /__  / _ `/ /  ' \ / -_) / __// _ `/
+        # \___/  \_,_/ /_/_/_/ \__/ /_/   \_,_/
 
-        # Do draw
+        # dt = time.time() - self.time
+        # self.time = time.time()
+
+        if self.player.data.position[0] - self.camera_position[0] < self.window_width/3:
+            self.camera_position[0] = self.player.data.position[0] - self.window_width/3
+        if self.player.data.position[0] - self.camera_position[0] > self.window_width*2/3:
+            self.camera_position[0] = self.player.data.position[0] - self.window_width*2/3
+        if self.player.data.position[1] - self.camera_position[1] < self.window_width/3:
+            self.camera_position[1] = self.player.data.position[1] - self.window_width/3
+        if self.player.data.position[1] - self.camera_position[1] > self.window_width*2/3:
+            self.camera_position[1] = self.player.data.position[1] - self.window_width*2/3
 
         self.screen.fill(self.bg_color)
 
-        for chunk in self.active_chunks:
-            chunk.draw(self.screen, self.camera_position)
+        #    ___                                 __                __
+        #   / _ \  ____ ___ _ _    __     ____  / /  __ __  ___   / /__
+        #  / // / / __// _ `/| |/|/ /    / __/ / _ \/ // / / _ \ /  '_/
+        # /____/ /_/   \_,_/ |__,__/     \__/ /_//_/\_,_/ /_//_//_/\_\
 
-        self.player.draw(self.screen, self.camera_position)
+        for chunk in self.active_chunks:
+            chunk.drawChunk(self.screen, self.camera_position)
+
+        #    ___    __
+        #   / _ \  / / ___ _  __ __ ___   ____
+        #  / ___/ / / / _ `/ / // // -_) / __/
+        # /_/    /_/  \_,_/  \_, / \__/ /_/
+        #                   /___/
+
+        self.player.draw(time.time(), self.screen, self.camera_position)
+
+        #    ____        __    _   __    _
+        #   / __/ ___   / /_  (_) / /_  (_) ___   ___
+        #  / _/  / _ \ / __/ / / / __/ / / / -_) (_-<
+        # /___/ /_//_/ \__/ /_/  \__/ /_/  \__/ /___/
+
+        for chunk in self.active_chunks:
+            chunk.drawEntities(time.time(), self.screen, self.camera_position)
 
         pygame.display.flip()
-        pygame.display.update()
-        self.clock.tick(FRAMERATE)
 
     def addChunk(self, pos, chunk):
         self.chunks[pos] = chunk
