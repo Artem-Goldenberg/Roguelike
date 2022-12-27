@@ -1,10 +1,11 @@
-import pygame
+# import pygame
+import time
 
 from entityLogic import EntityLogic, Behaviour
-from entityGraphics import EntityGraphics, Sprite
+from entityGraphics import EntityGraphics, UpgradedSprite
 from entityData import EntityData, Inventory
 from entity import Entity
-from eventSystem import Event, eventType
+from eventSystem import eventType  # Event
 
 #    __                 _
 #   / /   ___   ___ _  (_) ____
@@ -21,6 +22,7 @@ class PlayerStanding(Behaviour):
 
 class PlayerEntityLogic(EntityLogic):
     def __init__(self, _env, _data):
+        self.nextTimeActive = 0.0
         behaviours = {
             "Standing": PlayerStanding
         }
@@ -33,10 +35,83 @@ class PlayerEntityLogic(EntityLogic):
         )
 
     def handleEvents(self):
+        if self.nextTimeActive > time.time():
+            return
+
+        # Actions in the end of event
+        if self.data.state == "WalkingRight":
+            self.data.position[0] += self.env.grid_step
+            self.data.state = "StandingRight"
+            return
+        if self.data.state == "WalkingLeft":
+            self.data.position[0] -= self.env.grid_step
+            self.data.state = "StandingLeft"
+            return
+        if self.data.state == "WalkingDown":
+            self.data.position[1] += self.env.grid_step
+            self.data.state = "StandingDown"
+            return
+        if self.data.state == "WalkingUp":
+            self.data.position[1] -= self.env.grid_step
+            self.data.state = "StandingUp"
+            return
+        if self.data.state == "AtackingUp":
+            self.data.state = "StandingUp"
+            return
+        if self.data.state == "AtackingDown":
+            self.data.state = "StandingDown"
+            return
+        if self.data.state == "AtackingLeft":
+            self.data.state = "StandingLeft"
+            return
+        if self.data.state == "AtackingRight":
+            self.data.state = "StandingRight"
+            return
+
+        # Choosing next event
         for event in self.env.keyboardEvents.getEvents():
             if event.event_type == eventType.Move:
-                self.data.position[0] += event.data[0]*self.env.grid_step
-                self.data.position[1] += event.data[1]*self.env.grid_step
+                if event.data == (1, 0):
+                    if self.data.state == "StandingRight":
+                        self.data.state = "WalkingRight"
+                        self.nextTimeActive = time.time() + 0.5
+                    else:
+                        self.data.state = "StandingRight"
+                        self.nextTimeActive = time.time() + 0.15
+                if event.data == (-1, 0):
+                    if self.data.state == "StandingLeft":
+                        self.data.state = "WalkingLeft"
+                        self.nextTimeActive = time.time() + 0.5
+                    else:
+                        self.data.state = "StandingLeft"
+                        self.nextTimeActive = time.time() + 0.15
+                if event.data == (0, 1):
+                    if self.data.state == "StandingDown":
+                        self.data.state = "WalkingDown"
+                        self.nextTimeActive = time.time() + 0.5
+                    else:
+                        self.data.state = "StandingDown"
+                        self.nextTimeActive = time.time() + 0.15
+                if event.data == (0, -1):
+                    if self.data.state == "StandingUp":
+                        self.data.state = "WalkingUp"
+                        self.nextTimeActive = time.time() + 0.5
+                    else:
+                        self.data.state = "StandingUp"
+                        self.nextTimeActive = time.time() + 0.15
+            if event.event_type == eventType.Atack:
+                if self.data.state == "StandingUp":
+                    self.data.state = "AtackingUp"
+                    self.nextTimeActive = time.time() + 0.5
+                if self.data.state == "StandingDown":
+                    self.data.state = "AtackingDown"
+                    self.nextTimeActive = time.time() + 0.5
+                if self.data.state == "StandingLeft":
+                    self.data.state = "AtackingLeft"
+                    self.nextTimeActive = time.time() + 0.5
+                if self.data.state == "StandingRight":
+                    self.data.state = "AtackingRight"
+                    self.nextTimeActive = time.time() + 0.5
 
 
 #   _____                    __    _
@@ -46,22 +121,161 @@ class PlayerEntityLogic(EntityLogic):
 #                  /_/
 
 
-class PlayerSpriteStanding(Sprite):
-    # Actually overrides base class method
-    def getImage(self, _time):
-        texture = pygame.Surface((20, 20))
-        texture.fill((250, 100, 100))
-        return texture
+class PlayerSpriteStandingUp(UpgradedSprite):
+    def __init__(self):
+        UpgradedSprite.__init__(
+            self,
+            'Sprites/Player/Up/WarriorUpIdle.png',
+            2)
 
-    # Actually overrides base class method
     def getPosition(self, _time: int):
-        return [-10, -10]
+        return [0, 25]
+
+
+class PlayerSpriteStandingDown(UpgradedSprite):
+    def __init__(self):
+        UpgradedSprite.__init__(
+            self,
+            'Sprites/Player/Down/WarriorDownIdle.png',
+            2)
+
+    def getPosition(self, _time: int):
+        return [0, 25]
+
+
+class PlayerSpriteStandingLeft(UpgradedSprite):
+    def __init__(self):
+        UpgradedSprite.__init__(
+            self,
+            'Sprites/Player/Left/WarriorLeftIdle.png',
+            2)
+
+    def getPosition(self, _time: int):
+        return [0, 25]
+
+
+class PlayerSpriteStandingRight(UpgradedSprite):
+    def __init__(self):
+        UpgradedSprite.__init__(
+            self,
+            'Sprites/Player/Right/WarriorRightIdle.png',
+            2)
+
+    def getPosition(self, _time: int):
+        return [0, 25]
+
+
+class PlayerSpriteWalkingUp(UpgradedSprite):
+    def __init__(self):
+        UpgradedSprite.__init__(
+            self,
+            'Sprites/Player/Up/WarriorUpWalk.png',
+            2,
+            0.5)
+
+    def getPosition(self, _time: int):
+        return [0, 25 - _time * 100]
+
+
+class PlayerSpriteWalkingDown(UpgradedSprite):
+    def __init__(self):
+        UpgradedSprite.__init__(
+            self,
+            'Sprites/Player/Down/WarriorDownWalk.png',
+            2,
+            0.5)
+
+    def getPosition(self, _time: int):
+        return [0, 25 + _time * 100]
+
+
+class PlayerSpriteWalkingLeft(UpgradedSprite):
+    def __init__(self):
+        UpgradedSprite.__init__(
+            self,
+            'Sprites/Player/Left/WarriorLeftWalk.png',
+            2,
+            0.5)
+
+    def getPosition(self, _time: int):
+        return [- _time * 100, 25]
+
+
+class PlayerSpriteWalkingRight(UpgradedSprite):
+    def __init__(self):
+        UpgradedSprite.__init__(
+            self,
+            'Sprites/Player/Right/WarriorRightWalk.png',
+            2,
+            0.5)
+
+    def getPosition(self, _time: int):
+        return [_time * 100, 25]
+
+
+class PlayerSpriteAtackingUp(UpgradedSprite):
+    def __init__(self):
+        UpgradedSprite.__init__(
+            self,
+            'Sprites/Player/Up/WarriorUpAttack01.png',
+            2,
+            0.5)
+
+    def getPosition(self, _time: int):
+        return [0, 25]
+
+
+class PlayerSpriteAtackingDown(UpgradedSprite):
+    def __init__(self):
+        UpgradedSprite.__init__(
+            self,
+            'Sprites/Player/Down/WarriorDownAttack01.png',
+            2,
+            0.5)
+
+    def getPosition(self, _time: int):
+        return [0, 25]
+
+
+class PlayerSpriteAtackingLeft(UpgradedSprite):
+    def __init__(self):
+        UpgradedSprite.__init__(
+            self,
+            'Sprites/Player/Left/WarriorLeftAttack01.png',
+            2,
+            0.5)
+
+    def getPosition(self, _time: int):
+        return [0, 25]
+
+
+class PlayerSpriteAtackingRight(UpgradedSprite):
+    def __init__(self):
+        UpgradedSprite.__init__(
+            self,
+            'Sprites/Player/Right/WarriorRightAttack01.png',
+            2,
+            0.5)
+
+    def getPosition(self, _time: int):
+        return [0, 25]
 
 
 class PlayerEntityGraphics(EntityGraphics):
     def __init__(self, _data):
         sprites = {
-            "Standing": PlayerSpriteStanding
+            "StandingUp": PlayerSpriteStandingUp,
+            "StandingDown": PlayerSpriteStandingDown,
+            "StandingLeft": PlayerSpriteStandingLeft,
+            "StandingRight": PlayerSpriteStandingRight,
+            "WalkingUp": PlayerSpriteWalkingUp,
+            "WalkingDown": PlayerSpriteWalkingDown,
+            "WalkingLeft": PlayerSpriteWalkingLeft,
+            "WalkingRight": PlayerSpriteWalkingRight,
+            "AtackingUp": PlayerSpriteAtackingUp,
+            "AtackingDown": PlayerSpriteAtackingDown,
+            "AtackingLeft": PlayerSpriteAtackingLeft,
+            "AtackingRight": PlayerSpriteAtackingRight
         }
 
         EntityGraphics.__init__(self, _data, sprites)
@@ -75,7 +289,7 @@ class PlayerEntityGraphics(EntityGraphics):
 
 class Player(Entity):
     def __init__(self, _env):
-        entity_data = EntityData("Standing", [0, 0], Inventory([]))
+        entity_data = EntityData("WalkingDown", [0, 0], Inventory([]))
 
         Entity.__init__(
             self,
@@ -87,19 +301,3 @@ class Player(Entity):
         )
 
         self.env = _env
-
-
-class oldPlayer:
-    def __init__(self, env):
-        self.env = env
-        self.pos = [0, 0]
-        self.temp_texture = pygame.Surface((20, 20))
-        self.temp_texture.fill((250, 100, 100))
-
-    def update(self, dt):
-        pass
-
-    def draw(self, screen, camera_position):
-        screen.blit(self.temp_texture, [
-                        -10 + self.pos[0] - camera_position[0],
-                        -10 + self.pos[1] - camera_position[1]])

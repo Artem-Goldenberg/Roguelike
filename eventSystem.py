@@ -36,9 +36,9 @@ class KeyboardEventSystem():
     def __init__(self):
         self.events = []
         self.time_last_pressed = {}
-        self.press_timeout = 0.2
+        self.press_timeout = 0.0
 
-    def updateKeyPress(self, _key, _event_type, _data):
+    def updateKeyPress(self, _key, _event_type, _data=None):
         if not self.time_last_pressed.__contains__(_key):
             self.time_last_pressed[_key] = time.time()
             self.events.append(Event(_event_type, self, _data))
