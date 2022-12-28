@@ -1,10 +1,10 @@
 import logging
 import typing as tp
-from entityData import EntityData
+from Engine.entityData import EntityData
 
 
 class Behaviour():
-    def process(self, time: int):
+    def process(self, _dt: float):
         logging.info("Entity behaviour is not implemented")
 
 

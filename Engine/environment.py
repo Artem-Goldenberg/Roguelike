@@ -3,9 +3,9 @@ import pygame
 import time
 
 # from entity import Entity
-from chunk import Chunk
-from player import Player
-from eventSystem import EventSystem, KeyboardEventSystem
+from Engine.chunk import Chunk
+from Player.player import Player
+from Engine.eventSystem import EventSystem, KeyboardEventSystem
 
 
 def sign(num):
@@ -75,6 +75,7 @@ class Environment:
             if event.type == pygame.VIDEORESIZE:
                 self.window_height = event.h
                 self.window_width = event.w
+                print("New size: " + str(self.window_height) + "x" + str(self.window_width))
             if event.type == pygame.QUIT:
                 self.running = False
 
@@ -125,7 +126,7 @@ class Environment:
         dt = time.time() - self.time
         self.time = time.time()
 
-        self.player.logic.handleEvents()
+        self.player.logic.handleEvents(dt)
 
         for chunk in self.active_chunks:
             for entity in chunk.entities:
@@ -139,15 +140,15 @@ class Environment:
         # / /__  / _ `/ /  ' \ / -_) / __// _ `/
         # \___/  \_,_/ /_/_/_/ \__/ /_/   \_,_/
 
-
+        camera_move_speed = 100.0
         if self.player.data.position[0] - self.camera_position[0] < self.window_width/3:
-            self.camera_position[0] = self.player.data.position[0] - self.window_width/3
+            self.camera_position[0] -= dt * camera_move_speed
         if self.player.data.position[0] - self.camera_position[0] > self.window_width*2/3:
-            self.camera_position[0] = self.player.data.position[0] - self.window_width*2/3
-        if self.player.data.position[1] - self.camera_position[1] < self.window_width/3:
-            self.camera_position[1] = self.player.data.position[1] - self.window_width/3
-        if self.player.data.position[1] - self.camera_position[1] > self.window_width*2/3:
-            self.camera_position[1] = self.player.data.position[1] - self.window_width*2/3
+            self.camera_position[0] += dt * camera_move_speed
+        if self.player.data.position[1] - self.camera_position[1] < self.window_height/3:
+            self.camera_position[1] -= dt * camera_move_speed
+        if self.player.data.position[1] - self.camera_position[1] > self.window_height*2/3:
+            self.camera_position[1] += dt * camera_move_speed
 
         self.screen.fill(self.bg_color)
 

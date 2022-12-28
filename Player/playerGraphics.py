@@ -1,4 +1,4 @@
-from entityGraphics import EntityGraphics, UpgradedSprite
+from Engine.entityGraphics import EntityGraphics, UpgradedSprite
 
 standing_duration = 1.0
 standing_stadiness = 0.15
@@ -14,167 +14,140 @@ class PlayerSpriteStandingUp(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
             self,
-            'Sprites/Player/Up/WarriorUpIdle.png',
-            2,
-            _steadiness_time=standing_stadiness)
+            'Player/Sprites/Up/WarriorUpIdle.png',
+            2)
 
 
 class PlayerSpriteStandingDown(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
             self,
-            'Sprites/Player/Down/WarriorDownIdle.png',
-            2,
-            _steadiness_time=standing_stadiness)
+            'Player/Sprites/Down/WarriorDownIdle.png',
+            2)
 
 
 class PlayerSpriteStandingLeft(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
             self,
-            'Sprites/Player/Left/WarriorLeftIdle.png',
-            2,
-            _steadiness_time=standing_stadiness)
+            'Player/Sprites/Left/WarriorLeftIdle.png',
+            2)
 
 
 class PlayerSpriteStandingRight(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
             self,
-            'Sprites/Player/Right/WarriorRightIdle.png',
-            2,
-            _steadiness_time=standing_stadiness)
+            'Player/Sprites/Right/WarriorRightIdle.png',
+            2)
 
 
 class PlayerSpriteWalkingUp(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
             self,
-            'Sprites/Player/Up/WarriorUpWalk.png',
-            2,
-            walking_duration,
-            walking_stadiness)
+            'Player/Sprites/Up/WarriorUpWalk.png',
+            2)
 
-    def getPositionChange(self, _dt):
-        return [0, - 100 * _dt]
+    def getRelativePosition(self, _animation_stage):
+        return [0, 25 - 50 * _animation_stage]
 
 
 class PlayerSpriteWalkingDown(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
             self,
-            'Sprites/Player/Down/WarriorDownWalk.png',
-            2,
-            walking_duration,
-            walking_stadiness)
+            'Player/Sprites/Down/WarriorDownWalk.png',
+            2)
 
-    def getPositionChange(self, _dt):
-        return [0, 100 * _dt]
+    def getRelativePosition(self, _animation_stage):
+        return [0, 25 + 50 * _animation_stage]
 
 
 class PlayerSpriteWalkingLeft(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
             self,
-            'Sprites/Player/Left/WarriorLeftWalk.png',
-            2,
-            walking_duration,
-            walking_stadiness)
+            'Player/Sprites/Left/WarriorLeftWalk.png',
+            2)
 
-    def getPositionChange(self, _dt):
-        return [- 100 * _dt, 0]
+    def getRelativePosition(self, _animation_stage):
+        return [-50 * _animation_stage, 25]
 
 
 class PlayerSpriteWalkingRight(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
             self,
-            'Sprites/Player/Right/WarriorRightWalk.png',
-            2,
-            walking_duration,
-            walking_stadiness)
+            'Player/Sprites/Right/WarriorRightWalk.png',
+            2)
 
-    def getPositionChange(self, _dt):
-        return [100 * _dt, 0]
+    def getRelativePosition(self, _animation_stage):
+        return [50 * _animation_stage, 25]
 
 
 class PlayerSpriteAtackingUp(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
             self,
-            'Sprites/Player/Up/WarriorUpAttack01.png',
-            2,
-            atacking_duration,
-            atacking_stadiness)
+            'Player/Sprites/Up/WarriorUpAttack01.png',
+            2)
 
 
 class PlayerSpriteAtackingDown(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
             self,
-            'Sprites/Player/Down/WarriorDownAttack01.png',
-            2,
-            atacking_duration,
-            atacking_stadiness)
+            'Player/Sprites/Down/WarriorDownAttack01.png',
+            2)
 
 
 class PlayerSpriteAtackingLeft(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
             self,
-            'Sprites/Player/Left/WarriorLeftAttack01.png',
-            2,
-            atacking_duration,
-            atacking_stadiness)
+            'Sprites/Left/WarriorLeftAttack01.png',
+            2)
 
 
 class PlayerSpriteAtackingRight(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
             self,
-            'Sprites/Player/Right/WarriorRightAttack01.png',
-            2,
-            atacking_duration,
-            atacking_stadiness)
+            'Sprites/Right/WarriorRightAttack01.png',
+            2)
+
 
 class PlayerSpriteMassiveAtackingUp(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
             self,
-            'Sprites/Player/Up/WarriorUpAttack02.png',
-            2,
-            massive_atacking_duration,
-            massive_atacking_stadiness)
+            'Player/Sprites/Up/WarriorUpAttack02.png',
+            2)
 
 
 class PlayerSpriteMassiveAtackingDown(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
             self,
-            'Sprites/Player/Down/WarriorDownAttack02.png',
-            2,
-            massive_atacking_duration,
-            massive_atacking_stadiness)
+            'Player/Sprites/Down/WarriorDownAttack02.png',
+            2)
 
 
 class PlayerSpriteMassiveAtackingLeft(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
             self,
-            'Sprites/Player/Left/WarriorLeftAttack02.png',
-            2,
-            massive_atacking_duration,
-            massive_atacking_stadiness)
+            'Player/Sprites/Left/WarriorLeftAttack02.png',
+            2)
 
 
 class PlayerSpriteMassiveAtackingRight(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
             self,
-            'Sprites/Player/Right/WarriorRightAttack02.png',
-            2,
-            massive_atacking_duration,
-            massive_atacking_stadiness)
+            'Player/Sprites/Right/WarriorRightAttack02.png',
+            2)
 
 
 class PlayerEntityGraphics(EntityGraphics):

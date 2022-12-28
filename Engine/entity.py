@@ -1,8 +1,8 @@
 import typing as tp
 
-from entityLogic import EntityLogic
-from entityGraphics import EntityGraphics
-from entityData import EntityData
+from Engine.entityLogic import EntityLogic
+from Engine.entityGraphics import EntityGraphics
+from Engine.entityData import EntityData
 
 Point = tp.List[int]
 

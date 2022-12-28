@@ -2,7 +2,7 @@ import pygame
 import random
 
 import typing as tp
-from entity import Entity
+from Engine.entity import Entity
 
 
 class Chunk:
