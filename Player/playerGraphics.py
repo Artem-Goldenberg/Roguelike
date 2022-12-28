@@ -15,7 +15,7 @@ class PlayerSpriteStandingUp(UpgradedSprite):
         UpgradedSprite.__init__(
             self,
             'Player/Sprites/Up/WarriorUpIdle.png',
-            2)
+            3)
 
 
 class PlayerSpriteStandingDown(UpgradedSprite):
@@ -23,7 +23,7 @@ class PlayerSpriteStandingDown(UpgradedSprite):
         UpgradedSprite.__init__(
             self,
             'Player/Sprites/Down/WarriorDownIdle.png',
-            2)
+            3)
 
 
 class PlayerSpriteStandingLeft(UpgradedSprite):
@@ -31,7 +31,7 @@ class PlayerSpriteStandingLeft(UpgradedSprite):
         UpgradedSprite.__init__(
             self,
             'Player/Sprites/Left/WarriorLeftIdle.png',
-            2)
+            3)
 
 
 class PlayerSpriteStandingRight(UpgradedSprite):
@@ -39,7 +39,7 @@ class PlayerSpriteStandingRight(UpgradedSprite):
         UpgradedSprite.__init__(
             self,
             'Player/Sprites/Right/WarriorRightIdle.png',
-            2)
+            3)
 
 
 class PlayerSpriteWalkingUp(UpgradedSprite):
@@ -47,10 +47,10 @@ class PlayerSpriteWalkingUp(UpgradedSprite):
         UpgradedSprite.__init__(
             self,
             'Player/Sprites/Up/WarriorUpWalk.png',
-            2)
+            3)
 
     def getRelativePosition(self, _animation_stage):
-        return [0, 25 - 50 * _animation_stage]
+        return [0, 25 - 75 * _animation_stage]
 
 
 class PlayerSpriteWalkingDown(UpgradedSprite):
@@ -58,10 +58,10 @@ class PlayerSpriteWalkingDown(UpgradedSprite):
         UpgradedSprite.__init__(
             self,
             'Player/Sprites/Down/WarriorDownWalk.png',
-            2)
+            3)
 
     def getRelativePosition(self, _animation_stage):
-        return [0, 25 + 50 * _animation_stage]
+        return [0, 25 + 75 * _animation_stage]
 
 
 class PlayerSpriteWalkingLeft(UpgradedSprite):
@@ -69,10 +69,10 @@ class PlayerSpriteWalkingLeft(UpgradedSprite):
         UpgradedSprite.__init__(
             self,
             'Player/Sprites/Left/WarriorLeftWalk.png',
-            2)
+            3)
 
     def getRelativePosition(self, _animation_stage):
-        return [-50 * _animation_stage, 25]
+        return [-75 * _animation_stage, 25]
 
 
 class PlayerSpriteWalkingRight(UpgradedSprite):
@@ -80,10 +80,10 @@ class PlayerSpriteWalkingRight(UpgradedSprite):
         UpgradedSprite.__init__(
             self,
             'Player/Sprites/Right/WarriorRightWalk.png',
-            2)
+            3)
 
     def getRelativePosition(self, _animation_stage):
-        return [50 * _animation_stage, 25]
+        return [75 * _animation_stage, 25]
 
 
 class PlayerSpriteAtackingUp(UpgradedSprite):
@@ -91,7 +91,7 @@ class PlayerSpriteAtackingUp(UpgradedSprite):
         UpgradedSprite.__init__(
             self,
             'Player/Sprites/Up/WarriorUpAttack01.png',
-            2)
+            3)
 
 
 class PlayerSpriteAtackingDown(UpgradedSprite):
@@ -99,23 +99,23 @@ class PlayerSpriteAtackingDown(UpgradedSprite):
         UpgradedSprite.__init__(
             self,
             'Player/Sprites/Down/WarriorDownAttack01.png',
-            2)
+            3)
 
 
 class PlayerSpriteAtackingLeft(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
             self,
-            'Sprites/Left/WarriorLeftAttack01.png',
-            2)
+            'Player/Sprites/Left/WarriorLeftAttack01.png',
+            3)
 
 
 class PlayerSpriteAtackingRight(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
             self,
-            'Sprites/Right/WarriorRightAttack01.png',
-            2)
+            'Player/Sprites/Right/WarriorRightAttack01.png',
+            3)
 
 
 class PlayerSpriteMassiveAtackingUp(UpgradedSprite):
@@ -123,7 +123,7 @@ class PlayerSpriteMassiveAtackingUp(UpgradedSprite):
         UpgradedSprite.__init__(
             self,
             'Player/Sprites/Up/WarriorUpAttack02.png',
-            2)
+            3)
 
 
 class PlayerSpriteMassiveAtackingDown(UpgradedSprite):
@@ -131,7 +131,7 @@ class PlayerSpriteMassiveAtackingDown(UpgradedSprite):
         UpgradedSprite.__init__(
             self,
             'Player/Sprites/Down/WarriorDownAttack02.png',
-            2)
+            3)
 
 
 class PlayerSpriteMassiveAtackingLeft(UpgradedSprite):
@@ -139,7 +139,7 @@ class PlayerSpriteMassiveAtackingLeft(UpgradedSprite):
         UpgradedSprite.__init__(
             self,
             'Player/Sprites/Left/WarriorLeftAttack02.png',
-            2)
+            3)
 
 
 class PlayerSpriteMassiveAtackingRight(UpgradedSprite):
@@ -147,7 +147,7 @@ class PlayerSpriteMassiveAtackingRight(UpgradedSprite):
         UpgradedSprite.__init__(
             self,
             'Player/Sprites/Right/WarriorRightAttack02.png',
-            2)
+            3)
 
 
 class PlayerEntityGraphics(EntityGraphics):

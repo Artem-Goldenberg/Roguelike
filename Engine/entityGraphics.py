@@ -1,13 +1,9 @@
 import logging
-import typing as tp
+import pygame
+
 from math import floor
 
 from Engine.entityData import EntityData
-
-# temporal
-import pygame
-
-Point = tp.List[int]
 
 
 class Sprite:
@@ -17,7 +13,6 @@ class Sprite:
     # Basic function that draws sprite with respect to getImage, getPosition
     # and base position
     def draw(self, _animation_stage, _screen, _position):
-        # print("Draw: (" + str(self.getRelativePosition(_animation_stage)[0]) + ", " + str(self.getRelativePosition(_animation_stage)[1]) + ")")
         _screen.blit(
             self.getImage(_animation_stage),
             [
@@ -27,20 +22,20 @@ class Sprite:
         )
 
     # Abstract function that returns image (texture) at specified time
-    def getImage(self, _animation_stage) -> str:
-        logging.info("Sprite: getImage is not implemented: Sprite(" + str(self) + ")")
+    def getImage(self, _animation_stage):
+        logging.critical("Sprite: getImage is not implemented: Sprite(" + str(self) + ")")
         raise
 
     # Abstract function that returns position of texture at specified time
     # This point is considered to be relative to the base position -- beginning
     #  of corresponding animation
-    def getRelativePosition(self, _animation_stage) -> Point:
-        logging.info("Sprite: getPosition is not implemented: Sprite(" + str(self) + ")")
+    def getRelativePosition(self, _animation_stage):
+        logging.critical("Sprite: getPosition is not implemented: Sprite(" + str(self) + ")")
         raise
 
 
 class EntityGraphics():
-    def __init__(self, _data: EntityData, _sprites: tp.Dict[str, Sprite]):
+    def __init__(self, _data: EntityData, _sprites):
         self.data = _data
         self.sprites = _sprites
 
@@ -50,11 +45,12 @@ class EntityGraphics():
     def draw(self, _dt, _screen, _camera_position):
         if self.data.state != self.active_sprite_name:
             if not self.sprites.__contains__(self.data.state):
-                logging.info("EntityGraphics: draw: sprite \"" + str(self.data.state) + "\" is not implemented")
+                logging.critical("EntityGraphics: draw: sprite \"" + str(self.data.state) + "\" is not implemented")
                 raise
 
             self.active_sprite = self.sprites[self.data.state]()
             self.active_sprite_name = self.data.state
+            logging.info("EntityGraphics: draw: new sprite: \"" + str(self.active_sprite_name) + "\"")
 
         self.active_sprite.draw(
             self.data.animation_stage,

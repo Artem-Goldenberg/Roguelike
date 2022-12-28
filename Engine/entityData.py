@@ -5,10 +5,6 @@ from uuid import UUID
 from dataclasses import dataclass, field
 
 
-# class EntityState(Enum):
-#     idle = auto()
-
-
 @dataclass
 class Item:
     _id = UUID(int=random.getrandbits(128))
@@ -32,10 +28,17 @@ class Inventory:
         self._items.remove(item)
 
 
-@dataclass
 class EntityData:
-    state: str
-    position: tp.List[int]
-    animation_stage: float
-    inventory: Inventory
-    custom: str = ""
+    def __init__(
+            self,
+            _env,
+            _state="",
+            _position=(0, 0),
+            _animation_stage=0.0,
+            _inventory=Inventory([])
+    ):
+        self.env = _env
+        self.state = _state
+        self.position = _position
+        self.animation_stage = _animation_stage
+        self.inventory = _inventory

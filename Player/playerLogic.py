@@ -1,10 +1,10 @@
-import logging
+# import logging
 
 from Engine.entityLogic import EntityLogic, Behaviour
 from Engine.eventSystem import eventType  # Event
 
 
-class PlayerSpriteStandingUp(Behaviour):
+class PlayerBehaviourStandingUp(Behaviour):
     def __init__(self, _env):
         self.env = _env
         self.state_lasts = 0.0
@@ -45,7 +45,7 @@ class PlayerSpriteStandingUp(Behaviour):
                         _data.animation_stage = 0.0
 
 
-class PlayerSpriteStandingDown(Behaviour):
+class PlayerBehaviourStandingDown(Behaviour):
     def __init__(self, _env):
         self.env = _env
         self.state_lasts = 0.0
@@ -86,7 +86,7 @@ class PlayerSpriteStandingDown(Behaviour):
                         _data.animation_stage = 0.0
 
 
-class PlayerSpriteStandingLeft(Behaviour):
+class PlayerBehaviourStandingLeft(Behaviour):
     def __init__(self, _env):
         self.env = _env
         self.state_lasts = 0.0
@@ -127,7 +127,7 @@ class PlayerSpriteStandingLeft(Behaviour):
                         _data.animation_stage = 0.0
 
 
-class PlayerSpriteStandingRight(Behaviour):
+class PlayerBehaviourStandingRight(Behaviour):
     def __init__(self, _env):
         self.env = _env
         self.state_lasts = 0.0
@@ -168,7 +168,7 @@ class PlayerSpriteStandingRight(Behaviour):
                         _data.animation_stage = 0.0
 
 
-class PlayerSpriteWalkingUp(Behaviour):
+class PlayerBehaviourWalkingUp(Behaviour):
     def __init__(self, _env):
         self.env = _env
         self.state_lasts = 0.0
@@ -185,7 +185,7 @@ class PlayerSpriteWalkingUp(Behaviour):
                 continue_key_pressed = True
 
         if self.state_lasts >= self.duration:
-            _data.position[1] -= 50
+            _data.position[1] -= 75
             if continue_key_pressed:
                 self.state_lasts = 0.0
                 _data.animation_stage = 0.0
@@ -198,7 +198,7 @@ class PlayerSpriteWalkingUp(Behaviour):
             _data.animation_stage = 0.0
 
 
-class PlayerSpriteWalkingDown(Behaviour):
+class PlayerBehaviourWalkingDown(Behaviour):
     def __init__(self, _env):
         self.env = _env
         self.state_lasts = 0.0
@@ -215,7 +215,7 @@ class PlayerSpriteWalkingDown(Behaviour):
                 continue_key_pressed = True
 
         if self.state_lasts >= self.duration:
-            _data.position[1] += 50
+            _data.position[1] += 75
             if continue_key_pressed:
                 self.state_lasts = 0.0
                 _data.animation_stage = 0.0
@@ -228,7 +228,7 @@ class PlayerSpriteWalkingDown(Behaviour):
             _data.animation_stage = 0.0
 
 
-class PlayerSpriteWalkingLeft(Behaviour):
+class PlayerBehaviourWalkingLeft(Behaviour):
     def __init__(self, _env):
         self.env = _env
         self.state_lasts = 0.0
@@ -245,7 +245,7 @@ class PlayerSpriteWalkingLeft(Behaviour):
                 continue_key_pressed = True
 
         if self.state_lasts >= self.duration:
-            _data.position[0] -= 50
+            _data.position[0] -= 75
             if continue_key_pressed:
                 self.state_lasts = 0.0
                 _data.animation_stage = 0.0
@@ -258,7 +258,7 @@ class PlayerSpriteWalkingLeft(Behaviour):
             _data.animation_stage = 0.0
 
 
-class PlayerSpriteWalkingRight(Behaviour):
+class PlayerBehaviourWalkingRight(Behaviour):
     def __init__(self, _env):
         self.env = _env
         self.state_lasts = 0.0
@@ -275,7 +275,7 @@ class PlayerSpriteWalkingRight(Behaviour):
                 continue_key_pressed = True
 
         if self.state_lasts >= self.duration:
-            _data.position[0] += 50
+            _data.position[0] += 75
             if continue_key_pressed:
                 self.state_lasts = 0.0
                 _data.animation_stage = 0.0
@@ -288,7 +288,7 @@ class PlayerSpriteWalkingRight(Behaviour):
             _data.animation_stage = 0.0
 
 
-class PlayerSpriteAtackingUp(Behaviour):
+class PlayerBehaviourAtackingUp(Behaviour):
     def __init__(self, _env):
         self.env = _env
         self.state_lasts = 0.0
@@ -303,7 +303,7 @@ class PlayerSpriteAtackingUp(Behaviour):
             _data.animation_stage = 0.0
 
 
-class PlayerSpriteAtackingDown(Behaviour):
+class PlayerBehaviourAtackingDown(Behaviour):
     def __init__(self, _env):
         self.env = _env
         self.state_lasts = 0.0
@@ -318,7 +318,7 @@ class PlayerSpriteAtackingDown(Behaviour):
             _data.animation_stage = 0.0
 
 
-class PlayerSpriteAtackingLeft(Behaviour):
+class PlayerBehaviourAtackingLeft(Behaviour):
     def __init__(self, _env):
         self.env = _env
         self.state_lasts = 0.0
@@ -333,7 +333,7 @@ class PlayerSpriteAtackingLeft(Behaviour):
             _data.animation_stage = 0.0
 
 
-class PlayerSpriteAtackingRight(Behaviour):
+class PlayerBehaviourAtackingRight(Behaviour):
     def __init__(self, _env):
         self.env = _env
         self.state_lasts = 0.0
@@ -348,7 +348,7 @@ class PlayerSpriteAtackingRight(Behaviour):
             _data.animation_stage = 0.0
 
 
-class PlayerSpriteMassiveAtackingUp(Behaviour):
+class PlayerBehaviourMassiveAtackingUp(Behaviour):
     def __init__(self, _env):
         self.env = _env
         self.state_lasts = 0.0
@@ -377,7 +377,7 @@ class PlayerSpriteMassiveAtackingUp(Behaviour):
             _data.animation_stage = 0.0
 
 
-class PlayerSpriteMassiveAtackingDown(Behaviour):
+class PlayerBehaviourMassiveAtackingDown(Behaviour):
     def __init__(self, _env):
         self.env = _env
         self.state_lasts = 0.0
@@ -406,7 +406,7 @@ class PlayerSpriteMassiveAtackingDown(Behaviour):
             _data.animation_stage = 0.0
 
 
-class PlayerSpriteMassiveAtackingLeft(Behaviour):
+class PlayerBehaviourMassiveAtackingLeft(Behaviour):
     def __init__(self, _env):
         self.env = _env
         self.state_lasts = 0.0
@@ -435,7 +435,7 @@ class PlayerSpriteMassiveAtackingLeft(Behaviour):
             _data.animation_stage = 0.0
 
 
-class PlayerSpriteMassiveAtackingRight(Behaviour):
+class PlayerBehaviourMassiveAtackingRight(Behaviour):
     def __init__(self, _env):
         self.env = _env
         self.state_lasts = 0.0
@@ -467,40 +467,22 @@ class PlayerSpriteMassiveAtackingRight(Behaviour):
 class PlayerEntityLogic(EntityLogic):
     def __init__(self, _env, _data):
         behaviours = {
-            "StandingUp": PlayerSpriteStandingUp,
-            "StandingDown": PlayerSpriteStandingDown,
-            "StandingLeft": PlayerSpriteStandingLeft,
-            "StandingRight": PlayerSpriteStandingRight,
-            "WalkingUp": PlayerSpriteWalkingUp,
-            "WalkingDown": PlayerSpriteWalkingDown,
-            "WalkingLeft": PlayerSpriteWalkingLeft,
-            "WalkingRight": PlayerSpriteWalkingRight,
-            "AtackingUp": PlayerSpriteAtackingUp,
-            "AtackingDown": PlayerSpriteAtackingDown,
-            "AtackingLeft": PlayerSpriteAtackingLeft,
-            "AtackingRight": PlayerSpriteAtackingRight,
-            "MassiveAtackingUp": PlayerSpriteMassiveAtackingUp,
-            "MassiveAtackingDown": PlayerSpriteMassiveAtackingDown,
-            "MassiveAtackingLeft": PlayerSpriteMassiveAtackingLeft,
-            "MassiveAtackingRight": PlayerSpriteMassiveAtackingRight
+            "StandingUp": PlayerBehaviourStandingUp,
+            "StandingDown": PlayerBehaviourStandingDown,
+            "StandingLeft": PlayerBehaviourStandingLeft,
+            "StandingRight": PlayerBehaviourStandingRight,
+            "WalkingUp": PlayerBehaviourWalkingUp,
+            "WalkingDown": PlayerBehaviourWalkingDown,
+            "WalkingLeft": PlayerBehaviourWalkingLeft,
+            "WalkingRight": PlayerBehaviourWalkingRight,
+            "AtackingUp": PlayerBehaviourAtackingUp,
+            "AtackingDown": PlayerBehaviourAtackingDown,
+            "AtackingLeft": PlayerBehaviourAtackingLeft,
+            "AtackingRight": PlayerBehaviourAtackingRight,
+            "MassiveAtackingUp": PlayerBehaviourMassiveAtackingUp,
+            "MassiveAtackingDown": PlayerBehaviourMassiveAtackingDown,
+            "MassiveAtackingLeft": PlayerBehaviourMassiveAtackingLeft,
+            "MassiveAtackingRight": PlayerBehaviourMassiveAtackingRight
         }
 
-        EntityLogic.__init__(
-            self,
-            _env,
-            _data,
-            behaviours
-        )
-
-        self.active_state_name = ""
-        self.active_state = None
-
-    def handleEvents(self, _dt):
-        if self.active_state_name != self.data.state:
-            if not self.behaviors.__contains__(self.data.state):
-                logging.info("HandleEvents: state is not implemented: " + str(self.data.state) )
-                raise
-            self.active_state = self.behaviors[self.data.state](self.env)
-            self.active_state_name = self.data.state
-
-        self.active_state.process(self.data, _dt)
+        EntityLogic.__init__(self, _env, _data, behaviours)

@@ -1,6 +1,9 @@
 import logging
 import pygame
 import time
+import sys
+
+# from math import fabs
 
 # from entity import Entity
 from Engine.chunk import Chunk
@@ -16,6 +19,22 @@ def sign(num):
 
 class Environment:
     def __init__(self):
+
+        logFormatter = logging.Formatter(
+            fmt="%(asctime)s.%(msecs)03d [%(levelname)s]  %(message)s",
+            datefmt='%H:%M:%S'
+        )
+        rootLogger = logging.getLogger()
+        rootLogger.setLevel(logging.INFO)
+
+        fileHandler = logging.FileHandler(filename="rogue_like.log")
+        fileHandler.setFormatter(logFormatter)
+        rootLogger.addHandler(fileHandler)
+
+        consoleHandler = logging.StreamHandler(sys.stdout)
+        consoleHandler.setFormatter(logFormatter)
+        rootLogger.addHandler(consoleHandler)
+
         logging.info("Initing pygame")
         pygame.init()
         logging.info("Pygame inited")
@@ -29,13 +48,15 @@ class Environment:
         logging.info("Window inited")
 
         logging.info("Initing constants")
-        self.grid_step = 50
-        self.chunk_width = 11
-        self.chunk_height = 13
+        self.grid_step = 75
+        self.chunk_gap = 1
+        self.chunk_width = 19
+        self.chunk_height = 11
         self.running = True
         self.bg_color = (0, 0, 0)
         self.camera_position = [0, 0]
         self.time = time.time()
+        self.camera_move_speed = 150
         logging.info("Constants inited")
 
         logging.info("Initing chunks")
@@ -75,7 +96,7 @@ class Environment:
             if event.type == pygame.VIDEORESIZE:
                 self.window_height = event.h
                 self.window_width = event.w
-                print("New size: " + str(self.window_height) + "x" + str(self.window_width))
+                logging.info("Window resize: " + str(self.window_height) + "x" + str(self.window_width))
             if event.type == pygame.QUIT:
                 self.running = False
 
@@ -140,15 +161,14 @@ class Environment:
         # / /__  / _ `/ /  ' \ / -_) / __// _ `/
         # \___/  \_,_/ /_/_/_/ \__/ /_/   \_,_/
 
-        camera_move_speed = 100.0
         if self.player.data.position[0] - self.camera_position[0] < self.window_width/3:
-            self.camera_position[0] -= dt * camera_move_speed
+            self.camera_position[0] -= dt * self.camera_move_speed
         if self.player.data.position[0] - self.camera_position[0] > self.window_width*2/3:
-            self.camera_position[0] += dt * camera_move_speed
+            self.camera_position[0] += dt * self.camera_move_speed
         if self.player.data.position[1] - self.camera_position[1] < self.window_height/3:
-            self.camera_position[1] -= dt * camera_move_speed
+            self.camera_position[1] -= dt * self.camera_move_speed
         if self.player.data.position[1] - self.camera_position[1] > self.window_height*2/3:
-            self.camera_position[1] += dt * camera_move_speed
+            self.camera_position[1] += dt * self.camera_move_speed
 
         self.screen.fill(self.bg_color)
 
