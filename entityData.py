@@ -36,5 +36,6 @@ class Inventory:
 class EntityData:
     state: str
     position: tp.List[int]
+    nextTimeAcceptingEvents: float
     inventory: Inventory
     custom: str = ""

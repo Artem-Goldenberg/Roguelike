@@ -62,9 +62,9 @@ class KeyboardEventSystem():
         if keys[pygame.K_m]:
             self.updateKeyPress(pygame.K_m, eventType.Custom, "ToggleMap")
         if keys[pygame.K_x]:
-            self.updateKeyPress(pygame.K_x, eventType.Atack)
+            self.updateKeyPress(pygame.K_x, eventType.Atack, "Normal")
         if keys[pygame.K_z]:
-            self.updateKeyPress(pygame.K_z, eventType.PickUp)
+            self.updateKeyPress(pygame.K_z, eventType.Atack, "Massive")
         if keys[pygame.K_ESCAPE]:
             self.updateKeyPress(pygame.K_ESCAPE, eventType.Custom, "Settings")
 

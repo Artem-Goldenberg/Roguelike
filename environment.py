@@ -35,7 +35,7 @@ class Environment:
         self.running = True
         self.bg_color = (0, 0, 0)
         self.camera_position = [0, 0]
-        # self.time = time.time()
+        self.time = time.time()
         logging.info("Constants inited")
 
         logging.info("Initing chunks")
@@ -122,6 +122,9 @@ class Environment:
         # \____/ / .__/ \_,_/  \_,_/ \__/ \__/      \___//_.__/ __/ /
         #       /_/                                            |___/
 
+        dt = time.time() - self.time
+        self.time = time.time()
+
         self.player.logic.handleEvents()
 
         for chunk in self.active_chunks:
@@ -136,8 +139,6 @@ class Environment:
         # / /__  / _ `/ /  ' \ / -_) / __// _ `/
         # \___/  \_,_/ /_/_/_/ \__/ /_/   \_,_/
 
-        # dt = time.time() - self.time
-        # self.time = time.time()
 
         if self.player.data.position[0] - self.camera_position[0] < self.window_width/3:
             self.camera_position[0] = self.player.data.position[0] - self.window_width/3
@@ -164,7 +165,7 @@ class Environment:
         # /_/    /_/  \_,_/  \_, / \__/ /_/
         #                   /___/
 
-        self.player.draw(time.time(), self.screen, self.camera_position)
+        self.player.draw(dt, self.screen, self.camera_position)
 
         #    ____        __    _   __    _
         #   / __/ ___   / /_  (_) / /_  (_) ___   ___
