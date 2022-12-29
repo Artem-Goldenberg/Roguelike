@@ -21,6 +21,26 @@ class Chunk:
         self.pos = _pos
         self.entities = []  # none yet
 
+        positions_for_rocks = []
+        while len(positions_for_rocks) < 10:
+            new_pos = (
+                random.randint(int((1-self.env.chunk_width)/2), int(self.env.chunk_width/2)),
+                random.randint(int((1-self.env.chunk_height)/2), int(self.env.chunk_height/2))
+            )
+            if not positions_for_rocks.__contains__(new_pos):
+                positions_for_rocks.append(new_pos)
+        for rock_pos in positions_for_rocks:
+            self.entities.append(
+                self.env.object_factory.getObject(
+                    "Rock",
+                    self.env,
+                    [
+                        rock_pos[0] * self.env.grid_step + self.pos[0],
+                        rock_pos[1] * self.env.grid_step + self.pos[1]
+                    ]
+                )
+            )
+
         if self.env.chunk_width % 2 != 1:
             logging.critical("Chunk: chunk width must be odd !!!")
         if self.env.chunk_height % 2 != 1:
@@ -37,6 +57,6 @@ class Chunk:
                     ]
                 )
 
-    def drawEntities(self, _time, _screen, _camera_position):
+    def drawEntities(self, _dt, _screen, _camera_position):
         for entity in self.entities:
-            entity.draw(_time, _screen, _camera_position)
+            entity.draw(_dt, _screen, _camera_position)

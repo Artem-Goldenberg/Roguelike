@@ -4,14 +4,16 @@ from Engine.entityData import EntityData
 
 
 class Behaviour():
+    def __init__(self, _data):
+        self.data = _data
+
     def process(self, _dt: float):
         logging.critical("Entity behaviour is not implemented")
         raise
 
 
 class EntityLogic():
-    def __init__(self, _env, _data: EntityData, _behaviors):
-        self.env = _env
+    def __init__(self, _data: EntityData, _behaviors):
         self.data = _data
         self.behaviors = _behaviors
         self.active_state_name = ""
@@ -23,8 +25,8 @@ class EntityLogic():
                 logging.critical("HandleEvents: state is not implemented: " + str(self.data.state) )
                 raise
 
-            self.active_state = self.behaviors[self.data.state](self.env)
+            self.active_state = self.behaviors[self.data.state](self.data)
             self.active_state_name = self.data.state
-            logging.info("EntityLogic: draw: new sprite: \"" + str(self.active_state_name) + "\"")
+            logging.info("EntityLogic: handleEvents: new sprite: \"" + str(self.active_state_name) + "\"")
 
-        self.active_state.process(self.data, _dt)
+        self.active_state.process(_dt)

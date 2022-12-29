@@ -7,8 +7,9 @@ import sys
 
 # from entity import Entity
 from Engine.chunk import Chunk
-from Player.player import Player
 from Engine.eventSystem import EventSystem, KeyboardEventSystem
+from Player.player import Player
+from ObjectsFactory.objectFactory import ObjectFactory
 
 
 def sign(num):
@@ -58,6 +59,11 @@ class Environment:
         self.time = time.time()
         self.camera_move_speed = 150
         logging.info("Constants inited")
+
+        logging.info("Initing object factory")
+        self.object_factory = ObjectFactory()
+        logging.info("Object factory inited")
+
 
         logging.info("Initing chunks")
         self.available_chunks = {}
@@ -145,13 +151,14 @@ class Environment:
         #       /_/                                            |___/
 
         dt = time.time() - self.time
+        # print("fps: " + str(1/dt))
         self.time = time.time()
 
         self.player.logic.handleEvents(dt)
 
         for chunk in self.active_chunks:
             for entity in chunk.entities:
-                entity.logic.handleEvents()
+                entity.logic.handleEvents(dt)
 
         self.pastEvents = self.futureEvents
         self.futureEvents = EventSystem()
@@ -180,6 +187,14 @@ class Environment:
         for chunk in self.active_chunks:
             chunk.drawChunk(self.screen, self.camera_position)
 
+        #    ____        __    _   __    _
+        #   / __/ ___   / /_  (_) / /_  (_) ___   ___
+        #  / _/  / _ \ / __/ / / / __/ / / / -_) (_-<
+        # /___/ /_//_/ \__/ /_/  \__/ /_/  \__/ /___/
+
+        for chunk in self.active_chunks:
+            chunk.drawEntities(dt, self.screen, self.camera_position)
+
         #    ___    __
         #   / _ \  / / ___ _  __ __ ___   ____
         #  / ___/ / / / _ `/ / // // -_) / __/
@@ -188,13 +203,6 @@ class Environment:
 
         self.player.draw(dt, self.screen, self.camera_position)
 
-        #    ____        __    _   __    _
-        #   / __/ ___   / /_  (_) / /_  (_) ___   ___
-        #  / _/  / _ \ / __/ / / / __/ / / / -_) (_-<
-        # /___/ /_//_/ \__/ /_/  \__/ /_/  \__/ /___/
-
-        for chunk in self.active_chunks:
-            chunk.drawEntities(time.time(), self.screen, self.camera_position)
 
         pygame.display.flip()
 
