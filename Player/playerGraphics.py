@@ -10,6 +10,16 @@ massive_atacking_duration = 0.6
 massive_atacking_stadiness = 0.6
 
 
+def singleton(class_):
+    instances = {}
+    def getinstance(*args, **kwargs):
+        if class_ not in instances:
+            instances[class_] = class_(*args, **kwargs)
+        return instances[class_]
+    return getinstance
+
+
+@singleton
 class PlayerSpriteStandingUp(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
@@ -21,6 +31,7 @@ class PlayerSpriteStandingUp(UpgradedSprite):
         return [-75, -100]
 
 
+@singleton
 class PlayerSpriteStandingDown(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
@@ -32,6 +43,7 @@ class PlayerSpriteStandingDown(UpgradedSprite):
         return [-75, -100]
 
 
+@singleton
 class PlayerSpriteStandingLeft(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
@@ -43,6 +55,7 @@ class PlayerSpriteStandingLeft(UpgradedSprite):
         return [-75, -100]
 
 
+@singleton
 class PlayerSpriteStandingRight(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
@@ -54,6 +67,7 @@ class PlayerSpriteStandingRight(UpgradedSprite):
         return [-75, -100]
 
 
+@singleton
 class PlayerSpriteWalkingUp(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
@@ -65,6 +79,7 @@ class PlayerSpriteWalkingUp(UpgradedSprite):
         return [-75, -100 - 75 * _animation_stage]
 
 
+@singleton
 class PlayerSpriteWalkingDown(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
@@ -76,6 +91,7 @@ class PlayerSpriteWalkingDown(UpgradedSprite):
         return [-75, -100 + 75 * _animation_stage]
 
 
+@singleton
 class PlayerSpriteWalkingLeft(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
@@ -87,6 +103,7 @@ class PlayerSpriteWalkingLeft(UpgradedSprite):
         return [-75 - 75 * _animation_stage, -100]
 
 
+@singleton
 class PlayerSpriteWalkingRight(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
@@ -98,6 +115,7 @@ class PlayerSpriteWalkingRight(UpgradedSprite):
         return [-75 + 75 * _animation_stage, -100]
 
 
+@singleton
 class PlayerSpriteAtackingUp(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
@@ -109,6 +127,7 @@ class PlayerSpriteAtackingUp(UpgradedSprite):
         return [-75, -100]
 
 
+@singleton
 class PlayerSpriteAtackingDown(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
@@ -120,6 +139,7 @@ class PlayerSpriteAtackingDown(UpgradedSprite):
         return [-75, -100]
 
 
+@singleton
 class PlayerSpriteAtackingLeft(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
@@ -131,6 +151,7 @@ class PlayerSpriteAtackingLeft(UpgradedSprite):
         return [-75, -100]
 
 
+@singleton
 class PlayerSpriteAtackingRight(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
@@ -142,6 +163,7 @@ class PlayerSpriteAtackingRight(UpgradedSprite):
         return [-75, -100]
 
 
+@singleton
 class PlayerSpriteMassiveAtackingUp(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
@@ -153,6 +175,7 @@ class PlayerSpriteMassiveAtackingUp(UpgradedSprite):
         return [-75, -100]
 
 
+@singleton
 class PlayerSpriteMassiveAtackingDown(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
@@ -164,6 +187,7 @@ class PlayerSpriteMassiveAtackingDown(UpgradedSprite):
         return [-75, -100]
 
 
+@singleton
 class PlayerSpriteMassiveAtackingLeft(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
@@ -175,6 +199,7 @@ class PlayerSpriteMassiveAtackingLeft(UpgradedSprite):
         return [-75, -100]
 
 
+@singleton
 class PlayerSpriteMassiveAtackingRight(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
@@ -186,6 +211,7 @@ class PlayerSpriteMassiveAtackingRight(UpgradedSprite):
         return [-75, -100]
 
 
+@singleton
 class PlayerSpriteHurtUp(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
@@ -197,6 +223,7 @@ class PlayerSpriteHurtUp(UpgradedSprite):
         return [-75, -100]
 
 
+@singleton
 class PlayerSpriteHurtDown(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
@@ -208,6 +235,7 @@ class PlayerSpriteHurtDown(UpgradedSprite):
         return [-75, -100]
 
 
+@singleton
 class PlayerSpriteHurtLeft(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
@@ -219,6 +247,7 @@ class PlayerSpriteHurtLeft(UpgradedSprite):
         return [-75, -100]
 
 
+@singleton
 class PlayerSpriteHurtRight(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
@@ -230,79 +259,29 @@ class PlayerSpriteHurtRight(UpgradedSprite):
         return [-75, -100]
 
 
-staticsInited = False
-staticPlayerSpriteStandingUp = None
-staticPlayerSpriteStandingDown = None
-staticPlayerSpriteStandingLeft = None
-staticPlayerSpriteStandingRight = None
-staticPlayerSpriteWalkingUp = None
-staticPlayerSpriteWalkingDown = None
-staticPlayerSpriteWalkingLeft = None
-staticPlayerSpriteWalkingRight = None
-staticPlayerSpriteAtackingUp = None
-staticPlayerSpriteAtackingDown = None
-staticPlayerSpriteAtackingLeft = None
-staticPlayerSpriteAtackingRight = None
-staticPlayerSpriteMassiveAtackingUp = None
-staticPlayerSpriteMassiveAtackingDown = None
-staticPlayerSpriteMassiveAtackingLeft = None
-staticPlayerSpriteMassiveAtackingRight = None
-staticPlayerSpriteHurtUp = None
-staticPlayerSpriteHurtDown = None
-staticPlayerSpriteHurtLeft = None
-staticPlayerSpriteHurtRight = None
-
-
-def Singlton():
-    if not staticsInited:
-        staticPlayerSpriteStandingUp = PlayerSpriteStandingUp()
-        staticPlayerSpriteStandingDown = PlayerSpriteStandingDown()
-        staticPlayerSpriteStandingLeft = PlayerSpriteStandingLeft()
-        staticPlayerSpriteStandingRight = PlayerSpriteStandingRight()
-        staticPlayerSpriteWalkingUp = PlayerSpriteWalkingUp()
-        staticPlayerSpriteWalkingDown = PlayerSpriteWalkingDown()
-        staticPlayerSpriteWalkingLeft = PlayerSpriteWalkingLeft()
-        staticPlayerSpriteWalkingRight = PlayerSpriteWalkingRight()
-        staticPlayerSpriteAtackingUp = PlayerSpriteAtackingUp()
-        staticPlayerSpriteAtackingDown = PlayerSpriteAtackingDown()
-        staticPlayerSpriteAtackingLeft = PlayerSpriteAtackingLeft()
-        staticPlayerSpriteAtackingRight = PlayerSpriteAtackingRight()
-        staticPlayerSpriteMassiveAtackingUp = PlayerSpriteMassiveAtackingUp()
-        staticPlayerSpriteMassiveAtackingDown = PlayerSpriteMassiveAtackingDown()
-        staticPlayerSpriteMassiveAtackingLeft = PlayerSpriteMassiveAtackingLeft()
-        staticPlayerSpriteMassiveAtackingRight = PlayerSpriteMassiveAtackingRight()
-        staticPlayerSpriteHurtUp = PlayerSpriteHurtUp()
-        staticPlayerSpriteHurtDown = PlayerSpriteHurtDown()
-        staticPlayerSpriteHurtLeft = PlayerSpriteHurtLeft()
-        staticPlayerSpriteHurtRight = PlayerSpriteHurtRight()
-        staticsInited = True
-
-    return {
-        "StandingUp": staticPlayerSpriteStandingUp,
-        "StandingDown": staticPlayerSpriteStandingDown,
-        "StandingLeft": staticPlayerSpriteStandingLeft,
-        "StandingRight": staticPlayerSpriteStandingRight,
-        "WalkingUp": staticPlayerSpriteWalkingUp,
-        "WalkingDown": staticPlayerSpriteWalkingDown,
-        "WalkingLeft": staticPlayerSpriteWalkingLeft,
-        "WalkingRight": staticPlayerSpriteWalkingRight,
-        "AtackingUp": staticPlayerSpriteAtackingUp,
-        "AtackingDown": staticPlayerSpriteAtackingDown,
-        "AtackingLeft": staticPlayerSpriteAtackingLeft,
-        "AtackingRight": staticPlayerSpriteAtackingRight,
-        "MassiveAtackingUp": staticPlayerSpriteMassiveAtackingUp,
-        "MassiveAtackingDown": staticPlayerSpriteMassiveAtackingDown,
-        "MassiveAtackingLeft": staticPlayerSpriteMassiveAtackingLeft,
-        "MassiveAtackingRight": staticPlayerSpriteMassiveAtackingRight,
-        "HurtUp": staticPlayerSpriteHurtUp,
-        "HurtDown": staticPlayerSpriteHurtDown,
-        "HurtLeft": staticPlayerSpriteHurtLeft,
-        "HurtRight": staticPlayerSpriteHurtRight
-    }
-
-
 class PlayerEntityGraphics(EntityGraphics):
     def __init__(self, _data):
-        sprites = Singlton()
+        sprites = {
+            "StandingUp": PlayerSpriteStandingUp(),
+            "StandingDown": PlayerSpriteStandingDown(),
+            "StandingLeft": PlayerSpriteStandingLeft(),
+            "StandingRight": PlayerSpriteStandingRight(),
+            "WalkingUp": PlayerSpriteWalkingUp(),
+            "WalkingDown": PlayerSpriteWalkingDown(),
+            "WalkingLeft": PlayerSpriteWalkingLeft(),
+            "WalkingRight": PlayerSpriteWalkingRight(),
+            "AtackingUp": PlayerSpriteAtackingUp(),
+            "AtackingDown": PlayerSpriteAtackingDown(),
+            "AtackingLeft": PlayerSpriteAtackingLeft(),
+            "AtackingRight": PlayerSpriteAtackingRight(),
+            "MassiveAtackingUp": PlayerSpriteMassiveAtackingUp(),
+            "MassiveAtackingDown": PlayerSpriteMassiveAtackingDown(),
+            "MassiveAtackingLeft": PlayerSpriteMassiveAtackingLeft(),
+            "MassiveAtackingRight": PlayerSpriteMassiveAtackingRight(),
+            "HurtUp": PlayerSpriteHurtUp(),
+            "HurtDown": PlayerSpriteHurtDown(),
+            "HurtLeft": PlayerSpriteHurtLeft(),
+            "HurtRight": PlayerSpriteHurtRight()
+        }
 
         EntityGraphics.__init__(self, _data, sprites)
