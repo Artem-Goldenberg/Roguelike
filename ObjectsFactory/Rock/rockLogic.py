@@ -1,8 +1,8 @@
-from Engine.entityLogic import EntityLogic, Behaviour
+from Engine.entityLogic import EntityLogic, Behavior
 from Engine.eventSystem import Event, eventType
 
 
-class RockLogicStand(Behaviour):
+class RockLogicStand(Behavior):
     def process(self, _dt):
         for event in self.data.env.pastEvents.getEvents(eventType.Move):
             # print("Got event move to " + str(event.data) + ", but posiiton " + str(self.data.position))

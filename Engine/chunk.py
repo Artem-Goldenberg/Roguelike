@@ -5,6 +5,25 @@ import random
 # from Engine.entity import Entity
 
 
+def addTestItems(chunk):
+    NUM_SHINY = 10
+    dx = range((1 - chunk.env.chunk_width) // 2, chunk.env.chunk_width // 2)
+    dy = range((1 - chunk.env.chunk_height) // 2, chunk.env.chunk_height // 2)
+    print(dx)
+    print(dy)
+    for x, y in zip(random.sample(dx, NUM_SHINY), random.sample(dy, NUM_SHINY)):
+        chunk.entities.append(
+            chunk.env.object_factory.getObject(
+                "Shiny",
+                chunk.env,
+                [
+                    x * chunk.env.grid_step + chunk.pos[0],
+                    y * chunk.env.grid_step + chunk.pos[1]
+                ]
+            )
+        )
+
+
 class Chunk:
     def __init__(self, _env, _pos=(0, 0)):
         self.env = _env
@@ -41,6 +60,8 @@ class Chunk:
                 )
             )
 
+        addTestItems(self)
+
         if self.env.chunk_width % 2 != 1:
             logging.critical("Chunk: chunk width must be odd !!!")
         if self.env.chunk_height % 2 != 1:
@@ -52,8 +73,10 @@ class Chunk:
                 _screen.blit(
                     self.ceil,
                     [
-                        self.pos[0] - self.env.chunk_gap + self.env.grid_step * (i - 0.5) - _camera_position[0],
-                        self.pos[1] - self.env.chunk_gap + self.env.grid_step * (j - 0.5) - _camera_position[1]
+                        self.pos[0] - self.env.chunk_gap +
+                        self.env.grid_step * (i - 0.5) - _camera_position[0],
+                        self.pos[1] - self.env.chunk_gap +
+                        self.env.grid_step * (j - 0.5) - _camera_position[1]
                     ]
                 )
 

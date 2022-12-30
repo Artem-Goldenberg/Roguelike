@@ -1,12 +1,14 @@
 import logging
 
 from ObjectsFactory.Rock.rock import Rock
+from ObjectsFactory.Shiny.shiny import Shiny
 
 
 class ObjectFactory:
     def __init__(self):
         self.known_objects = {
-            "Rock": Rock
+            "Rock": Rock,
+            "Shiny": Shiny
         }
 
     def getObject(self, _name, _env, _pos):

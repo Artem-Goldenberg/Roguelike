@@ -3,12 +3,12 @@ import logging
 from Engine.entityData import EntityData
 
 
-class Behaviour():
+class Behavior():
     def __init__(self, _data):
         self.data = _data
 
     def process(self, _dt: float):
-        logging.critical("Entity behaviour is not implemented")
+        logging.critical("Entity behavior is not implemented")
         raise
 
 

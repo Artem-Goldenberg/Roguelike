@@ -1,10 +1,10 @@
 # import logging
 
-from Engine.entityLogic import EntityLogic, Behaviour
+from Engine.entityLogic import EntityLogic, Behavior
 from Engine.eventSystem import eventType, Event
 
 
-class PlayerBehaviourStandingUp(Behaviour):
+class PlayerBehaviourStandingUp(Behavior):
     def __init__(self, _data):
         self.data = _data
         self.state_lasts = 0.0
@@ -55,7 +55,7 @@ class PlayerBehaviourStandingUp(Behaviour):
                         self.data.animation_stage = 0.0
 
 
-class PlayerBehaviourStandingDown(Behaviour):
+class PlayerBehaviourStandingDown(Behavior):
     def __init__(self, _data):
         self.data = _data
         self.state_lasts = 0.0
@@ -106,7 +106,7 @@ class PlayerBehaviourStandingDown(Behaviour):
                         self.data.animation_stage = 0.0
 
 
-class PlayerBehaviourStandingLeft(Behaviour):
+class PlayerBehaviourStandingLeft(Behavior):
     def __init__(self, _data):
         self.data = _data
         self.state_lasts = 0.0
@@ -157,7 +157,7 @@ class PlayerBehaviourStandingLeft(Behaviour):
                         self.data.animation_stage = 0.0
 
 
-class PlayerBehaviourStandingRight(Behaviour):
+class PlayerBehaviourStandingRight(Behavior):
     def __init__(self, _data):
         self.data = _data
         self.state_lasts = 0.0
@@ -208,7 +208,7 @@ class PlayerBehaviourStandingRight(Behaviour):
                         self.data.animation_stage = 0.0
 
 
-class PlayerBehaviourWalkingUp(Behaviour):
+class PlayerBehaviourWalkingUp(Behavior):
     def __init__(self, _data):
         self.data = _data
         self.state_lasts = 0.0
@@ -253,7 +253,7 @@ class PlayerBehaviourWalkingUp(Behaviour):
             self.data.animation_stage = 0.0
 
 
-class PlayerBehaviourWalkingDown(Behaviour):
+class PlayerBehaviourWalkingDown(Behavior):
     def __init__(self, _data):
         self.data = _data
         self.state_lasts = 0.0
@@ -298,7 +298,7 @@ class PlayerBehaviourWalkingDown(Behaviour):
             self.data.animation_stage = 0.0
 
 
-class PlayerBehaviourWalkingLeft(Behaviour):
+class PlayerBehaviourWalkingLeft(Behavior):
     def __init__(self, _data):
         self.data = _data
         self.state_lasts = 0.0
@@ -343,7 +343,7 @@ class PlayerBehaviourWalkingLeft(Behaviour):
             self.data.animation_stage = 0.0
 
 
-class PlayerBehaviourWalkingRight(Behaviour):
+class PlayerBehaviourWalkingRight(Behavior):
     def __init__(self, _data):
         self.data = _data
         self.state_lasts = 0.0
@@ -388,7 +388,7 @@ class PlayerBehaviourWalkingRight(Behaviour):
             self.data.animation_stage = 0.0
 
 
-class PlayerBehaviourAtackingUp(Behaviour):
+class PlayerBehaviourAtackingUp(Behavior):
     def __init__(self, _data):
         self.data = _data
         self.state_lasts = 0.0
@@ -403,7 +403,7 @@ class PlayerBehaviourAtackingUp(Behaviour):
             self.data.animation_stage = 0.0
 
 
-class PlayerBehaviourAtackingDown(Behaviour):
+class PlayerBehaviourAtackingDown(Behavior):
     def __init__(self, _data):
         self.data = _data
         self.state_lasts = 0.0
@@ -418,7 +418,7 @@ class PlayerBehaviourAtackingDown(Behaviour):
             self.data.animation_stage = 0.0
 
 
-class PlayerBehaviourAtackingLeft(Behaviour):
+class PlayerBehaviourAtackingLeft(Behavior):
     def __init__(self, _data):
         self.data = _data
         self.state_lasts = 0.0
@@ -433,7 +433,7 @@ class PlayerBehaviourAtackingLeft(Behaviour):
             self.data.animation_stage = 0.0
 
 
-class PlayerBehaviourAtackingRight(Behaviour):
+class PlayerBehaviourAtackingRight(Behavior):
     def __init__(self, _data):
         self.data = _data
         self.state_lasts = 0.0
@@ -448,7 +448,7 @@ class PlayerBehaviourAtackingRight(Behaviour):
             self.data.animation_stage = 0.0
 
 
-class PlayerBehaviourMassiveAtackingUp(Behaviour):
+class PlayerBehaviourMassiveAtackingUp(Behavior):
     def __init__(self, _data):
         self.data = _data
         self.state_lasts = 0.0
@@ -477,7 +477,7 @@ class PlayerBehaviourMassiveAtackingUp(Behaviour):
             self.data.animation_stage = 0.0
 
 
-class PlayerBehaviourMassiveAtackingDown(Behaviour):
+class PlayerBehaviourMassiveAtackingDown(Behavior):
     def __init__(self, _data):
         self.data = _data
         self.state_lasts = 0.0
@@ -506,7 +506,7 @@ class PlayerBehaviourMassiveAtackingDown(Behaviour):
             self.data.animation_stage = 0.0
 
 
-class PlayerBehaviourMassiveAtackingLeft(Behaviour):
+class PlayerBehaviourMassiveAtackingLeft(Behavior):
     def __init__(self, _data):
         self.data = _data
         self.state_lasts = 0.0
@@ -535,7 +535,7 @@ class PlayerBehaviourMassiveAtackingLeft(Behaviour):
             self.data.animation_stage = 0.0
 
 
-class PlayerBehaviourMassiveAtackingRight(Behaviour):
+class PlayerBehaviourMassiveAtackingRight(Behavior):
     def __init__(self, _data):
         self.data = _data
         self.state_lasts = 0.0
