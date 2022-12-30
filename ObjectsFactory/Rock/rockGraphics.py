@@ -9,7 +9,7 @@ class RockSpriteStand(UpgradedSprite):
             0.28)
 
     def getRelativePosition(self, _animation_stage):
-        return [35, 34]
+        return [-40, -40]
 
 
 class RockGraphics(EntityGraphics):

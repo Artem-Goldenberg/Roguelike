@@ -1,7 +1,7 @@
 # import logging
 
 from Engine.entityLogic import EntityLogic, Behaviour
-from Engine.eventSystem import eventType  # Event
+from Engine.eventSystem import eventType, Event
 
 
 class PlayerBehaviourStandingUp(Behaviour):
@@ -35,6 +35,16 @@ class PlayerBehaviourStandingUp(Behaviour):
                     if event.data == (0, -1):
                         self.data.state = "WalkingUp"
                         self.data.animation_stage = 0.0
+                        self.data.env.futureEvents.sendEvent(
+                            Event(
+                                eventType.Move,
+                                self,
+                                [
+                                    self.data.position[0],
+                                    self.data.position[1] - self.data.env.grid_step
+                                ]
+                            )
+                        )
 
                 if event.event_type == eventType.Atack:
                     if event.data == "Normal":
@@ -73,6 +83,16 @@ class PlayerBehaviourStandingDown(Behaviour):
                     if event.data == (0, 1):
                         self.data.state = "WalkingDown"
                         self.data.animation_stage = 0.0
+                        self.data.env.futureEvents.sendEvent(
+                            Event(
+                                eventType.Move,
+                                self,
+                                [
+                                    self.data.position[0],
+                                    self.data.position[1] + self.data.env.grid_step
+                                ]
+                            )
+                        )
                     if event.data == (0, -1):
                         self.data.state = "StandingUp"
                         self.data.animation_stage = 0.0
@@ -111,6 +131,16 @@ class PlayerBehaviourStandingLeft(Behaviour):
                     if event.data == (-1, 0):
                         self.data.state = "WalkingLeft"
                         self.data.animation_stage = 0.0
+                        self.data.env.futureEvents.sendEvent(
+                            Event(
+                                eventType.Move,
+                                self,
+                                [
+                                    self.data.position[0] - self.data.env.grid_step,
+                                    self.data.position[1]
+                                ]
+                            )
+                        )
                     if event.data == (0, 1):
                         self.data.state = "StandingDown"
                         self.data.animation_stage = 0.0
@@ -149,6 +179,16 @@ class PlayerBehaviourStandingRight(Behaviour):
                     if event.data == (1, 0):
                         self.data.state = "WalkingRight"
                         self.data.animation_stage = 0.0
+                        self.data.env.futureEvents.sendEvent(
+                            Event(
+                                eventType.Move,
+                                self,
+                                [
+                                    self.data.position[0] + self.data.env.grid_step,
+                                    self.data.position[1]
+                                ]
+                            )
+                        )
                     if event.data == (-1, 0):
                         self.data.state = "StandingLeft"
                         self.data.animation_stage = 0.0
@@ -176,6 +216,11 @@ class PlayerBehaviourWalkingUp(Behaviour):
         self.beginning_steady_time = 0.15
 
     def process(self, _dt):
+        for event in self.data.env.pastEvents.getEvents(eventType.MoveProhibited):
+            if event.event_type == eventType.MoveProhibited and event.data == [self.data.position[0], self.data.position[1] - self.data.env.grid_step]:
+                self.data.state = "StandingUp"
+                return
+
         self.state_lasts += _dt
         self.data.animation_stage = self.state_lasts / self.duration
 
@@ -185,10 +230,20 @@ class PlayerBehaviourWalkingUp(Behaviour):
                 continue_key_pressed = True
 
         if self.state_lasts >= self.duration:
-            self.data.position[1] -= 75
+            self.data.position[1] -= self.data.env.grid_step
             if continue_key_pressed:
                 self.state_lasts = 0.0
                 self.data.animation_stage = 0.0
+                self.data.env.futureEvents.sendEvent(
+                    Event(
+                        eventType.Move,
+                        self,
+                        [
+                            self.data.position[0],
+                            self.data.position[1] - self.data.env.grid_step
+                        ]
+                    )
+                )
             else:
                 self.data.state = "StandingUp"
                 self.data.animation_stage = 0.0
@@ -206,6 +261,11 @@ class PlayerBehaviourWalkingDown(Behaviour):
         self.beginning_steady_time = 0.15
 
     def process(self, _dt):
+        for event in self.data.env.pastEvents.getEvents(eventType.MoveProhibited):
+            if event.event_type == eventType.MoveProhibited and event.data == [self.data.position[0], self.data.position[1] + self.data.env.grid_step]:
+                self.data.state = "StandingDown"
+                return
+
         self.state_lasts += _dt
         self.data.animation_stage = self.state_lasts / self.duration
 
@@ -219,6 +279,16 @@ class PlayerBehaviourWalkingDown(Behaviour):
             if continue_key_pressed:
                 self.state_lasts = 0.0
                 self.data.animation_stage = 0.0
+                self.data.env.futureEvents.sendEvent(
+                    Event(
+                        eventType.Move,
+                        self,
+                        [
+                            self.data.position[0],
+                            self.data.position[1] + self.data.env.grid_step
+                        ]
+                    )
+                )
             else:
                 self.data.state = "StandingDown"
                 self.data.animation_stage = 0.0
@@ -236,6 +306,11 @@ class PlayerBehaviourWalkingLeft(Behaviour):
         self.beginning_steady_time = 0.2
 
     def process(self, _dt):
+        for event in self.data.env.pastEvents.getEvents(eventType.MoveProhibited):
+            if event.event_type == eventType.MoveProhibited and event.data == [self.data.position[0] - self.data.env.grid_step, self.data.position[1]]:
+                self.data.state = "StandingLeft"
+                return
+
         self.state_lasts += _dt
         self.data.animation_stage = self.state_lasts / self.duration
 
@@ -249,6 +324,16 @@ class PlayerBehaviourWalkingLeft(Behaviour):
             if continue_key_pressed:
                 self.state_lasts = 0.0
                 self.data.animation_stage = 0.0
+                self.data.env.futureEvents.sendEvent(
+                    Event(
+                        eventType.Move,
+                        self,
+                        [
+                            self.data.position[0] - self.data.env.grid_step,
+                            self.data.position[1]
+                        ]
+                    )
+                )
             else:
                 self.data.state = "StandingLeft"
                 self.data.animation_stage = 0.0
@@ -266,6 +351,11 @@ class PlayerBehaviourWalkingRight(Behaviour):
         self.beginning_steady_time = 0.15
 
     def process(self, _dt):
+        for event in self.data.env.pastEvents.getEvents(eventType.MoveProhibited):
+            if event.event_type == eventType.MoveProhibited and event.data == [self.data.position[0] + self.data.env.grid_step, self.data.position[1]]:
+                self.data.state = "StandingRight"
+                return
+
         self.state_lasts += _dt
         self.data.animation_stage = self.state_lasts / self.duration
 
@@ -279,6 +369,16 @@ class PlayerBehaviourWalkingRight(Behaviour):
             if continue_key_pressed:
                 self.state_lasts = 0.0
                 self.data.animation_stage = 0.0
+                self.data.env.futureEvents.sendEvent(
+                    Event(
+                        eventType.Move,
+                        self,
+                        [
+                            self.data.position[0] + self.data.env.grid_step,
+                            self.data.position[1]
+                        ]
+                    )
+                )
             else:
                 self.data.state = "StandingRight"
                 self.data.animation_stage = 0.0

@@ -1,6 +1,7 @@
 import enum
 import pygame
 import time
+import logging
 
 
 class eventType(enum.Enum):
@@ -24,6 +25,7 @@ class EventSystem:
 
     def sendEvent(self, _event):
         self.events.append(_event)
+        logging.info("EventSystem: new event: " + str(_event.event_type) + ": " + str(_event.data))
 
     def getEvents(self, _eventType):
         return [e for e in self.events if e.event_type == _eventType]

@@ -111,6 +111,3 @@ class UpgradedSprite(Sprite):
             )
         )
         return image
-
-    def getRelativePosition(self, _animation_stage):
-        return [0, 25]

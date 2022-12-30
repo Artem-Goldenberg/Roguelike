@@ -203,6 +203,9 @@ class Environment:
 
         self.player.draw(dt, self.screen, self.camera_position)
 
+        test_surf = pygame.Surface((10, 10))
+        test_surf.fill((255, 255, 255))
+        self.screen.blit(test_surf, (-self.camera_position[0], -self.camera_position[1]))
 
         pygame.display.flip()
 
