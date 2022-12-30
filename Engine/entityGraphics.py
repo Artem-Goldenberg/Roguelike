@@ -48,7 +48,7 @@ class EntityGraphics():
                 logging.critical("EntityGraphics: draw: sprite \"" + str(self.data.state) + "\" is not implemented")
                 raise
 
-            self.active_sprite = self.sprites[self.data.state]()
+            self.active_sprite = self.sprites[self.data.state]
             self.active_sprite_name = self.data.state
             logging.info("EntityGraphics: draw: new sprite: \"" + str(self.active_sprite_name) + "\"")
 

@@ -9,7 +9,8 @@ class eventType(enum.Enum):
     Atack = 2,
     Move = 3,
     MoveProhibited = 4,
-    Custom = 5
+    Moved = 5
+    Custom = 6
 
 
 class Event:

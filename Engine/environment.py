@@ -91,6 +91,8 @@ class Environment:
         self.player = Player(self)
         logging.info("Player inited")
 
+        self.flame = self.object_factory.getObject("Fire", self, [self.grid_step, self.grid_step])
+
     def updateScreen(self):
 
         #    ____                    __
@@ -156,8 +158,12 @@ class Environment:
 
         self.player.logic.handleEvents(dt)
 
+        self.flame.logic.handleEvents(dt)
+
         for chunk in self.active_chunks:
-            for entity in chunk.entities:
+            for entity in chunk.bg_entities:
+                entity.logic.handleEvents(dt)
+            for entity in chunk.fg_entities:
                 entity.logic.handleEvents(dt)
 
         self.pastEvents = self.futureEvents
@@ -193,7 +199,7 @@ class Environment:
         # /___/ /_//_/ \__/ /_/  \__/ /_/  \__/ /___/
 
         for chunk in self.active_chunks:
-            chunk.drawEntities(dt, self.screen, self.camera_position)
+            chunk.drawBgEntities(dt, self.screen, self.camera_position)
 
         #    ___    __
         #   / _ \  / / ___ _  __ __ ___   ____
@@ -203,9 +209,14 @@ class Environment:
 
         self.player.draw(dt, self.screen, self.camera_position)
 
+        for chunk in self.active_chunks:
+            chunk.drawFgEntities(dt, self.screen, self.camera_position)
+
         test_surf = pygame.Surface((10, 10))
         test_surf.fill((255, 255, 255))
         self.screen.blit(test_surf, (-self.camera_position[0], -self.camera_position[1]))
+
+        # self.flame.draw(dt, self.screen, self.camera_position)
 
         pygame.display.flip()
 

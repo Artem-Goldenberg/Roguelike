@@ -16,6 +16,12 @@ class PlayerBehaviourStandingUp(Behaviour):
         self.state_lasts += _dt
         self.data.animation_stage = (self.state_lasts % self.duration) / self.duration
 
+        for event in self.data.env.pastEvents.getEvents(eventType.Atack):
+            if event.data == self.data.position:
+                self.data.state = "HurtUp"
+                self.data.animation_stage = 0.0
+                return
+
         if self.state_lasts < self.beginning_steady_time:
             # ignore everything
             return
@@ -66,6 +72,12 @@ class PlayerBehaviourStandingDown(Behaviour):
         # normal behaviour
         self.state_lasts += _dt
         self.data.animation_stage = (self.state_lasts % self.duration) / self.duration
+
+        for event in self.data.env.pastEvents.getEvents(eventType.Atack):
+            if event.data == self.data.position:
+                self.data.state = "HurtDown"
+                self.data.animation_stage = 0.0
+                return
 
         if self.state_lasts < self.beginning_steady_time:
             # ignore everything
@@ -118,6 +130,12 @@ class PlayerBehaviourStandingLeft(Behaviour):
         self.state_lasts += _dt
         self.data.animation_stage = (self.state_lasts % self.duration) / self.duration
 
+        for event in self.data.env.pastEvents.getEvents(eventType.Atack):
+            if event.data == self.data.position:
+                self.data.state = "HurtLeft"
+                self.data.animation_stage = 0.0
+                return
+
         if self.state_lasts < self.beginning_steady_time:
             # ignore everything
             return
@@ -168,6 +186,12 @@ class PlayerBehaviourStandingRight(Behaviour):
         # normal behaviour
         self.state_lasts += _dt
         self.data.animation_stage = (self.state_lasts % self.duration) / self.duration
+
+        for event in self.data.env.pastEvents.getEvents(eventType.Atack):
+            if event.data == self.data.position:
+                self.data.state = "HurtRight"
+                self.data.animation_stage = 0.0
+                return
 
         if self.state_lasts < self.beginning_steady_time:
             # ignore everything
@@ -229,8 +253,25 @@ class PlayerBehaviourWalkingUp(Behaviour):
             if event.event_type == eventType.Move and event.data == (0, -1):
                 continue_key_pressed = True
 
+        if self.state_lasts <= self.beginning_steady_time:
+            for event in self.data.env.pastEvents.getEvents(eventType.Atack):
+                if event.data == self.data.position:
+                    self.data.state = "HurtUp"
+                    self.data.animation_stage = 0.0
+                    return
+
         if self.state_lasts >= self.duration:
             self.data.position[1] -= self.data.env.grid_step
+            self.data.env.futureEvents.sendEvent(
+                Event(
+                    eventType.Moved,
+                    self,
+                    [
+                        self.data.position[0],
+                        self.data.position[1]
+                    ]
+                )
+            )
             if continue_key_pressed:
                 self.state_lasts = 0.0
                 self.data.animation_stage = 0.0
@@ -274,8 +315,25 @@ class PlayerBehaviourWalkingDown(Behaviour):
             if event.event_type == eventType.Move and event.data == (0, 1):
                 continue_key_pressed = True
 
+        if self.state_lasts <= self.beginning_steady_time:
+            for event in self.data.env.pastEvents.getEvents(eventType.Atack):
+                if event.data == self.data.position:
+                    self.data.state = "HurtDown"
+                    self.data.animation_stage = 0.0
+                    return
+
         if self.state_lasts >= self.duration:
             self.data.position[1] += 75
+            self.data.env.futureEvents.sendEvent(
+                Event(
+                    eventType.Moved,
+                    self,
+                    [
+                        self.data.position[0],
+                        self.data.position[1]
+                    ]
+                )
+            )
             if continue_key_pressed:
                 self.state_lasts = 0.0
                 self.data.animation_stage = 0.0
@@ -319,8 +377,25 @@ class PlayerBehaviourWalkingLeft(Behaviour):
             if event.event_type == eventType.Move and event.data == (-1, 0):
                 continue_key_pressed = True
 
+        if self.state_lasts <= self.beginning_steady_time:
+            for event in self.data.env.pastEvents.getEvents(eventType.Atack):
+                if event.data == self.data.position:
+                    self.data.state = "HurtLeft"
+                    self.data.animation_stage = 0.0
+                    return
+
         if self.state_lasts >= self.duration:
             self.data.position[0] -= 75
+            self.data.env.futureEvents.sendEvent(
+                Event(
+                    eventType.Moved,
+                    self,
+                    [
+                        self.data.position[0],
+                        self.data.position[1]
+                    ]
+                )
+            )
             if continue_key_pressed:
                 self.state_lasts = 0.0
                 self.data.animation_stage = 0.0
@@ -364,8 +439,25 @@ class PlayerBehaviourWalkingRight(Behaviour):
             if event.event_type == eventType.Move and event.data == (1, 0):
                 continue_key_pressed = True
 
+        if self.state_lasts <= self.beginning_steady_time:
+            for event in self.data.env.pastEvents.getEvents(eventType.Atack):
+                if event.data == self.data.position:
+                    self.data.state = "HurtRight"
+                    self.data.animation_stage = 0.0
+                    return
+
         if self.state_lasts >= self.duration:
             self.data.position[0] += 75
+            self.data.env.futureEvents.sendEvent(
+                Event(
+                    eventType.Moved,
+                    self,
+                    [
+                        self.data.position[0],
+                        self.data.position[1]
+                    ]
+                )
+            )
             if continue_key_pressed:
                 self.state_lasts = 0.0
                 self.data.animation_stage = 0.0
@@ -395,6 +487,12 @@ class PlayerBehaviourAtackingUp(Behaviour):
         self.duration = 0.3
 
     def process(self, _dt):
+        for event in self.data.env.pastEvents.getEvents(eventType.Atack):
+            if event.data == self.data.position:
+                self.data.state = "HurtUp"
+                self.data.animation_stage = 0.0
+                return
+
         self.state_lasts += _dt
         self.data.animation_stage = self.state_lasts / self.duration
 
@@ -410,6 +508,12 @@ class PlayerBehaviourAtackingDown(Behaviour):
         self.duration = 0.3
 
     def process(self, _dt):
+        for event in self.data.env.pastEvents.getEvents(eventType.Atack):
+            if event.data == self.data.position:
+                self.data.state = "HurtDown"
+                self.data.animation_stage = 0.0
+                return
+
         self.state_lasts += _dt
         self.data.animation_stage = self.state_lasts / self.duration
 
@@ -425,6 +529,12 @@ class PlayerBehaviourAtackingLeft(Behaviour):
         self.duration = 0.3
 
     def process(self, _dt):
+        for event in self.data.env.pastEvents.getEvents(eventType.Atack):
+            if event.data == self.data.position:
+                self.data.state = "HurtLeft"
+                self.data.animation_stage = 0.0
+                return
+
         self.state_lasts += _dt
         self.data.animation_stage = self.state_lasts / self.duration
 
@@ -440,6 +550,12 @@ class PlayerBehaviourAtackingRight(Behaviour):
         self.duration = 0.3
 
     def process(self, _dt):
+        for event in self.data.env.pastEvents.getEvents(eventType.Atack):
+            if event.data == self.data.position:
+                self.data.state = "HurtRight"
+                self.data.animation_stage = 0.0
+                return
+
         self.state_lasts += _dt
         self.data.animation_stage = self.state_lasts / self.duration
 
@@ -456,6 +572,12 @@ class PlayerBehaviourMassiveAtackingUp(Behaviour):
         self.beginning_steady_time = 0.25
 
     def process(self, _dt):
+        for event in self.data.env.pastEvents.getEvents(eventType.Atack):
+            if event.data == self.data.position:
+                self.data.state = "HurtUp"
+                self.data.animation_stage = 0.0
+                return
+
         self.state_lasts += _dt
         self.data.animation_stage = self.state_lasts / self.duration
 
@@ -485,6 +607,12 @@ class PlayerBehaviourMassiveAtackingDown(Behaviour):
         self.beginning_steady_time = 0.25
 
     def process(self, _dt):
+        for event in self.data.env.pastEvents.getEvents(eventType.Atack):
+            if event.data == self.data.position:
+                self.data.state = "HurtDown"
+                self.data.animation_stage = 0.0
+                return
+
         self.state_lasts += _dt
         self.data.animation_stage = self.state_lasts / self.duration
 
@@ -514,6 +642,12 @@ class PlayerBehaviourMassiveAtackingLeft(Behaviour):
         self.beginning_steady_time = 0.25
 
     def process(self, _dt):
+        for event in self.data.env.pastEvents.getEvents(eventType.Atack):
+            if event.data == self.data.position:
+                self.data.state = "HurtLeft"
+                self.data.animation_stage = 0.0
+                return
+
         self.state_lasts += _dt
         self.data.animation_stage = self.state_lasts / self.duration
 
@@ -543,6 +677,12 @@ class PlayerBehaviourMassiveAtackingRight(Behaviour):
         self.beginning_steady_time = 0.25
 
     def process(self, _dt):
+        for event in self.data.env.pastEvents.getEvents(eventType.Atack):
+            if event.data == self.data.position:
+                self.data.state = "HurtRight"
+                self.data.animation_stage = 0.0
+                return
+
         self.state_lasts += _dt
         self.data.animation_stage = self.state_lasts / self.duration
 
@@ -560,6 +700,66 @@ class PlayerBehaviourMassiveAtackingRight(Behaviour):
                 self.data.animation_stage = 0.0
 
         if self.state_lasts < self.beginning_steady_time and not continue_key_pressed:
+            self.data.state = "StandingRight"
+            self.data.animation_stage = 0.0
+
+
+class PlayerBehaviourHurtUp(Behaviour):
+    def __init__(self, _data):
+        self.data = _data
+        self.state_lasts = 0.0
+        self.duration = 0.3
+
+    def process(self, _dt):
+        self.state_lasts += _dt
+        self.data.animation_stage = self.state_lasts / self.duration
+
+        if self.state_lasts >= self.duration:
+            self.data.state = "StandingUp"
+            self.data.animation_stage = 0.0
+
+
+class PlayerBehaviourHurtDown(Behaviour):
+    def __init__(self, _data):
+        self.data = _data
+        self.state_lasts = 0.0
+        self.duration = 0.3
+
+    def process(self, _dt):
+        self.state_lasts += _dt
+        self.data.animation_stage = self.state_lasts / self.duration
+
+        if self.state_lasts >= self.duration:
+            self.data.state = "StandingDown"
+            self.data.animation_stage = 0.0
+
+
+class PlayerBehaviourHurtLeft(Behaviour):
+    def __init__(self, _data):
+        self.data = _data
+        self.state_lasts = 0.0
+        self.duration = 0.3
+
+    def process(self, _dt):
+        self.state_lasts += _dt
+        self.data.animation_stage = self.state_lasts / self.duration
+
+        if self.state_lasts >= self.duration:
+            self.data.state = "StandingLeft"
+            self.data.animation_stage = 0.0
+
+
+class PlayerBehaviourHurtRight(Behaviour):
+    def __init__(self, _data):
+        self.data = _data
+        self.state_lasts = 0.0
+        self.duration = 0.3
+
+    def process(self, _dt):
+        self.state_lasts += _dt
+        self.data.animation_stage = self.state_lasts / self.duration
+
+        if self.state_lasts >= self.duration:
             self.data.state = "StandingRight"
             self.data.animation_stage = 0.0
 
@@ -582,7 +782,11 @@ class PlayerEntityLogic(EntityLogic):
             "MassiveAtackingUp": PlayerBehaviourMassiveAtackingUp,
             "MassiveAtackingDown": PlayerBehaviourMassiveAtackingDown,
             "MassiveAtackingLeft": PlayerBehaviourMassiveAtackingLeft,
-            "MassiveAtackingRight": PlayerBehaviourMassiveAtackingRight
+            "MassiveAtackingRight": PlayerBehaviourMassiveAtackingRight,
+            "HurtUp": PlayerBehaviourHurtUp,
+            "HurtDown": PlayerBehaviourHurtDown,
+            "HurtLeft": PlayerBehaviourHurtLeft,
+            "HurtRight": PlayerBehaviourHurtRight
         }
 
         EntityLogic.__init__(self, _data, behaviours)

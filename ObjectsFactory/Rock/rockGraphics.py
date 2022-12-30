@@ -12,10 +12,22 @@ class RockSpriteStand(UpgradedSprite):
         return [-40, -40]
 
 
+staticsInited = False
+staticRockSpriteStand = None
+
+
+def Singlton():
+    if not staticsInited:
+        staticRockSpriteStand = RockSpriteStand()
+        staticsInited = True
+
+    return {
+        "Stand": staticRockSpriteStand
+    }
+
+
 class RockGraphics(EntityGraphics):
     def __init__(self, _data):
-        sprites = {
-            "Stand": RockSpriteStand
-        }
+        sprites = Singlton()
 
         EntityGraphics.__init__(self, _data, sprites)

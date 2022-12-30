@@ -1,12 +1,14 @@
 import logging
 
 from ObjectsFactory.Rock.rock import Rock
+from ObjectsFactory.Fire.fire import Fire
 
 
 class ObjectFactory:
     def __init__(self):
         self.known_objects = {
-            "Rock": Rock
+            "Rock": Rock,
+            "Fire": Fire
         }
 
     def getObject(self, _name, _env, _pos):
@@ -15,4 +17,5 @@ class ObjectFactory:
             raise
 
         obj = self.known_objects[_name](_env, _pos)
+
         return obj
