@@ -209,6 +209,11 @@ class Environment:
 
         pygame.display.flip()
 
+    def removeItem(self, id):
+        # TODO: maybe better way to remove entity
+        for chunk in self.active_chunks:
+            chunk.removeEntity(id)
+
     def addChunk(self, pos, chunk):
         self.chunks[pos] = chunk
 

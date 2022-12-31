@@ -83,3 +83,9 @@ class Chunk:
     def drawEntities(self, _dt, _screen, _camera_position):
         for entity in self.entities:
             entity.draw(_dt, _screen, _camera_position)
+
+    def removeEntity(self, id):
+        for i, entity in enumerate(self.entities):
+            if entity.data.id == id:
+                self.entities.pop(i)
+                break

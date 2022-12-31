@@ -4,10 +4,13 @@ from uuid import UUID
 # from enum import Enum, auto
 from dataclasses import dataclass, field
 
+def get_unique_id():
+    return UUID(int=random.getrandbits(128))
+
 
 @dataclass
 class Item:
-    _id = UUID(int=random.getrandbits(128))
+    _id = get_unique_id()
     name: str
     cost: int
     quantity: int = 1
@@ -20,6 +23,10 @@ class Item:
 @dataclass
 class Inventory:
     _items: tp.List[Item] = field(default_factory=list)
+
+    def merge(self, other: 'Inventory'):
+        # TODO: do checks whether we have space and so on...
+        self._items += other._items
 
     def addItem(self, item: Item):
         self._items.append(item)
@@ -37,6 +44,7 @@ class EntityData:
             _animation_stage=0.0,
             _inventory=Inventory([])
     ):
+        self.id = get_unique_id()
         self.env = _env
         self.state = _state
         self.position = _position

@@ -9,7 +9,8 @@ class eventType(enum.Enum):
     Atack = 2,
     Move = 3,
     MoveProhibited = 4,
-    Custom = 5
+    PickMe = 5,
+    Custom = 6
 
 
 class Event:
@@ -67,6 +68,8 @@ class KeyboardEventSystem():
             self.updateKeyPress(pygame.K_x, eventType.Atack, "Normal")
         if keys[pygame.K_z]:
             self.updateKeyPress(pygame.K_z, eventType.Atack, "Massive")
+        if keys[pygame.K_c]:
+            self.updateKeyPress(pygame.K_c, eventType.PickUp, "PickUp")
         if keys[pygame.K_ESCAPE]:
             self.updateKeyPress(pygame.K_ESCAPE, eventType.Custom, "Settings")
 
