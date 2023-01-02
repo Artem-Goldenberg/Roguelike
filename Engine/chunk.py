@@ -22,11 +22,48 @@ class Chunk:
         self.bg_entities = []
         self.fg_entities = []
 
+        if self.env.chunk_width % 2 != 1:
+            logging.critical("Chunk: chunk width must be odd !!!")
+            raise
+        if self.env.chunk_height % 2 != 1:
+            logging.critical("Chunk: chunk height must be odd !!!")
+            raise
+
+        self.random_init()
+
+    def drawChunk(self, _screen, _camera_position):
+        for i in range((1-self.env.chunk_width) // 2, (1+self.env.chunk_width) // 2):
+            for j in range((1-self.env.chunk_height) // 2, (1+self.env.chunk_height) // 2):
+                _screen.blit(
+                    self.ceil,
+                    [
+                        self.pos[0] - self.env.chunk_gap + self.env.grid_step * (i - 0.5) - _camera_position[0],
+                        self.pos[1] - self.env.chunk_gap + self.env.grid_step * (j - 0.5) - _camera_position[1]
+                    ]
+                )
+
+    def drawBgEntities(self, _dt, _screen, _camera_position):
+        for entity in self.bg_entities:
+            entity.draw(_dt, _screen, _camera_position)
+
+    def drawFgEntities(self, _dt, _screen, _camera_position):
+        for entity in self.fg_entities:
+            entity.draw(_dt, _screen, _camera_position)
+
+    def removeEntity(self, _data):
+        for i, entity in enumerate(self.bg_entities):
+            if entity.data == _data:
+                self.bg_entities.pop(i)
+        for i, entity in enumerate(self.fg_entities):
+            if entity.data == _data:
+                self.fg_entities.pop(i)
+
+    def random_init(self):
         random_positions = []
-        while len(random_positions) < 20:
+        while len(random_positions) < 30:
             new_pos = (
-                random.randint(int((1-self.env.chunk_width)/2), int(self.env.chunk_width/2)),
-                random.randint(int((1-self.env.chunk_height)/2), int(self.env.chunk_height/2))
+                random.randint((1-self.env.chunk_width) // 2, self.env.chunk_width // 2),
+                random.randint((1-self.env.chunk_height) // 2, self.env.chunk_height // 2)
             )
             if not random_positions.__contains__(new_pos):
                 random_positions.append(new_pos)
@@ -43,38 +80,26 @@ class Chunk:
                 )
             )
 
-        for rock_pos in random_positions[10:]:
+        for fire_pos in random_positions[10:20]:
             self.fg_entities.append(
                 self.env.object_factory.getObject(
                     "Fire",
                     self.env,
                     [
-                        rock_pos[0] * self.env.grid_step + self.pos[0],
-                        rock_pos[1] * self.env.grid_step + self.pos[1]
+                        fire_pos[0] * self.env.grid_step + self.pos[0],
+                        fire_pos[1] * self.env.grid_step + self.pos[1]
                     ]
                 )
             )
 
-        if self.env.chunk_width % 2 != 1:
-            logging.critical("Chunk: chunk width must be odd !!!")
-        if self.env.chunk_height % 2 != 1:
-            logging.critical("Chunk: chunk height must be odd !!!")
-
-    def drawChunk(self, _screen, _camera_position):
-        for i in range(int((1-self.env.chunk_width)/2), int((1+self.env.chunk_width)/2)):
-            for j in range(int((1-self.env.chunk_height)/2), int((1+self.env.chunk_height)/2)):
-                _screen.blit(
-                    self.ceil,
+        for item_pos in random_positions[20:]:
+            self.fg_entities.append(
+                self.env.object_factory.getObject(
+                    "Shiny",
+                    self.env,
                     [
-                        self.pos[0] - self.env.chunk_gap + self.env.grid_step * (i - 0.5) - _camera_position[0],
-                        self.pos[1] - self.env.chunk_gap + self.env.grid_step * (j - 0.5) - _camera_position[1]
+                        item_pos[0] * self.env.grid_step + self.pos[0],
+                        item_pos[1] * self.env.grid_step + self.pos[1]
                     ]
                 )
-
-    def drawBgEntities(self, _dt, _screen, _camera_position):
-        for entity in self.bg_entities:
-            entity.draw(_dt, _screen, _camera_position)
-
-    def drawFgEntities(self, _dt, _screen, _camera_position):
-        for entity in self.fg_entities:
-            entity.draw(_dt, _screen, _camera_position)
+            )

@@ -1,11 +1,13 @@
 from Engine.entityLogic import EntityLogic, Behaviour
 from Engine.eventSystem import Event, eventType
 
+import random
+
 
 class FireLogicStand(Behaviour):
     def __init__(self, _data):
         self.data = _data
-        self.state_lasts = 0.0
+        self.state_lasts = random.randint(0, 20)/20  # 0.0
         self.duration = 0.5
         self.atack_rate = 0.7
         self.time_since_last_attack = 0.0

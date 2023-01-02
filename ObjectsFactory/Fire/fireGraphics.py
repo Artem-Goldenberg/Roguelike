@@ -1,5 +1,7 @@
 from Engine.entityGraphics import EntityGraphics, UpgradedSprite
 
+from math import sin, pi
+
 
 def singleton(class_):
     instances = {}
@@ -21,7 +23,7 @@ class FireSpriteBurn(UpgradedSprite):
             0.4)
 
     def getRelativePosition(self, _animation_stage):
-        return [-53 - 4 * _animation_stage, -55]
+        return [-53 - 4 * _animation_stage, -55 + 4*sin(_animation_stage*pi)]
 
 
 class FireGraphics(EntityGraphics):

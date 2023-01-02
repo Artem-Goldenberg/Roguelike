@@ -19,13 +19,18 @@ class Item:
 
 @dataclass
 class Inventory:
-    _items: tp.List[Item] = field(default_factory=list)
+    items: tp.List[Item] = field(default_factory=list)
 
-    def addItem(self, item: Item):
-        self._items.append(item)
+    def addItem(self, _item):
+        self._items.append(_item)
 
-    def removeItem(self, item: Item):
-        self._items.remove(item)
+    def removeItem(self, _item):
+        self._items.remove(_item)
+
+    def merge(self, _other):
+        self.items += _other.items
+
+
 
 
 class EntityData:
@@ -35,10 +40,12 @@ class EntityData:
             _state="",
             _position=(0, 0),
             _animation_stage=0.0,
-            _inventory=Inventory([])
+            _inventory=Inventory([]),
+            _custom=""
     ):
         self.env = _env
         self.state = _state
         self.position = _position
         self.animation_stage = _animation_stage
         self.inventory = _inventory
+        self.custom = _custom

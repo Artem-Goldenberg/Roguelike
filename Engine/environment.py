@@ -3,8 +3,6 @@ import pygame
 import time
 import sys
 
-# from math import fabs
-
 # from entity import Entity
 from Engine.chunk import Chunk
 from Engine.eventSystem import EventSystem, KeyboardEventSystem
@@ -229,3 +227,7 @@ class Environment:
         new_chunk = Chunk(self, pos)
         self.available_chunks[pos] = new_chunk
         return new_chunk
+
+    def removeItem(self, _data):
+        for chunk in self.active_chunks:
+            chunk.removeEntity(_data)
