@@ -1,20 +1,22 @@
-import random
+# import random
 import typing as tp
-from uuid import UUID
+# from uuid import UUID
 # from enum import Enum, auto
 from dataclasses import dataclass, field
 
 
-@dataclass
 class Item:
-    _id = UUID(int=random.getrandbits(128))
-    name: str
-    cost: int
-    quantity: int = 1
-    texture: str = "default"
-
-    def __eq__(self, other):
-        return self._id == other.id
+    def __init__(
+            self,
+            _name,
+            _cost,
+            _texture,
+            _quantity=1
+    ):
+        self.name = _name
+        self.cost = _cost
+        self.quantity = _quantity
+        self.texture = _texture
 
 
 @dataclass
