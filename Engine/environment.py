@@ -7,7 +7,10 @@ import sys
 from Engine.chunk import Chunk
 from Engine.eventSystem import EventSystem, KeyboardEventSystem
 from Player.player import Player
+from Player.playerInventory import InventoryGraphics
+from Player.playerHealthGraphics import PlayerHealth
 from ObjectsFactory.objectFactory import ObjectFactory
+from ItemFactory.itemFactory import ItemFactory
 
 
 def sign(num):
@@ -60,8 +63,8 @@ class Environment:
 
         logging.info("Initing object factory")
         self.object_factory = ObjectFactory()
+        self.item_factory = ItemFactory()
         logging.info("Object factory inited")
-
 
         logging.info("Initing chunks")
         self.available_chunks = {}
@@ -87,9 +90,10 @@ class Environment:
 
         logging.info("Initing player")
         self.player = Player(self)
+        self.player.data.inventory.addItem(self.item_factory.getItem("SampleItem"))
+        self.playerInventory = InventoryGraphics(self.player.data)
+        self.playerHealth = PlayerHealth(self.player.data)
         logging.info("Player inited")
-
-        self.flame = self.object_factory.getObject("Fire", self, [self.grid_step, self.grid_step])
 
     def updateScreen(self):
 
@@ -155,8 +159,7 @@ class Environment:
         self.time = time.time()
 
         self.player.logic.handleEvents(dt)
-
-        self.flame.logic.handleEvents(dt)
+        self.playerInventory.update(dt)
 
         for chunk in self.active_chunks:
             for entity in chunk.bg_entities:
@@ -214,7 +217,8 @@ class Environment:
         test_surf.fill((255, 255, 255))
         self.screen.blit(test_surf, (-self.camera_position[0], -self.camera_position[1]))
 
-        # self.flame.draw(dt, self.screen, self.camera_position)
+        self.playerInventory.draw()
+        self.playerHealth.draw()
 
         pygame.display.flip()
 

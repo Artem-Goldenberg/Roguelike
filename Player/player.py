@@ -7,7 +7,7 @@ from Player.playerGraphics import PlayerEntityGraphics
 
 class Player(Entity):
     def __init__(self, _env):
-        entity_data = EntityData(_env, "StandingDown", [0, 0], 0.0, Inventory([]), (0, 1))
+        entity_data = EntityData(_env, 100, "StandingDown", [0, 0], 0.0, Inventory([]), (0, 1))
 
         Entity.__init__(
             self,

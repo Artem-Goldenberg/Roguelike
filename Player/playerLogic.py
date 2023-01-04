@@ -2,7 +2,7 @@
 
 from Engine.entityLogic import EntityLogic, Behaviour
 from Engine.eventSystem import eventType, Event
-from Engine.entityData import Inventory
+# from Engine.entityData import Inventory
 
 
 def direction(pos):
@@ -34,6 +34,7 @@ class PlayerBehaviourStanding(Behaviour):
         for event in self.data.env.pastEvents.getEvents(eventType.Atack):
             if event.data == self.data.position:
                 self.data.state = "Hurt" + direction(self.data.custom)
+                self.data.hp -= 10
                 self.data.animation_stage = 0.0
                 return
 
@@ -115,6 +116,7 @@ class PlayerBehaviourWalking(Behaviour):
             for event in self.data.env.pastEvents.getEvents(eventType.Atack):
                 if event.data == self.data.position:
                     self.data.state = "Hurt" + direction(self.data.custom)
+                    self.data.hp -= 10
                     self.data.animation_stage = 0.0
                     return
 
@@ -163,6 +165,7 @@ class PlayerBehaviourAtacking(Behaviour):
         for event in self.data.env.pastEvents.getEvents(eventType.Atack):
             if event.data == self.data.position:
                 self.data.state = "Hurt" + direction(self.data.custom)
+                self.data.hp -= 10
                 self.data.animation_stage = 0.0
                 return
 
@@ -185,6 +188,7 @@ class PlayerBehaviourMassiveAtacking(Behaviour):
         for event in self.data.env.pastEvents.getEvents(eventType.Atack):
             if event.data == self.data.position:
                 self.data.state = "Hurt" + direction(self.data.custom)
+                self.data.hp -= 10
                 self.data.animation_stage = 0.0
                 return
 
@@ -220,8 +224,12 @@ class PlayerBehaviourHurt(Behaviour):
         self.data.animation_stage = self.state_lasts / self.duration
 
         if self.state_lasts >= self.duration:
-            self.data.state = "Standing" + direction(self.data.custom)
-            self.data.animation_stage = 0.0
+            if self.data.hp > 0:
+                self.data.state = "Standing" + direction(self.data.custom)
+                self.data.animation_stage = 0.0
+            else:
+                self.data.state = "Dying" + direction(self.data.custom)
+                self.data.animation_stage = 0.0
 
 
 class PlayerBehaviourPickingUp(Behaviour):
@@ -235,6 +243,7 @@ class PlayerBehaviourPickingUp(Behaviour):
         for event in self.data.env.pastEvents.getEvents(eventType.Atack):
             if event.data == self.data.position:
                 self.data.state = "Hurt" + direction(self.data.custom)
+                self.data.hp -= 10
                 self.data.animation_stage = 0.0
                 return
 
@@ -245,12 +254,27 @@ class PlayerBehaviourPickingUp(Behaviour):
         self.data.animation_stage = self.state_lasts / self.duration
 
         if self.state_lasts >= self.duration:
-            for item_data in self.items_to_take:
-                self.data.inventory.merge(item_data.inventory)
-                self.data.env.removeItem(item_data)
+            if len(self.items_to_take) > 0:
+                self.data.inventory.merge(self.items_to_take[0].inventory)
+                self.data.env.removeItem(self.items_to_take[0])
 
             self.data.state = "Standing" + direction(self.data.custom)
             self.data.animation_stage = 0.0
+
+
+class PlayerBehaviourDying(Behaviour):
+    def __init__(self, _data):
+        self.data = _data
+        self.state_lasts = 0.0
+        self.duration = 1.0
+
+    def process(self, _dt):
+        self.state_lasts += _dt
+
+        if self.state_lasts >= self.duration:
+            self.data.animation_stage = 0.8
+        else:
+            self.data.animation_stage = self.state_lasts / self.duration
 
 
 class PlayerEntityLogic(EntityLogic):
@@ -279,7 +303,11 @@ class PlayerEntityLogic(EntityLogic):
             "PickingUpUp": PlayerBehaviourPickingUp,
             "PickingUpDown": PlayerBehaviourPickingUp,
             "PickingUpLeft": PlayerBehaviourPickingUp,
-            "PickingUpRight": PlayerBehaviourPickingUp
+            "PickingUpRight": PlayerBehaviourPickingUp,
+            "DyingUp": PlayerBehaviourDying,
+            "DyingDown": PlayerBehaviourDying,
+            "DyingLeft": PlayerBehaviourDying,
+            "DyingRight": PlayerBehaviourDying
         }
 
         EntityLogic.__init__(self, _data, behaviours)

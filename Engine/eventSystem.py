@@ -73,6 +73,26 @@ class KeyboardEventSystem():
             self.updateKeyPress(pygame.K_c, eventType.PickUp)
         if keys[pygame.K_ESCAPE]:
             self.updateKeyPress(pygame.K_ESCAPE, eventType.Custom, "Settings")
+        if keys[pygame.K_1]:
+            self.updateKeyPress(pygame.K_1, eventType.Custom, "InventoryItem1")
+        if keys[pygame.K_2]:
+            self.updateKeyPress(pygame.K_2, eventType.Custom, "InventoryItem2")
+        if keys[pygame.K_3]:
+            self.updateKeyPress(pygame.K_3, eventType.Custom, "InventoryItem3")
+        if keys[pygame.K_4]:
+            self.updateKeyPress(pygame.K_4, eventType.Custom, "InventoryItem4")
+        if keys[pygame.K_5]:
+            self.updateKeyPress(pygame.K_5, eventType.Custom, "InventoryItem5")
+        if keys[pygame.K_6]:
+            self.updateKeyPress(pygame.K_6, eventType.Custom, "InventoryItem6")
+        if keys[pygame.K_7]:
+            self.updateKeyPress(pygame.K_7, eventType.Custom, "InventoryItem7")
+        if keys[pygame.K_8]:
+            self.updateKeyPress(pygame.K_8, eventType.Custom, "InventoryItem8")
+        if keys[pygame.K_9]:
+            self.updateKeyPress(pygame.K_9, eventType.Custom, "InventoryItem9")
+        if keys[pygame.K_a]:
+            self.updateKeyPress(pygame.K_a, eventType.Custom, "UseItem")
 
     def getEvents(self, _eventType=None):
         if _eventType is not None:

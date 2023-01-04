@@ -19,7 +19,6 @@ class ShinyLogicStand(Behaviour):
                 self.data.env.futureEvents.sendEvent(
                     Event(eventType.Pickable, self, self.data)
                 )
-                # self.data.env.removeItem(self.data.id)
 
 
 class ShinyLogic(EntityLogic):

@@ -6,7 +6,7 @@ from ObjectsFactory.Fire.fireGraphics import FireGraphics
 
 class Fire(Entity):
     def __init__(self, _env, _pos):
-        entity_data = EntityData(_env, "Burn", _pos)
+        entity_data = EntityData(_env, _state="Burn", _position=_pos)
 
         Entity.__init__(
             self,

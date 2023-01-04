@@ -6,7 +6,7 @@ from ObjectsFactory.Rock.rockGraphics import RockGraphics
 
 class Rock(Entity):
     def __init__(self, _env, _pos):
-        entity_data = EntityData(_env, "Stand", _pos)
+        entity_data = EntityData(_env, _state="Stand", _position=_pos)
 
         Entity.__init__(
             self,

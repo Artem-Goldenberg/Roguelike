@@ -307,6 +307,54 @@ class PlayerSpritePickingUpRight(UpgradedSprite):
         return [-75, -100]
 
 
+@singleton
+class PlayerSpriteDyingUp(UpgradedSprite):
+    def __init__(self):
+        UpgradedSprite.__init__(
+            self,
+            'Player/Sprites/Up/WarriorUpDeath.png',
+            3)
+
+    def getRelativePosition(self, _animation_stage):
+        return [-75, -100]
+
+
+@singleton
+class PlayerSpriteDyingDown(UpgradedSprite):
+    def __init__(self):
+        UpgradedSprite.__init__(
+            self,
+            'Player/Sprites/Down/WarriorDownDeath.png',
+            3)
+
+    def getRelativePosition(self, _animation_stage):
+        return [-75, -100]
+
+
+@singleton
+class PlayerSpriteDyingLeft(UpgradedSprite):
+    def __init__(self):
+        UpgradedSprite.__init__(
+            self,
+            'Player/Sprites/Left/WarriorLeftDeath.png',
+            3)
+
+    def getRelativePosition(self, _animation_stage):
+        return [-75, -100]
+
+
+@singleton
+class PlayerSpriteDyingRight(UpgradedSprite):
+    def __init__(self):
+        UpgradedSprite.__init__(
+            self,
+            'Player/Sprites/Right/WarriorRightDeath.png',
+            3)
+
+    def getRelativePosition(self, _animation_stage):
+        return [-75, -100]
+
+
 class PlayerEntityGraphics(EntityGraphics):
     def __init__(self, _data):
         sprites = {
@@ -333,7 +381,11 @@ class PlayerEntityGraphics(EntityGraphics):
             "PickingUpUp": PlayerSpritePickingUpUp(),
             "PickingUpDown": PlayerSpritePickingUpDown(),
             "PickingUpLeft": PlayerSpritePickingUpLeft(),
-            "PickingUpRight": PlayerSpritePickingUpRight()
+            "PickingUpRight": PlayerSpritePickingUpRight(),
+            "DyingUp": PlayerSpriteDyingUp(),
+            "DyingDown": PlayerSpriteDyingDown(),
+            "DyingLeft": PlayerSpriteDyingLeft(),
+            "DyingRight": PlayerSpriteDyingRight()
         }
 
         EntityGraphics.__init__(self, _data, sprites)
