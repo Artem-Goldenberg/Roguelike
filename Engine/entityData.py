@@ -1,8 +1,12 @@
-# import random
-import typing as tp
-# from uuid import UUID
-# from enum import Enum, auto
-from dataclasses import dataclass, field
+import enum
+import logging
+
+
+class itemType(enum.Enum):
+    Potion = 1,
+    Rune1 = 2,
+    Rune2 = 3,
+    Rune3 = 4
 
 
 class Item:
@@ -11,26 +15,63 @@ class Item:
             _name,
             _cost,
             _texture,
-            _quantity=1
+            _quantity=1,
+            _item_type=itemType.Potion
     ):
         self.name = _name
         self.cost = _cost
         self.quantity = _quantity
         self.texture = _texture
+        self.item_type = _item_type
 
 
-@dataclass
 class Inventory:
-    items: tp.List[Item] = field(default_factory=list)
+    def __init__(self, _items=None, _capacity=1):
+        self.capacity = _capacity
+        if _items is None:
+            self.items = []
+        else:
+            self.items = _items
+        if len(self.items) > self.capacity:
+            logging.critical(f"Inventory: given _items: {_items}, but capacity is {_capacity}")
+            raise
+        for _ in range(self.capacity - len(self.items)):
+            self.items.append(None)
 
     def addItem(self, _item):
-        self.items.append(_item)
+        for item_num in range(self.capacity):
+            if self.items[item_num] is None:
+                self.items[item_num] = _item
+                return
 
     def removeItem(self, _item):
         self.items.remove(_item)
 
+    def isEmpty(self):
+        for item_num in range(self.capacity):
+            if self.items[item_num] is not None:
+                return False
+        return True
+
     def merge(self, _other):
-        self.items += _other.items
+        first_free = -1
+        for item_num in range(self.capacity):
+            if self.items[item_num] is None:
+                first_free = item_num
+                break
+        if first_free == -1:
+            return
+        for item_num in range(_other.capacity):
+            if _other.items[item_num] is not None:
+                self.items[first_free] = _other.items[item_num]
+                _other.items[item_num] = None
+                first_free = -1
+                for item in range(first_free, self.capacity):
+                    if self.items[item_num] is None:
+                        first_free = item_num
+                        break
+                if first_free == -1:
+                    return
 
 
 class EntityData:

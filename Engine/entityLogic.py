@@ -27,6 +27,5 @@ class EntityLogic():
 
             self.active_state = self.behaviors[self.data.state](self.data)
             self.active_state_name = self.data.state
-            logging.info("EntityLogic: handleEvents: new sprite: \"" + str(self.active_state_name) + "\"")
 
         self.active_state.process(_dt)

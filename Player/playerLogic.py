@@ -256,7 +256,8 @@ class PlayerBehaviourPickingUp(Behaviour):
         if self.state_lasts >= self.duration:
             if len(self.items_to_take) > 0:
                 self.data.inventory.merge(self.items_to_take[0].inventory)
-                self.data.env.removeItem(self.items_to_take[0])
+                if self.items_to_take[0].inventory.isEmpty():
+                    self.data.env.removeItem(self.items_to_take[0])
 
             self.data.state = "Standing" + direction(self.data.custom)
             self.data.animation_stage = 0.0

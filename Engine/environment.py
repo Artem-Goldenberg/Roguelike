@@ -8,7 +8,7 @@ from Engine.chunk import Chunk
 from Engine.eventSystem import EventSystem, KeyboardEventSystem
 from Player.player import Player
 from Player.playerInventory import InventoryGraphics
-from Player.playerHealthGraphics import PlayerHealth
+from Player.playerStatusGraphics import PlayerStatusBar
 from ObjectsFactory.objectFactory import ObjectFactory
 from ItemFactory.itemFactory import ItemFactory
 
@@ -41,8 +41,6 @@ class Environment:
         pygame.init()
         logging.info("Pygame inited")
 
-        self.clock = pygame.time.Clock()
-
         logging.info("Initing window")
         self.screen = pygame.display.set_mode([800, 600], pygame.RESIZABLE)
         self.window_height = self.screen.get_height()
@@ -61,10 +59,10 @@ class Environment:
         self.camera_move_speed = 150
         logging.info("Constants inited")
 
-        logging.info("Initing object factory")
+        logging.info("Initing factories")
         self.object_factory = ObjectFactory()
         self.item_factory = ItemFactory()
-        logging.info("Object factory inited")
+        logging.info("Factories inited")
 
         logging.info("Initing chunks")
         self.available_chunks = {}
@@ -91,8 +89,11 @@ class Environment:
         logging.info("Initing player")
         self.player = Player(self)
         self.player.data.inventory.addItem(self.item_factory.getItem("SampleItem"))
+        self.player.data.inventory.addItem(self.item_factory.getItem("HealthRune"))
+        self.player.data.inventory.addItem(self.item_factory.getItem("NormalAttackRune"))
+        self.player.data.inventory.addItem(self.item_factory.getItem("MassiveAttackRune"))
         self.playerInventory = InventoryGraphics(self.player.data)
-        self.playerHealth = PlayerHealth(self.player.data)
+        self.playerHealth = PlayerStatusBar(self.player.data)
         logging.info("Player inited")
 
     def updateScreen(self):
@@ -106,7 +107,7 @@ class Environment:
             if event.type == pygame.VIDEORESIZE:
                 self.window_height = event.h
                 self.window_width = event.w
-                logging.info("Window resize: " + str(self.window_height) + "x" + str(self.window_width))
+                logging.info(f"Window resize: {self.window_height}x{self.window_width}")
             if event.type == pygame.QUIT:
                 self.running = False
 
@@ -148,11 +149,11 @@ class Environment:
                 self.active_chunks
         ]
 
-        #   __  __           __        __                   __       _
-        #  / / / / ___   ___/ / ___ _ / /_ ___       ___   / /      (_)
-        # / /_/ / / _ \ / _  / / _ `// __// -_)     / _ \ / _ \    / /
-        # \____/ / .__/ \_,_/  \_,_/ \__/ \__/      \___//_.__/ __/ /
-        #       /_/                                            |___/
+        #   __  __           __        __                   __      _
+        #  / / / / ___   ___/ / ___ _ / /_ ___       ___   / /     (_)
+        # / /_/ / / _ \ / _  / / _ `// __// -_)     / _ \ / _ \   / /
+        # \____/ / .__/ \_,_/  \_,_/ \__/ \__/      \___//_.__/__/ /
+        #       /_/                                           |___/
 
         dt = time.time() - self.time
         # print("fps: " + str(1/dt))

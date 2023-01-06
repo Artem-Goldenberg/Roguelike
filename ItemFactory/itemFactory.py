@@ -1,15 +1,16 @@
 import pygame
 import logging
-from Engine.entityData import Item
+from Engine.entityData import Item, itemType
 
 
 class UpgradedItem(Item):
     def __init__(
-            self,
-            _name,
-            _cost,
-            _texture_name="Default.png",
-            _quantity=1
+        self,
+        _name,
+        _cost,
+        _texture_name="Default.png",
+        _quantity=1,
+        _item_type=itemType.Potion
     ):
         image = pygame.image.load("ItemFactory/Textures/" + _texture_name).convert_alpha()
         resized_image = pygame.Surface(
@@ -34,7 +35,9 @@ class UpgradedItem(Item):
             self,
             _name,
             _cost,
-            resized_image
+            resized_image,
+            _quantity,
+            _item_type
         )
 
 
@@ -44,6 +47,27 @@ class ItemFactory():
             "SampleItem": UpgradedItem(
                 "SampleItem",
                 100
+            ),
+            "HealthRune": UpgradedItem(
+                "HealthRune",
+                100,
+                "Rune1.png",
+                1,
+                itemType.Rune1
+            ),
+            "NormalAttackRune": UpgradedItem(
+                "NormalAttackRune",
+                100,
+                "Rune2.png",
+                1,
+                itemType.Rune2
+            ),
+            "MassiveAttackRune": UpgradedItem(
+                "MassiveAttackRune",
+                100,
+                "Rune3.png",
+                1,
+                itemType.Rune3
             )
         }
 
@@ -58,5 +82,7 @@ class ItemFactory():
             return Item(
                 item.name,
                 item.cost,
-                item.texture
+                item.texture,
+                item.quantity,
+                item.item_type
             )

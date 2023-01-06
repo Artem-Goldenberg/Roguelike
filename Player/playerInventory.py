@@ -1,5 +1,6 @@
 import pygame
 from Engine.eventSystem import eventType
+from Engine.entityData import itemType
 
 
 class InventoryGraphics:
@@ -17,7 +18,7 @@ class InventoryGraphics:
             )
         )
         self.item = pygame.Surface((80, 80))
-        self.item.fill((250, 250, 250))
+        self.item.fill((200, 200, 200))
         self.choosen_one = 1
         self.time_since_last_interaction = 0.0
         self.click_duration = 0.3
@@ -41,40 +42,45 @@ class InventoryGraphics:
             )
 
         for event in self.data.env.keyboardEvents.getEvents(eventType.Custom):
-            if event.data == "InventoryItem1":
-                self.choosen_one = 1
-                self.time_since_last_interaction = 0.0
-            if event.data == "InventoryItem2":
-                self.choosen_one = 2
-                self.time_since_last_interaction = 0.0
-            if event.data == "InventoryItem3":
-                self.choosen_one = 3
-                self.time_since_last_interaction = 0.0
-            if event.data == "InventoryItem4":
-                self.choosen_one = 4
-                self.time_since_last_interaction = 0.0
-            if event.data == "InventoryItem5":
-                self.choosen_one = 5
-                self.time_since_last_interaction = 0.0
-            if event.data == "InventoryItem6":
-                self.choosen_one = 6
-                self.time_since_last_interaction = 0.0
-            if event.data == "InventoryItem7":
-                self.choosen_one = 7
-                self.time_since_last_interaction = 0.0
-            if event.data == "InventoryItem8":
-                self.choosen_one = 8
-                self.time_since_last_interaction = 0.0
-            if event.data == "InventoryItem9":
-                self.choosen_one = 9
-                self.time_since_last_interaction = 0.0
+            if event.data[:13] == "InventoryItem":
+                if len(event.data) == 14 and event.data[13].isnumeric():
+                    self.choosen_one = int(event.data[13])
+                    self.time_since_last_interaction = 0.0
             if event.data == "UseItem":
                 self.time_since_last_interaction = 0.0
-                if self.choosen_one <= len(self.data.inventory.items):
-                    self.data.inventory.items.pop(self.choosen_one-1)
-                    self.data.hp += 10
-                    if self.data.hp > 100:
-                        self.data.hp = 100
+
+                if self.data.inventory.items[self.choosen_one-1] is None:
+                    continue
+
+                if self.data.inventory.items[self.choosen_one-1].item_type == itemType.Potion:
+                    # TODO: use potion
+                    if self.choosen_one <= len(self.data.inventory.items):
+                        self.data.inventory.items[self.choosen_one-1] = None
+                        self.data.hp += 10
+                        if self.data.hp > 100:
+                            self.data.hp = 100
+                    continue
+
+                if self.data.inventory.items[self.choosen_one-1].item_type == itemType.Rune1:
+                    old_item = self.data.equipment[0]
+                    new_item = self.data.inventory.items[self.choosen_one-1]
+                    self.data.equipment[0] = new_item
+                    self.data.inventory.items[self.choosen_one-1] = old_item
+                    continue
+
+                if self.data.inventory.items[self.choosen_one-1].item_type == itemType.Rune2:
+                    old_item = self.data.equipment[1]
+                    new_item = self.data.inventory.items[self.choosen_one-1]
+                    self.data.equipment[1] = new_item
+                    self.data.inventory.items[self.choosen_one-1] = old_item
+                    continue
+
+                if self.data.inventory.items[self.choosen_one-1].item_type == itemType.Rune3:
+                    old_item = self.data.equipment[2]
+                    new_item = self.data.inventory.items[self.choosen_one-1]
+                    self.data.equipment[2] = new_item
+                    self.data.inventory.items[self.choosen_one-1] = old_item
+                    continue
 
     def draw(self):
         # draw inventory bar
@@ -100,13 +106,14 @@ class InventoryGraphics:
 
         # draw items
         for i in range(0, len(self.data.inventory.items)):
-            self.data.env.screen.blit(
-                self.data.inventory.items[i].texture,
-                [
-                    self.data.env.window_width // 2 + (i-4) * 90 - 40,
-                    self.data.env.window_height - 140
-                ]
-            )
+            if self.data.inventory.items[i] is not None:
+                self.data.env.screen.blit(
+                    self.data.inventory.items[i].texture,
+                    [
+                        self.data.env.window_width // 2 + (i-4) * 90 - 40,
+                        self.data.env.window_height - 140
+                    ]
+                )
 
         # highlight active item
         pygame.draw.rect(
