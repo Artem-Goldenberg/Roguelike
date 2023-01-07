@@ -19,6 +19,7 @@ class ShinyLogicStand(Behaviour):
                 self.data.env.futureEvents.sendEvent(
                     Event(eventType.Pickable, self, self.data)
                 )
+                break
 
 
 class ShinyLogic(EntityLogic):

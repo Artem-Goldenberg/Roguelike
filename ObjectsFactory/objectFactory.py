@@ -3,6 +3,7 @@ import logging
 from ObjectsFactory.Rock.rock import Rock
 from ObjectsFactory.Fire.fire import Fire
 from ObjectsFactory.Shiny.shiny import Shiny
+from ObjectsFactory.Enemy.enemy import Enemy
 
 
 class ObjectFactory:
@@ -10,7 +11,8 @@ class ObjectFactory:
         self.known_objects = {
             "Rock": Rock,
             "Fire": Fire,
-            "Shiny": Shiny
+            "Shiny": Shiny,
+            "Enemy": Enemy
         }
 
     def getObject(self, _name, _env, _pos):

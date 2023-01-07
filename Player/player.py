@@ -5,6 +5,8 @@ from Player.playerLogic import PlayerEntityLogic
 from Player.playerGraphics import PlayerEntityGraphics
 from Player.playerData import PlayerData
 
+# from ObjectsFactory.Enemy.enemyGraphics import EnemyGraphics
+
 
 class Player(Entity):
     def __init__(self, _env):
@@ -22,4 +24,5 @@ class Player(Entity):
             entity_data,
             PlayerEntityLogic(entity_data),
             PlayerEntityGraphics(entity_data)
+            # EnemyGraphics(entity_data)
         )
