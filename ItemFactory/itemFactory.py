@@ -55,6 +55,27 @@ class ItemFactory():
                 1,
                 itemType.Rune1
             ),
+            "HealthRuneLvl1": UpgradedItem(
+                "HealthRune",
+                100,
+                "Rune1lvl1.png",
+                1,
+                itemType.Rune1
+            ),
+            "HealthRuneLvl2": UpgradedItem(
+                "HealthRune",
+                100,
+                "Rune1lvl2.png",
+                1,
+                itemType.Rune1
+            ),
+            "HealthRuneLvl3": UpgradedItem(
+                "HealthRune",
+                100,
+                "Rune1lvl3.png",
+                1,
+                itemType.Rune1
+            ),
             "NormalAttackRune": UpgradedItem(
                 "NormalAttackRune",
                 100,
@@ -62,10 +83,52 @@ class ItemFactory():
                 1,
                 itemType.Rune2
             ),
+            "NormalAttackRuneLvl1": UpgradedItem(
+                "NormalAttackRune",
+                100,
+                "Rune2lvl1.png",
+                1,
+                itemType.Rune2
+            ),
+            "NormalAttackRuneLvl2": UpgradedItem(
+                "NormalAttackRune",
+                100,
+                "Rune2lvl2.png",
+                1,
+                itemType.Rune2
+            ),
+            "NormalAttackRuneLvl3": UpgradedItem(
+                "NormalAttackRune",
+                100,
+                "Rune2lvl3.png",
+                1,
+                itemType.Rune2
+            ),
             "MassiveAttackRune": UpgradedItem(
                 "MassiveAttackRune",
                 100,
                 "Rune3.png",
+                1,
+                itemType.Rune3
+            ),
+            "MassiveAttackRuneLvl1": UpgradedItem(
+                "MassiveAttackRune",
+                100,
+                "Rune3lvl1.png",
+                1,
+                itemType.Rune3
+            ),
+            "MassiveAttackRuneLvl2": UpgradedItem(
+                "MassiveAttackRune",
+                100,
+                "Rune3lvl3.png",
+                1,
+                itemType.Rune3
+            ),
+            "MassiveAttackRuneLvl3": UpgradedItem(
+                "MassiveAttackRune",
+                100,
+                "Rune3lvl3.png",
                 1,
                 itemType.Rune3
             )

@@ -1,8 +1,24 @@
 import logging
 
 from ObjectsFactory.Rock.rock import Rock
+from ObjectsFactory.Rock.rockGraphics import RockGraphics
+from ObjectsFactory.Rock.rockLogic import RockLogic
+
 from ObjectsFactory.Fire.fire import Fire
+from ObjectsFactory.Fire.fireGraphics import FireGraphics
+from ObjectsFactory.Fire.fireLogic import FireLogic
+
 from ObjectsFactory.Shiny.shiny import Shiny
+from ObjectsFactory.Shiny.shinyGraphics import ShinyGraphics
+from ObjectsFactory.Shiny.shinyLogic import ShinyLogic
+
+from ObjectsFactory.Player.player import Player
+from ObjectsFactory.Player.playerGraphics import PlayerGraphics
+from ObjectsFactory.Player.playerLogic import PlayerLogic
+
+from Engine.entity import Entity
+from Engine.activeEntity import ActiveEntity
+from Engine.defaultActiveEntityLogic import DefaultEntityLogic
 
 
 class ObjectFactory:
@@ -11,6 +27,16 @@ class ObjectFactory:
             "Rock": Rock,
             "Fire": Fire,
             "Shiny": Shiny
+        }
+        self.known_entities = {
+            "Passive": Entity,
+            "Active": ActiveEntity
+        }
+        self.known_graphics = {
+            "Rock": Rock,
+            "Fire": Fire,
+            "Shiny": Shiny
+            "Player":
         }
 
     def getObject(self, _name, _env, _pos):
