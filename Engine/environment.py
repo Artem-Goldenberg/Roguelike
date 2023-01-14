@@ -5,6 +5,7 @@ import sys
 
 # from entity import Entity
 from Engine.chunk import Chunk
+from Engine.activeEntity import ActiveEntity
 from Engine.eventSystem import EventSystem, KeyboardEventSystem
 from Engine.playerStatusGraphics import PlayerStatusBar
 from Engine.playerInventory import InventoryGraphics
@@ -159,13 +160,18 @@ class Environment:
         # print("fps: " + str(1/dt))
         self.time = time.time()
 
+        self.player.meta_logic.updateMetaInstructions(dt)
         self.player.logic.handleEvents(dt)
         self.playerInventory.update(dt)
 
         for chunk in self.active_chunks:
             for entity in chunk.bg_entities:
+                if isinstance(entity, ActiveEntity):
+                    entity.meta_logic.updateMetaInstructions(dt)
                 entity.logic.handleEvents(dt)
             for entity in chunk.fg_entities:
+                if isinstance(entity, ActiveEntity):
+                    entity.meta_logic.updateMetaInstructions(dt)
                 entity.logic.handleEvents(dt)
 
         self.pastEvents = self.futureEvents

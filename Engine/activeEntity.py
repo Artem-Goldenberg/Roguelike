@@ -16,4 +16,4 @@ class ActiveEntity(Entity):
             _entity_graphics
         )
 
-        self.entity_meta_logic = _entity_meta_logic
+        self.meta_logic = _entity_meta_logic

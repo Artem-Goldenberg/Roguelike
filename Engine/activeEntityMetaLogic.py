@@ -26,4 +26,4 @@ class EntityMetaLogic():
             self.active_meta_state = self.strategies[self.data.meta_state](self.data)
             self.active_meta_state_name = self.data.meta_state
 
-        self.active_meta_state.updateMetaInstructions(_dt)
+        self.active_meta_state.process(_dt)

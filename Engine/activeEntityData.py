@@ -24,5 +24,11 @@ class ActiveEntityData(EntityData):
             _inventory,
             _custom
         )
-        self._meta_state = _meta_state
+        self.meta_state = _meta_state
         self._meta_instructions = _meta_instructions
+    
+    def get_instructions(self):
+        return self._meta_instructions
+    
+    def set_instructions(self, _instructions):
+        self._meta_instructions = _instructions
