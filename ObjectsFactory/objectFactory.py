@@ -14,7 +14,6 @@ from ObjectsFactory.Shiny.shinyLogic import ShinyLogic
 
 from ObjectsFactory.Player.player import Player
 from ObjectsFactory.Player.playerGraphics import PlayerEntityGraphics
-from ObjectsFactory.Player.playerLogic import PlayerEntityLogic
 
 from Engine.entity import Entity
 from Engine.activeEntity import ActiveEntity

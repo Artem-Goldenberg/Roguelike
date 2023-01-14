@@ -1,7 +1,7 @@
 from Engine.entityData import Inventory
 from Engine.entity import Entity
+from Engine.defaultActiveEntityLogic import DefaultEntityLogic
 
-from .playerLogic import PlayerEntityLogic
 from .playerGraphics import PlayerEntityGraphics
 from .playerData import PlayerData
 
@@ -20,6 +20,6 @@ class Player(Entity):
         Entity.__init__(
             self,
             entity_data,
-            PlayerEntityLogic(entity_data),
+            DefaultEntityLogic(entity_data),
             PlayerEntityGraphics(entity_data)
         )
