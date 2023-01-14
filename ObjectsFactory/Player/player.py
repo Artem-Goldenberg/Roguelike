@@ -1,9 +1,9 @@
 from Engine.entityData import Inventory
 from Engine.entity import Entity
 
-from Player.playerLogic import PlayerEntityLogic
-from Player.playerGraphics import PlayerEntityGraphics
-from Player.playerData import PlayerData
+from .playerLogic import PlayerEntityLogic
+from .playerGraphics import PlayerEntityGraphics
+from .playerData import PlayerData
 
 
 class Player(Entity):

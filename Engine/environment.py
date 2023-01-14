@@ -6,9 +6,9 @@ import sys
 # from entity import Entity
 from Engine.chunk import Chunk
 from Engine.eventSystem import EventSystem, KeyboardEventSystem
-from Player.player import Player
-from Player.playerInventory import InventoryGraphics
-from Player.playerStatusGraphics import PlayerStatusBar
+from Engine.playerStatusGraphics import PlayerStatusBar
+from Engine.playerInventory import InventoryGraphics
+from ObjectsFactory.Player.player import Player
 from ObjectsFactory.objectFactory import ObjectFactory
 from ItemFactory.itemFactory import ItemFactory
 

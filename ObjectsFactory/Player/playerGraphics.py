@@ -24,7 +24,7 @@ class PlayerSpriteStandingUp(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
             self,
-            'Player/Sprites/Up/WarriorUpIdle.png',
+            'ObjectsFactory/Player/Sprites/Up/WarriorUpIdle.png',
             3)
 
     def getRelativePosition(self, _animation_stage):
@@ -36,7 +36,7 @@ class PlayerSpriteStandingDown(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
             self,
-            'Player/Sprites/Down/WarriorDownIdle.png',
+            'ObjectsFactory/Player/Sprites/Down/WarriorDownIdle.png',
             3)
 
     def getRelativePosition(self, _animation_stage):
@@ -48,7 +48,7 @@ class PlayerSpriteStandingLeft(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
             self,
-            'Player/Sprites/Left/WarriorLeftIdle.png',
+            'ObjectsFactory/Player/Sprites/Left/WarriorLeftIdle.png',
             3)
 
     def getRelativePosition(self, _animation_stage):
@@ -60,7 +60,7 @@ class PlayerSpriteStandingRight(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
             self,
-            'Player/Sprites/Right/WarriorRightIdle.png',
+            'ObjectsFactory/Player/Sprites/Right/WarriorRightIdle.png',
             3)
 
     def getRelativePosition(self, _animation_stage):
@@ -72,7 +72,7 @@ class PlayerSpriteWalkingUp(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
             self,
-            'Player/Sprites/Up/WarriorUpWalk.png',
+            'ObjectsFactory/Player/Sprites/Up/WarriorUpWalk.png',
             3)
 
     def getRelativePosition(self, _animation_stage):
@@ -84,7 +84,7 @@ class PlayerSpriteWalkingDown(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
             self,
-            'Player/Sprites/Down/WarriorDownWalk.png',
+            'ObjectsFactory/Player/Sprites/Down/WarriorDownWalk.png',
             3)
 
     def getRelativePosition(self, _animation_stage):
@@ -96,7 +96,7 @@ class PlayerSpriteWalkingLeft(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
             self,
-            'Player/Sprites/Left/WarriorLeftWalk.png',
+            'ObjectsFactory/Player/Sprites/Left/WarriorLeftWalk.png',
             3)
 
     def getRelativePosition(self, _animation_stage):
@@ -108,7 +108,7 @@ class PlayerSpriteWalkingRight(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
             self,
-            'Player/Sprites/Right/WarriorRightWalk.png',
+            'ObjectsFactory/Player/Sprites/Right/WarriorRightWalk.png',
             3)
 
     def getRelativePosition(self, _animation_stage):
@@ -120,7 +120,7 @@ class PlayerSpriteAtackingUp(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
             self,
-            'Player/Sprites/Up/WarriorUpAttack01.png',
+            'ObjectsFactory/Player/Sprites/Up/WarriorUpAttack01.png',
             3)
 
     def getRelativePosition(self, _animation_stage):
@@ -132,7 +132,7 @@ class PlayerSpriteAtackingDown(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
             self,
-            'Player/Sprites/Down/WarriorDownAttack01.png',
+            'ObjectsFactory/Player/Sprites/Down/WarriorDownAttack01.png',
             3)
 
     def getRelativePosition(self, _animation_stage):
@@ -144,7 +144,7 @@ class PlayerSpriteAtackingLeft(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
             self,
-            'Player/Sprites/Left/WarriorLeftAttack01.png',
+            'ObjectsFactory/Player/Sprites/Left/WarriorLeftAttack01.png',
             3)
 
     def getRelativePosition(self, _animation_stage):
@@ -156,7 +156,7 @@ class PlayerSpriteAtackingRight(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
             self,
-            'Player/Sprites/Right/WarriorRightAttack01.png',
+            'ObjectsFactory/Player/Sprites/Right/WarriorRightAttack01.png',
             3)
 
     def getRelativePosition(self, _animation_stage):
@@ -168,7 +168,7 @@ class PlayerSpriteMassiveAtackingUp(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
             self,
-            'Player/Sprites/Up/WarriorUpAttack02.png',
+            'ObjectsFactory/Player/Sprites/Up/WarriorUpAttack02.png',
             3)
 
     def getRelativePosition(self, _animation_stage):
@@ -180,7 +180,7 @@ class PlayerSpriteMassiveAtackingDown(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
             self,
-            'Player/Sprites/Down/WarriorDownAttack02.png',
+            'ObjectsFactory/Player/Sprites/Down/WarriorDownAttack02.png',
             3)
 
     def getRelativePosition(self, _animation_stage):
@@ -192,7 +192,7 @@ class PlayerSpriteMassiveAtackingLeft(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
             self,
-            'Player/Sprites/Left/WarriorLeftAttack02.png',
+            'ObjectsFactory/Player/Sprites/Left/WarriorLeftAttack02.png',
             3)
 
     def getRelativePosition(self, _animation_stage):
@@ -204,7 +204,7 @@ class PlayerSpriteMassiveAtackingRight(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
             self,
-            'Player/Sprites/Right/WarriorRightAttack02.png',
+            'ObjectsFactory/Player/Sprites/Right/WarriorRightAttack02.png',
             3)
 
     def getRelativePosition(self, _animation_stage):
@@ -216,7 +216,7 @@ class PlayerSpriteHurtUp(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
             self,
-            'Player/Sprites/Up/WarriorUpHurt.png',
+            'ObjectsFactory/Player/Sprites/Up/WarriorUpHurt.png',
             3)
 
     def getRelativePosition(self, _animation_stage):
@@ -228,7 +228,7 @@ class PlayerSpriteHurtDown(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
             self,
-            'Player/Sprites/Down/WarriorDownHurt.png',
+            'ObjectsFactory/Player/Sprites/Down/WarriorDownHurt.png',
             3)
 
     def getRelativePosition(self, _animation_stage):
@@ -240,7 +240,7 @@ class PlayerSpriteHurtLeft(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
             self,
-            'Player/Sprites/Left/WarriorLeftHurt.png',
+            'ObjectsFactory/Player/Sprites/Left/WarriorLeftHurt.png',
             3)
 
     def getRelativePosition(self, _animation_stage):
@@ -252,7 +252,7 @@ class PlayerSpriteHurtRight(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
             self,
-            'Player/Sprites/Right/WarriorRightHurt.png',
+            'ObjectsFactory/Player/Sprites/Right/WarriorRightHurt.png',
             3)
 
     def getRelativePosition(self, _animation_stage):
@@ -264,7 +264,7 @@ class PlayerSpritePickingUpUp(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
             self,
-            'Player/Sprites/Up/WarriorUpLand.png',
+            'ObjectsFactory/Player/Sprites/Up/WarriorUpLand.png',
             3)
 
     def getRelativePosition(self, _animation_stage):
@@ -276,7 +276,7 @@ class PlayerSpritePickingUpDown(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
             self,
-            'Player/Sprites/Down/WarriorDownLand.png',
+            'ObjectsFactory/Player/Sprites/Down/WarriorDownLand.png',
             3)
 
     def getRelativePosition(self, _animation_stage):
@@ -288,7 +288,7 @@ class PlayerSpritePickingUpLeft(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
             self,
-            'Player/Sprites/Left/WarriorLeftLand.png',
+            'ObjectsFactory/Player/Sprites/Left/WarriorLeftLand.png',
             3)
 
     def getRelativePosition(self, _animation_stage):
@@ -300,7 +300,7 @@ class PlayerSpritePickingUpRight(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
             self,
-            'Player/Sprites/Right/WarriorRightLand.png',
+            'ObjectsFactory/Player/Sprites/Right/WarriorRightLand.png',
             3)
 
     def getRelativePosition(self, _animation_stage):
@@ -312,7 +312,7 @@ class PlayerSpriteDyingUp(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
             self,
-            'Player/Sprites/Up/WarriorUpDeath.png',
+            'ObjectsFactory/Player/Sprites/Up/WarriorUpDeath.png',
             3)
 
     def getRelativePosition(self, _animation_stage):
@@ -324,7 +324,7 @@ class PlayerSpriteDyingDown(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
             self,
-            'Player/Sprites/Down/WarriorDownDeath.png',
+            'ObjectsFactory/Player/Sprites/Down/WarriorDownDeath.png',
             3)
 
     def getRelativePosition(self, _animation_stage):
@@ -336,7 +336,7 @@ class PlayerSpriteDyingLeft(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
             self,
-            'Player/Sprites/Left/WarriorLeftDeath.png',
+            'ObjectsFactory/Player/Sprites/Left/WarriorLeftDeath.png',
             3)
 
     def getRelativePosition(self, _animation_stage):
@@ -348,7 +348,7 @@ class PlayerSpriteDyingRight(UpgradedSprite):
     def __init__(self):
         UpgradedSprite.__init__(
             self,
-            'Player/Sprites/Right/WarriorRightDeath.png',
+            'ObjectsFactory/Player/Sprites/Right/WarriorRightDeath.png',
             3)
 
     def getRelativePosition(self, _animation_stage):

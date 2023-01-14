@@ -13,8 +13,8 @@ from ObjectsFactory.Shiny.shinyGraphics import ShinyGraphics
 from ObjectsFactory.Shiny.shinyLogic import ShinyLogic
 
 from ObjectsFactory.Player.player import Player
-from ObjectsFactory.Player.playerGraphics import PlayerGraphics
-from ObjectsFactory.Player.playerLogic import PlayerLogic
+from ObjectsFactory.Player.playerGraphics import PlayerEntityGraphics
+from ObjectsFactory.Player.playerLogic import PlayerEntityLogic
 
 from Engine.entity import Entity
 from Engine.activeEntity import ActiveEntity
@@ -35,8 +35,8 @@ class ObjectFactory:
         self.known_graphics = {
             "Rock": Rock,
             "Fire": Fire,
-            "Shiny": Shiny
-            "Player":
+            "Shiny": Shiny,
+            "Player": Player
         }
 
     def getObject(self, _name, _env, _pos):
