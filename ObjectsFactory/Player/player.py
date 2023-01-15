@@ -4,7 +4,7 @@ from Engine.defaultActiveEntityLogic import DefaultEntityLogic
 
 from .playerData import PlayerData
 from .playerGraphics import PlayerEntityGraphics
-from.playerMetaLogic import PlayerMetaLogic
+from .playerMetaLogic import PlayerMetaLogic
 
 
 class Player(ActiveEntity):

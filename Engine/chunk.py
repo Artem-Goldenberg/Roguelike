@@ -2,7 +2,7 @@ import pygame
 import logging
 import random
 
-# from Engine.entity import Entity
+from Engine.entity import EntityData
 
 
 class Chunk:
@@ -70,10 +70,10 @@ class Chunk:
 
         for rock_pos in random_positions[:10]:
             self.bg_entities.append(
-                self.env.object_factory.getObject(
-                    "Rock",
-                    self.env,
-                    [
+                self.env.object_factory.getSimpleEntity(
+                    _logic="RockLogic",
+                    _graphics="Rock",
+                    _pos=[
                         rock_pos[0] * self.env.grid_step + self.pos[0],
                         rock_pos[1] * self.env.grid_step + self.pos[1]
                     ]
@@ -82,10 +82,10 @@ class Chunk:
 
         for fire_pos in random_positions[10:20]:
             self.fg_entities.append(
-                self.env.object_factory.getObject(
-                    "Fire",
-                    self.env,
-                    [
+                self.env.object_factory.getSimpleEntity(
+                    _logic="FireLogic",
+                    _graphics="Fire",
+                    _pos=[
                         fire_pos[0] * self.env.grid_step + self.pos[0],
                         fire_pos[1] * self.env.grid_step + self.pos[1]
                     ]
@@ -93,13 +93,14 @@ class Chunk:
             )
 
         for item_pos in random_positions[20:]:
-            self.fg_entities.append(
-                self.env.object_factory.getObject(
-                    "Shiny",
-                    self.env,
-                    [
-                        item_pos[0] * self.env.grid_step + self.pos[0],
-                        item_pos[1] * self.env.grid_step + self.pos[1]
-                    ]
-                )
+            shiny = self.env.object_factory.getSimpleEntity(
+                _logic="ShinyLogic",
+                _graphics="Shiny",
+                _pos=[
+                    item_pos[0] * self.env.grid_step + self.pos[0],
+                    item_pos[1] * self.env.grid_step + self.pos[1]]
             )
+            shiny.data.inventory.addItem(
+                self.env.item_factory.getItem("SampleItem")
+            )
+            self.fg_entities.append(shiny)

@@ -43,7 +43,7 @@ class DefaultBehaviourStanding(Behaviour):
             return
 
         else:
-            for event in self.data.get_instructions():
+            for event in self.data.getInstructions():
                 if event.event_type == eventType.Move:
                     if event.data == self.data.custom:
                         self.data.state = "Walking" + direction(self.data.custom)
@@ -108,7 +108,7 @@ class DefaultBehaviourWalking(Behaviour):
         self.data.animation_stage = self.state_lasts / self.duration
 
         continue_key_pressed = False
-        for event in self.data.get_instructions():
+        for event in self.data.getInstructions():
             if event.event_type == eventType.Move and event.data == self.data.custom:
                 continue_key_pressed = True
 
@@ -196,7 +196,7 @@ class DefaultBehaviourMassiveAtacking(Behaviour):
         self.data.animation_stage = self.state_lasts / self.duration
 
         continue_key_pressed = False
-        for event in self.data.get_instructions():
+        for event in self.data.getInstructions():
             if event.event_type == eventType.Atack and event.data == "Massive":
                 continue_key_pressed = True
 

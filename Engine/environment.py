@@ -61,7 +61,7 @@ class Environment:
         logging.info("Constants inited")
 
         logging.info("Initing factories")
-        self.object_factory = ObjectFactory()
+        self.object_factory = ObjectFactory(self)
         self.item_factory = ItemFactory()
         logging.info("Factories inited")
 
@@ -88,7 +88,11 @@ class Environment:
         logging.info("Event systems inited")
 
         logging.info("Initing player")
-        self.player = Player(self)
+        self.player = self.object_factory.getActiveEntity(
+            _meta_logic="PlayerMetaLogic",
+            _logic="PlayerLogic",
+            _graphics="Player",
+        )
         self.player.data.inventory.addItem(self.item_factory.getItem("SampleItem"))
         self.player.data.inventory.addItem(self.item_factory.getItem("HealthRuneLvl1"))
         self.player.data.inventory.addItem(self.item_factory.getItem("NormalAttackRuneLvl2"))

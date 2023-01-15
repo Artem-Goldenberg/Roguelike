@@ -1,3 +1,4 @@
+import copy
 from Engine.entityData import EntityData
 
 
@@ -26,9 +27,9 @@ class ActiveEntityData(EntityData):
         )
         self.meta_state = _meta_state
         self._meta_instructions = _meta_instructions
-    
-    def get_instructions(self):
+
+    def getInstructions(self):
         return self._meta_instructions
     
-    def set_instructions(self, _instructions):
+    def setInstructions(self, _instructions):
         self._meta_instructions = _instructions

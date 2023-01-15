@@ -8,7 +8,7 @@ class PlayerData(ActiveEntityData):
             _hp=100,
             _state="",
             _meta_instructions=[],
-            _meta_state="Keyboard",
+            _meta_state="",
             _position=[0, 0],
             _animation_stage=0.0,
             _inventory=None,

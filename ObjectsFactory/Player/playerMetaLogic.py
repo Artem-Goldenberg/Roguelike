@@ -6,8 +6,7 @@ class PlayerStrategyKeyboard(Strategy):
         Strategy.__init__(self, _data)
 
     def process(self, _dt: float):
-        self.data.set_instructions(self.data.env.keyboardEvents.getEvents())
-
+        self.data.setInstructions(self.data.env.keyboardEvents.getEvents())
 
 
 class PlayerMetaLogic(EntityMetaLogic):
