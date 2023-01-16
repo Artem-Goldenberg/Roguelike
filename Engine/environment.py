@@ -9,7 +9,8 @@ from Engine.activeEntity import ActiveEntity
 from Engine.eventSystem import EventSystem, KeyboardEventSystem
 from Engine.playerStatusGraphics import PlayerStatusBar
 from Engine.playerInventory import InventoryGraphics
-from ObjectsFactory.Player.player import Player
+from Engine.mapParse import parseMap
+# from ObjectsFactory.Player.player import Player
 from ObjectsFactory.objectFactory import ObjectFactory
 from ItemFactory.itemFactory import ItemFactory
 
@@ -68,16 +69,28 @@ class Environment:
         logging.info("Initing chunks")
         self.available_chunks = {}
         self.active_chunks = []
+
+        parseMap(self)
+
+        print(f"KEKEKK KKEK KKE: {self.available_chunks}")
         for i in range(-1, 2):
             for j in range(-1, 2):
-                new_chunk = Chunk(
-                    self,
-                    [
-                        self.grid_step*self.chunk_width*i,
-                        self.grid_step*self.chunk_height*j
-                    ]
+                new_pos = (
+                    self.grid_step*self.chunk_width*i,
+                    self.grid_step*self.chunk_height*j
                 )
-                self.available_chunks[(i, j)] = new_chunk
+                if not self.available_chunks.__contains__(new_pos):
+                    new_chunk = Chunk(
+                        self,
+                        [
+                            self.grid_step*self.chunk_width*i,
+                            self.grid_step*self.chunk_height*j
+                        ]
+                    )
+                    # new_chunk.random_init()
+                    self.available_chunks[new_pos] = new_chunk
+                else:
+                    new_chunk = self.available_chunks[new_pos]
                 self.active_chunks.append(new_chunk)
         logging.info("Chunks inited")
 
@@ -89,9 +102,9 @@ class Environment:
 
         logging.info("Initing player")
         self.player = self.object_factory.getActiveEntity(
-            _meta_logic="PlayerMetaLogic",
-            _logic="PlayerLogic",
-            _graphics="Player",
+            _meta_logic_name="Player",
+            _logic_name="Player",
+            _graphics_name="Player",
         )
         self.player.data.inventory.addItem(self.item_factory.getItem("SampleItem"))
         self.player.data.inventory.addItem(self.item_factory.getItem("HealthRuneLvl1"))
@@ -240,7 +253,9 @@ class Environment:
         if self.available_chunks.__contains__(pos):
             return self.available_chunks[pos]
         new_chunk = Chunk(self, pos)
+        new_chunk.random_init()
         self.available_chunks[pos] = new_chunk
+        logging.info(f'Environment: new chunk on {pos}')
         return new_chunk
 
     def removeItem(self, _data):

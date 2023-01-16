@@ -21,28 +21,33 @@ from Engine.defaultActiveEntityLogic import DefaultEntityLogic
 
 
 class ObjectFactory:
-    def __init__(self, _env): # _env ?
+    def __init__(self, _env):
         self.known_graphics = {
             "Rock": RockGraphics,
             "Fire": FireGraphics,
             "Shiny": ShinyGraphics,
             "Player": PlayerEntityGraphics
         }
-        self.known_logics = { 
-            "RockLogic": RockLogic,
-            "FireLogic": FireLogic,
-            "ShinyLogic": ShinyLogic,
-            "PlayerLogic": DefaultEntityLogic
+
+        self.known_simple_logics = {
+            "Rock": RockLogic,
+            "Fire": FireLogic,
+            "Shiny": ShinyLogic
         }
+
+        self.known_active_logics = {
+            "Player": DefaultEntityLogic
+        }
+
         self.known_meta_logics = { 
-            "PlayerMetaLogic": PlayerMetaLogic
+            "Player": PlayerMetaLogic
         }
-        # ?
-        self.default_data = { 
-            "RockLogic": EntityData(_env, _state="Stand"),
-            "FireLogic": EntityData(_env, _state="Burn"),
-            "ShinyLogic": EntityData(_env, _state="Stand"),
-            "PlayerLogic": PlayerData(
+
+        self.default_data = {
+            "Rock": EntityData(_env, _state="Stand"),
+            "Fire": EntityData(_env, _state="Burn"),
+            "Shiny": EntityData(_env, _state="Stand"),
+            "Player": PlayerData(
                 _env,
                 _state="StandingDown",
                 _meta_state="Keyboard",
@@ -51,82 +56,7 @@ class ObjectFactory:
             )
         }
 
-    # def getSimpleEntity(
-    #         self,
-    #         _env,
-    #         _logic,
-    #         _graphics,
-    #         _hp=100,
-    #         _state="",
-    #         _pos=(0, 0),
-    #         _inventory=None,
-    #         _custom=""
-    # ):
-    #     if _logic not in self.known_logics:
-    #         logging.critical("ObjectsFactory: no known logics with id \"" + _logic + "\"")
-    #         raise 
-    #     if _graphics not in self.known_graphics:
-    #         logging.critical("ObjectsFactory: no known graphics with id \"" + _graphics + "\"")
-    #         raise 
-
-    #     data = EntityData(
-    #         _env,
-    #         _hp=_hp,
-    #         _state=_state,
-    #         _position=_pos,
-    #         _inventory=_inventory,
-    #         _custom=_custom
-    #     )
-        
-    #     return Entity(
-    #         data,
-    #         self.known_logics[_logic](_data),
-    #         self.known_graphics[_graphics](_data)
-    #     )
-
-    # def getActiveEntity(
-    #         self,
-    #         _env,
-    #         _meta_logic,
-    #         _logic,
-    #         _graphics,
-    #         _hp=100,
-    #         _state="",
-    #         _meta_instructions=[],
-    #         _meta_state="",
-    #         _pos=(0, 0),
-    #         _inventory=None,
-    #         _custom=""
-    # ):
-    #     if _logic not in self.known_logics:
-    #         logging.critical("ObjectsFactory: no known logics with id \"" + _logic + "\"")
-    #         raise 
-    #     if _graphics not in self.known_graphics:
-    #         logging.critical("ObjectsFactory: no known graphics with id \"" + _graphics + "\"")
-    #         raise 
-    #     if _meta_logic not in self.known_meta_logics:
-    #         logging.critical("ObjectsFactory: no known meta logics with id \"" + _meta_logic + "\"")
-    #         raise  
-
-    #     data = ActiveEntityData(
-    #         _env,
-    #         _hp=_hp,
-    #         _state=_state,
-    #         _meta_instructions=_meta_instructions,
-    #         _meta_state=_meta_state,
-    #         _position=_pos,
-    #         _inventory=_inventory,
-    #         _custom=_custom
-    #     )
-        
-    #     return ActiveEntity(
-    #         data,
-    #         self.known_meta_logics[_meta_logic](_data),
-    #         self.known_logics[_logic](_data),
-    #         self.known_graphics[_graphics](_data)
-    #     )
-
-    def getSimpleEntity(self, _logic, _graphics, _data=None, _pos=None):
+    def getSimpleEntity(self, _logic_name, _graphics_name, _data=None, _pos=None):
         """ Builds new Entity object with with given parameters
 
         Method accepts parameters ids, it then looks them up in the pre-defined dictionaries
@@ -137,34 +67,34 @@ class ObjectFactory:
         :param _data: an actual object with all information about entity, default is None
             if None, the default data will be used
         :param _pos: position on the map, only used if _data is None
-            
+
         :type _logic: str
         :type _graphics: str
         :type _data: EntityData | None
         :type _pos: tuple of 2 ints | None
         """
-        if _logic not in self.known_logics:
-            logging.critical("ObjectsFactory: no known logics with id \"" + _logic + "\"")
+        if _logic_name not in self.known_simple_logics:
+            logging.critical(f'ObjectsFactory: no known/suitable logic named "{_logic_name}" found')
             raise
-        if _graphics not in self.known_graphics:
-            logging.critical("ObjectsFactory: no known graphics with id \"" + _graphics + "\"")
+        if _graphics_name not in self.known_graphics:
+            logging.critical(f'ObjectsFactory: no known graphics named "{_graphics_name}" found')
             raise
 
         if _data is None:
-            if _logic not in self.default_data:
-                logging.critical("ObjectsFactory: no default data for logic id \"" + _logic + "\"")
+            if _logic_name not in self.default_data:
+                logging.critical(f'ObjectsFactory: no default data for logic named "{_logic_name}" found')
                 raise
-            _data = copy.copy(self.default_data[_logic])
+            _data = copy.copy(self.default_data[_logic_name])
             if _pos is not None:
                 _data.position = _pos
 
         return Entity(
-            _data, 
-            self.known_logics[_logic](_data),
-            self.known_graphics[_graphics](_data)
+            _data,
+            self.known_simple_logics[_logic_name](_data),
+            self.known_graphics[_graphics_name](_data)
         )
-    
-    def getActiveEntity(self, _meta_logic, _logic, _graphics, _data=None, _pos=None):
+
+    def getActiveEntity(self, _meta_logic_name, _logic_name, _graphics_name, _data=None, _pos=None):
         """ Builds a new ActiveEntity object with given parameters
 
         Method accepts parameters ids, it then looks them up in the pre-defined dictionaries
@@ -183,14 +113,30 @@ class ObjectFactory:
         :type _data: EntityData | None
         :type _pos: tuple of 2 ints | None
         """
-        obj = self.getSimpleEntity(_logic, _graphics, _data, _pos)
-        if _meta_logic not in self.known_meta_logics:
-            logging.critical("ObjectsFactory: no known meta logics with id \"" + _meta_logic + "\"")
+
+        if _logic_name not in self.known_active_logics:
+            logging.critical(f'ObjectsFactory: no known/suitable logic named "{_logic_name}" found')
             raise
 
+        if _graphics_name not in self.known_graphics:
+            logging.critical(f'ObjectsFactory: no known graphics named "{_graphics_name}" found')
+            raise
+
+        if _meta_logic_name not in self.known_meta_logics:
+            logging.critical(f'ObjectsFactory: no known meta logic named "{_meta_logic_name}" found')
+            raise
+
+        if _data is None:
+            if _logic_name not in self.default_data:
+                logging.critical(f'ObjectsFactory: no default data for logic named "{_logic_name}" found')
+                raise
+            _data = copy.copy(self.default_data[_logic_name])
+            if _pos is not None:
+                _data.position = _pos
+
         return ActiveEntity(
-            obj.data,
-            self.known_meta_logics[_meta_logic](obj.data),
-            obj.logic,
-            obj.graphics
+            _data,
+            self.known_meta_logics[_meta_logic_name](_data),
+            self.known_active_logics[_logic_name](_data),
+            self.known_graphics[_graphics_name](_data)
         )

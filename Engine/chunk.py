@@ -2,7 +2,7 @@ import pygame
 import logging
 import random
 
-from Engine.entity import EntityData
+# from Engine.entity import EntityData
 
 
 class Chunk:
@@ -29,7 +29,7 @@ class Chunk:
             logging.critical("Chunk: chunk height must be odd !!!")
             raise
 
-        self.random_init()
+        # self.random_init()
 
     def drawChunk(self, _screen, _camera_position):
         for i in range((1-self.env.chunk_width) // 2, (1+self.env.chunk_width) // 2):
@@ -58,6 +58,12 @@ class Chunk:
             if entity.data == _data:
                 self.fg_entities.pop(i)
 
+    def addToBG(self, _entity):
+        self.bg_entities.append(_entity)
+
+    def addToFG(self, _entity):
+        self.fg_entities.append(_entity)
+
     def random_init(self):
         random_positions = []
         while len(random_positions) < 30:
@@ -71,8 +77,8 @@ class Chunk:
         for rock_pos in random_positions[:10]:
             self.bg_entities.append(
                 self.env.object_factory.getSimpleEntity(
-                    _logic="RockLogic",
-                    _graphics="Rock",
+                    _logic_name="Rock",
+                    _graphics_name="Rock",
                     _pos=[
                         rock_pos[0] * self.env.grid_step + self.pos[0],
                         rock_pos[1] * self.env.grid_step + self.pos[1]
@@ -83,8 +89,8 @@ class Chunk:
         for fire_pos in random_positions[10:20]:
             self.fg_entities.append(
                 self.env.object_factory.getSimpleEntity(
-                    _logic="FireLogic",
-                    _graphics="Fire",
+                    _logic_name="Fire",
+                    _graphics_name="Fire",
                     _pos=[
                         fire_pos[0] * self.env.grid_step + self.pos[0],
                         fire_pos[1] * self.env.grid_step + self.pos[1]
@@ -94,8 +100,8 @@ class Chunk:
 
         for item_pos in random_positions[20:]:
             shiny = self.env.object_factory.getSimpleEntity(
-                _logic="ShinyLogic",
-                _graphics="Shiny",
+                _logic_name="Shiny",
+                _graphics_name="Shiny",
                 _pos=[
                     item_pos[0] * self.env.grid_step + self.pos[0],
                     item_pos[1] * self.env.grid_step + self.pos[1]]
