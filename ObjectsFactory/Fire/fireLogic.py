@@ -31,7 +31,11 @@ class FireLogicStand(Behaviour):
                 Event(
                     eventType.Atack,
                     self,
-                    self.data.position
+                    [
+                        self.data.position[0],
+                        self.data.position[1],
+                        10
+                    ]
                 )
             )
             self.time_since_last_attack = 0.0

@@ -32,9 +32,9 @@ class DefaultBehaviourStanding(Behaviour):
         self.data.animation_stage = (self.state_lasts % self.duration) / self.duration
 
         for event in self.data.env.pastEvents.getEvents(eventType.Atack):
-            if event.data == self.data.position:
+            if event.data[:2] == self.data.position:
                 self.data.state = "Hurt" + direction(self.data.custom)
-                self.data.hp -= 10
+                self.data.hp -= event.data[2]
                 self.data.animation_stage = 0.0
                 return
 

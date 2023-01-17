@@ -32,9 +32,9 @@ class PlayerBehaviourStanding(Behaviour):
         self.data.animation_stage = (self.state_lasts % self.duration) / self.duration
 
         for event in self.data.env.pastEvents.getEvents(eventType.Atack):
-            if event.data == self.data.position:
+            if event.data[:2] == self.data.position:
                 self.data.state = "Hurt" + direction(self.data.custom)
-                self.data.hp -= 10 # TODO take appropriate damage
+                self.data.hp -= event.data[2]
                 self.data.animation_stage = 0.0
                 return
 
@@ -173,6 +173,17 @@ class PlayerBehaviourAtacking(Behaviour):
         self.data.animation_stage = self.state_lasts / self.duration
 
         if self.state_lasts >= self.duration:
+            self.data.env.futureEvents.sendEvent(
+                Event(
+                    eventType.Atack,
+                    self,
+                    [
+                        self.data.position[0] + self.data.env.grid_step * self.data.custom[0],
+                        self.data.position[1] + self.data.env.grid_step * self.data.custom[1],
+                        self.data.stats.normal_damage
+                    ]
+                )
+            )
             self.data.state = "Standing" + direction(self.data.custom)
             self.data.animation_stage = 0.0
 

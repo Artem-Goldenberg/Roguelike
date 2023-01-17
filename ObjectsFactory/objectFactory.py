@@ -15,9 +15,13 @@ from ObjectsFactory.Player.playerLogic import PlayerLogic
 from ObjectsFactory.Player.playerGraphics import PlayerEntityGraphics
 from ObjectsFactory.Player.playerMetaLogic import PlayerMetaLogic
 
+from ObjectsFactory.Skeleton.skeletonGraphics import SkeletonGraphics
+from ObjectsFactory.Skeleton.skeletonMetaLogic import SkeletonMetaLogic
+
 from Engine.entity import Entity
 from Engine.activeEntity import ActiveEntity
 from Engine.entityData import EntityData, Inventory
+from Engine.activeEntityData import ActiveEntityData
 from Engine.defaultActiveEntityLogic import DefaultEntityLogic
 
 
@@ -28,7 +32,8 @@ class ObjectFactory:
             "Rock": RockGraphics,
             "Fire": FireGraphics,
             "Shiny": ShinyGraphics,
-            "Player": PlayerEntityGraphics
+            "Player": PlayerEntityGraphics,
+            "Skeleton": SkeletonGraphics
         }
 
         self.known_simple_logics = {
@@ -38,11 +43,13 @@ class ObjectFactory:
         }
 
         self.known_active_logics = {
-            "Player": PlayerLogic
+            "Player": PlayerLogic,
+            "Skeleton": DefaultEntityLogic
         }
 
-        self.known_meta_logics = { 
-            "Player": PlayerMetaLogic
+        self.known_meta_logics = {
+            "Player": PlayerMetaLogic,
+            "Skeleton": SkeletonMetaLogic
         }
 
         self.default_data = {
@@ -55,6 +62,14 @@ class ObjectFactory:
                 _meta_state="Keyboard",
                 _inventory=Inventory(_capacity=9),
                 _custom=(0, 1)
+            ),
+            "Skeleton": ActiveEntityData(
+                _env,
+                _state="StandingDown",
+                _meta_state="Passive",
+                _inventory=Inventory(_capacity=3),
+                _custom=(0, 1),
+                _hp=50
             )
         }
 
