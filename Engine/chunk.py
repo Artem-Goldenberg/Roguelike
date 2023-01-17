@@ -113,9 +113,9 @@ class Chunk:
 
         for enemy_pos in random_positions[30:]:
             enemy = self.env.object_factory.getActiveEntity(
-                _meta_logic_name="Enemy",
-                _logic_name="Enemy",
-                _graphics_name="Enemy",
+                _meta_logic_name="Skeleton",
+                _logic_name="Skeleton",
+                _graphics_name="Skeleton",
                 _pos=[
                     enemy_pos[0] * self.env.grid_step + self.pos[0],
                     enemy_pos[1] * self.env.grid_step + self.pos[1]]
