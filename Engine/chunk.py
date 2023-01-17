@@ -98,30 +98,29 @@ class Chunk:
                 )
             )
 
-        for item_pos in random_positions[20:30]:
+        for item_pos in random_positions[20:35]:
             shiny = self.env.object_factory.getSimpleEntity(
                 _logic_name="Shiny",
                 _graphics_name="Shiny",
                 _pos=[
                     item_pos[0] * self.env.grid_step + self.pos[0],
-                    item_pos[1] * self.env.grid_step + self.pos[1]]
+                    item_pos[1] * self.env.grid_step + self.pos[1]],
+                _items_names=["SampleItem"]
             )
             shiny.data.inventory.addItem(
                 self.env.item_factory.getItem("SampleItem")
             )
             self.fg_entities.append(shiny)
 
-        for enemy_pos in random_positions[30:]:
+        for enemy_pos in random_positions[35:]:
             enemy = self.env.object_factory.getActiveEntity(
                 _meta_logic_name="Skeleton",
                 _logic_name="Skeleton",
                 _graphics_name="Skeleton",
                 _pos=[
                     enemy_pos[0] * self.env.grid_step + self.pos[0],
-                    enemy_pos[1] * self.env.grid_step + self.pos[1]]
+                    enemy_pos[1] * self.env.grid_step + self.pos[1]],
+                _items_names=["SampleItem"]
             )
-            enemy.data.inventory.addItem(
-                self.env.item_factory.getItem("SampleItem")
-            )
-            self.bg_entities.append(enemy)
+            self.fg_entities.append(enemy)
 

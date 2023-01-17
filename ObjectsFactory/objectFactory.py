@@ -68,8 +68,9 @@ class ObjectFactory:
                 _state="StandingDown",
                 _meta_state="Aggressive",
                 _inventory=Inventory(_capacity=3),
+                _damage=5,
                 _custom=(0, 1),
-                _hp=50
+                _hp=40
             )
         }
 

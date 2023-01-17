@@ -108,7 +108,8 @@ def parseMap(_env, _file_name="map.cfg"):
                 current_meta_logic_name,
                 current_logic_name,
                 current_graphics_name,
-                _pos=current_position
+                _pos=current_position,
+                _items_names=current_inventory_items_names
             ),
             current_entity_instructions,
             _env
@@ -118,7 +119,8 @@ def parseMap(_env, _file_name="map.cfg"):
             _env.object_factory.getSimpleEntity(
                 current_logic_name,
                 current_graphics_name,
-                _pos=current_position
+                _pos=current_position,
+                _items_names=current_inventory_items_names
             ),
             current_entity_instructions,
             _env

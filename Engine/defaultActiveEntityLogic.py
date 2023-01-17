@@ -99,10 +99,20 @@ class DefaultBehaviourWalking(Behaviour):
     def __init__(self, _data):
         self.data = _data
         self.state_lasts = 0.0
-        self.duration = 0.5
+        self.duration = _data.step_duration
         self.beginning_steady_time = 0.2
 
     def process(self, _dt):
+        for event in self.data.env.pastEvents.getEvents(eventType.Move):
+            if event.data[0] == self.data.position[0] and event.data[1] == self.data.position[1]:
+                self.data.env.futureEvents.sendEvent(
+                    Event(
+                        eventType.SomeoneThere,
+                        self,
+                        self.data.position
+                    )
+                )
+
         for event in self.data.env.pastEvents.getEvents(eventType.MoveProhibited):
             if (
                     event.data == [
@@ -183,10 +193,20 @@ class DefaultBehaviourAtacking(Behaviour):
         self.duration = 0.3
 
     def process(self, _dt):
+        for event in self.data.env.pastEvents.getEvents(eventType.Move):
+            if event.data[0] == self.data.position[0] and event.data[1] == self.data.position[1]:
+                self.data.env.futureEvents.sendEvent(
+                    Event(
+                        eventType.SomeoneThere,
+                        self,
+                        self.data.position
+                    )
+                )
+
         for event in self.data.env.pastEvents.getEvents(eventType.Atack):
-            if event.data == self.data.position:
+            if event.data[0] == self.data.position[0] and event.data[1] == self.data.position[1]:
                 self.data.state = "Hurt" + direction(self.data.custom)
-                self.data.hp -= 10
+                self.data.hp -= event.data[2]
                 self.data.animation_stage = 0.0
                 return
 
@@ -194,6 +214,17 @@ class DefaultBehaviourAtacking(Behaviour):
         self.data.animation_stage = self.state_lasts / self.duration
 
         if self.state_lasts >= self.duration:
+            self.data.env.futureEvents.sendEvent(
+                Event(
+                    eventType.Atack,
+                    self,
+                    [
+                        self.data.position[0] + self.data.custom[0] * self.data.env.grid_step,
+                        self.data.position[1] + self.data.custom[1] * self.data.env.grid_step,
+                        self.data.damage
+                    ]
+                )
+            )
             self.data.state = "Standing" + direction(self.data.custom)
             self.data.animation_stage = 0.0
 
@@ -206,6 +237,16 @@ class DefaultBehaviourMassiveAtacking(Behaviour):
         self.beginning_steady_time = 0.25
 
     def process(self, _dt):
+        for event in self.data.env.pastEvents.getEvents(eventType.Move):
+            if event.data[0] == self.data.position[0] and event.data[1] == self.data.position[1]:
+                self.data.env.futureEvents.sendEvent(
+                    Event(
+                        eventType.SomeoneThere,
+                        self,
+                        self.data.position
+                    )
+                )
+
         for event in self.data.env.pastEvents.getEvents(eventType.Atack):
             if event.data == self.data.position:
                 self.data.state = "Hurt" + direction(self.data.custom)
@@ -223,25 +264,22 @@ class DefaultBehaviourMassiveAtacking(Behaviour):
                 
 
         if self.state_lasts >= self.duration:
+            # this is where we attack, I guess ...
             for d in [
                 (0, 0), (0, 1), (0, -1), (1, 0), (-1, 0),
                 (1, 1), (1, -1), (-1, 1), (-1, -1)
             ]:
-                print(f"coords: {self.data.position[0] // self.data.env.grid_step + d[0]=}")
                 self.data.env.futureEvents.sendEvent( 
                     Event(
                         eventType.MassiveAttack, 
                         self, 
                         [
                             self.data.position[0] // self.data.env.grid_step + d[0],
-                            self.data.position[1] // self.data.env.grid_step + d[1]
+                            self.data.position[1] // self.data.env.grid_step + d[1],
+                            self.data.damage
                         ]
                     )
                 )
-            # this is where we attack, I guess ...
-            self.data.env.futureEvents.sendEvent(
-                Event(eventType.Atack, self, "Massive")
-            )
             if continue_key_pressed:
                 self.state_lasts = 0.0
                 self.data.animation_stage = 0.0
@@ -261,6 +299,16 @@ class DefaultBehaviourHurt(Behaviour):
         self.duration = 0.3
 
     def process(self, _dt):
+        for event in self.data.env.pastEvents.getEvents(eventType.Move):
+            if event.data[0] == self.data.position[0] and event.data[1] == self.data.position[1]:
+                self.data.env.futureEvents.sendEvent(
+                    Event(
+                        eventType.SomeoneThere,
+                        self,
+                        self.data.position
+                    )
+                )
+
         self.state_lasts += _dt
         self.data.animation_stage = self.state_lasts / self.duration
 
@@ -281,6 +329,16 @@ class DefaultBehaviourPickingUp(Behaviour):
         self.items_to_take = []
 
     def process(self, _dt):
+        for event in self.data.env.pastEvents.getEvents(eventType.Move):
+            if event.data[0] == self.data.position[0] and event.data[1] == self.data.position[1]:
+                self.data.env.futureEvents.sendEvent(
+                    Event(
+                        eventType.SomeoneThere,
+                        self,
+                        self.data.position
+                    )
+                )
+
         for event in self.data.env.pastEvents.getEvents(eventType.Atack):
             if event.data == self.data.position:
                 self.data.state = "Hurt" + direction(self.data.custom)
@@ -289,7 +347,8 @@ class DefaultBehaviourPickingUp(Behaviour):
                 return
 
         for event in self.data.env.pastEvents.getEvents(eventType.Pickable):
-            self.items_to_take.append(event.data)
+            if event.data.position[0] == self.data.position[0] and event.data.position[1] == self.data.position[1]:
+                self.items_to_take.append(event.data)
 
         self.state_lasts += _dt
         self.data.animation_stage = self.state_lasts / self.duration
@@ -317,6 +376,13 @@ class DefaultBehaviourDying(Behaviour):
             self.data.animation_stage = 0.8
         else:
             self.data.animation_stage = self.state_lasts / self.duration
+
+        for event in self.data.env.pastEvents.getEvents(eventType.PickUp):
+            if event.data == self.data.position:
+                self.data.env.futureEvents.sendEvent(
+                    Event(eventType.Pickable, self, self.data)
+                )
+                break
 
 
 class DefaultEntityLogic(EntityLogic):

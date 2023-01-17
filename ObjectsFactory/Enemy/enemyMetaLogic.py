@@ -4,7 +4,7 @@ from Engine.eventSystem import Event, eventType
 from Engine.activeEntityMetaLogic import EntityMetaLogic, Strategy
 
 
-RANGE = 3
+RANGE = 5
 PANIC_HP = 10
 CONFUSE_RANGE = 3
 TOTAL_TIME_CONFUSED = 10
@@ -29,8 +29,6 @@ def _toCells(_env, pos):
 
 def _checkConfused(data):
     for event in data.env.pastEvents.getEvents(eventType.MassiveAttack):
-        print(f"cords {event.data=}")
-        print(f"enemy in {_toCells(data.env, data.position)=}")
         pos = _toCells(data.env, data.position)
         if event.data[0] == pos[0] and event.data[1] == pos[1]:
             return True
@@ -42,7 +40,7 @@ class EnemyStrategyAggressive(Strategy):
         Strategy.__init__(self, _data, _previous_strategy)
 
     def process(self, _dt: float):
-        if self.data.hp < PANIC_HP:
+        if self.data.hp <= PANIC_HP:
             self.data.meta_state = "Flee"
             return 
 
@@ -94,7 +92,7 @@ class EnemyStrategyFlee(Strategy):
         Strategy.__init__(self, _data, _previous_strategy)
 
     def process(self, _dt: float):
-        if self.data.hp >= PANIC_HP and self.previous_strategy is not None:
+        if self.data.hp > PANIC_HP and self.previous_strategy is not None:
             self.data.meta_state = self.previous_strategy
             return
 
@@ -158,7 +156,7 @@ class EnemyStrategyConfused(Strategy):
         # confusing code, ha-ha
         cell = random.randint(0, 3)
         neighbors = [(0, 1), (0, -1), (1, 0), (-1, 0)]
-        self.data.setInstructions([Event(eventType.Move, self, neighbors[cell])] * 10)
+        self.data.setInstructions([Event(eventType.Move, self, neighbors[cell])])
 
 
 class EnemyMetaLogic(EntityMetaLogic):
