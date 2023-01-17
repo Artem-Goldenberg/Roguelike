@@ -31,6 +31,16 @@ class DefaultBehaviourStanding(Behaviour):
         self.state_lasts += _dt
         self.data.animation_stage = (self.state_lasts % self.duration) / self.duration
 
+        for event in self.data.env.pastEvents.getEvents(eventType.Move):
+            if event.data[0] == self.data.position[0] and event.data[1] == self.data.position[1]:
+                self.data.env.futureEvents.sendEvent(
+                    Event(
+                        eventType.SomeoneThere,
+                        self,
+                        self.data.position
+                    )
+                )
+
         for event in self.data.env.pastEvents.getEvents(eventType.Atack):
             if event.data[:2] == self.data.position:
                 self.data.state = "Hurt" + direction(self.data.custom)
@@ -101,6 +111,17 @@ class DefaultBehaviourWalking(Behaviour):
                     ]
             ):
                 self.data.state = "Standing" + direction(self.data.custom)
+                self.data.animation_stage = 0.0
+                return
+
+        for event in self.data.env.pastEvents.getEvents(eventType.SomeoneThere):
+            if (
+                    event.data == [
+                        self.data.position[0] + self.data.custom[0] * self.data.env.grid_step,
+                        self.data.position[1] + self.data.custom[1] * self.data.env.grid_step
+                    ]
+            ):
+                self.data.state = "Atacking" + direction(self.data.custom)
                 self.data.animation_stage = 0.0
                 return
 
@@ -199,8 +220,28 @@ class DefaultBehaviourMassiveAtacking(Behaviour):
         for event in self.data.getInstructions():
             if event.event_type == eventType.Atack and event.data == "Massive":
                 continue_key_pressed = True
+                
 
         if self.state_lasts >= self.duration:
+            for d in [
+                (0, 0), (0, 1), (0, -1), (1, 0), (-1, 0),
+                (1, 1), (1, -1), (-1, 1), (-1, -1)
+            ]:
+                print(f"coords: {self.data.position[0] // self.data.env.grid_step + d[0]=}")
+                self.data.env.futureEvents.sendEvent( 
+                    Event(
+                        eventType.MassiveAttack, 
+                        self, 
+                        [
+                            self.data.position[0] // self.data.env.grid_step + d[0],
+                            self.data.position[1] // self.data.env.grid_step + d[1]
+                        ]
+                    )
+                )
+            # this is where we attack, I guess ...
+            self.data.env.futureEvents.sendEvent(
+                Event(eventType.Atack, self, "Massive")
+            )
             if continue_key_pressed:
                 self.state_lasts = 0.0
                 self.data.animation_stage = 0.0

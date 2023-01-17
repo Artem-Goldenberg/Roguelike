@@ -11,7 +11,9 @@ class eventType(enum.Enum):
     Move = 4,
     MoveProhibited = 5,
     Moved = 6,
-    Custom = 7
+    MassiveAttack = 7,
+    SomeoneThere = 8,
+    Custom = 9
 
 
 class Event:
