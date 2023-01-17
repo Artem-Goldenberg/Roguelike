@@ -7,6 +7,7 @@ def parseMap(_env, _file_name="map.cfg"):
     current_logic_name = None
     current_meta_logic_name = None
     current_position = None
+    current_inventory_items_names = []
     current_entity_instructions = None
 
     config_file = open(_file_name, "r")
@@ -34,7 +35,8 @@ def parseMap(_env, _file_name="map.cfg"):
                         current_meta_logic_name,
                         current_logic_name,
                         current_graphics_name,
-                        _pos=current_position
+                        _pos=current_position,
+                        _items_names=current_inventory_items_names
                     ),
                     past_entity_instruction,
                     _env
@@ -44,7 +46,8 @@ def parseMap(_env, _file_name="map.cfg"):
                     _env.object_factory.getSimpleEntity(
                         current_logic_name,
                         current_graphics_name,
-                        _pos=current_position
+                        _pos=current_position,
+                        _items_names=current_inventory_items_names
                     ),
                     past_entity_instruction,
                     _env
@@ -53,6 +56,11 @@ def parseMap(_env, _file_name="map.cfg"):
             current_logic_name = None
             current_meta_logic_name = None
             current_position = None
+            current_inventory_items_names = []
+            continue
+
+        if stripped_line[0] == "Inventory":
+            current_inventory_items_names = stripped_line[1:]
             continue
 
         if stripped_line[0] == "Logic":

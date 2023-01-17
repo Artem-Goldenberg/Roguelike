@@ -55,15 +55,21 @@ class InventoryGraphics:
                 if self.data.inventory.items[self.choosen_one-1].item_type == itemType.Potion:
                     # TODO: use potion
                     if self.choosen_one <= len(self.data.inventory.items):
+                        print(f'Name: {self.data.inventory.items[self.choosen_one-1].name}, Effect value: {self.data.inventory.items[self.choosen_one-1].effect_value}')
+                        self.data.hp += self.data.inventory.items[self.choosen_one-1].effect_value
                         self.data.inventory.items[self.choosen_one-1] = None
-                        self.data.hp += 10
-                        if self.data.hp > 100:
-                            self.data.hp = 100
+                        if self.data.hp > self.data.stats.maximum_hp:
+                            self.data.hp = self.data.stats.maximum_hp
                     continue
 
                 if self.data.inventory.items[self.choosen_one-1].item_type == itemType.Rune1:
                     old_item = self.data.equipment[0]
                     new_item = self.data.inventory.items[self.choosen_one-1]
+                    self.data.stats.maximum_hp += new_item.effect_value
+                    if old_item is not None:
+                        self.data.stats.maximum_hp -= old_item.effect_value
+                    if self.data.hp > self.data.stats.maximum_hp:
+                        self.data.hp = self.data.stats.maximum_hp
                     self.data.equipment[0] = new_item
                     self.data.inventory.items[self.choosen_one-1] = old_item
                     continue
@@ -71,6 +77,9 @@ class InventoryGraphics:
                 if self.data.inventory.items[self.choosen_one-1].item_type == itemType.Rune2:
                     old_item = self.data.equipment[1]
                     new_item = self.data.inventory.items[self.choosen_one-1]
+                    self.data.stats.normal_damage += new_item.effect_value
+                    if old_item is not None:
+                        self.data.stats.normal_damage -= old_item.effect_value
                     self.data.equipment[1] = new_item
                     self.data.inventory.items[self.choosen_one-1] = old_item
                     continue
@@ -78,6 +87,9 @@ class InventoryGraphics:
                 if self.data.inventory.items[self.choosen_one-1].item_type == itemType.Rune3:
                     old_item = self.data.equipment[2]
                     new_item = self.data.inventory.items[self.choosen_one-1]
+                    self.data.stats.massive_damage += new_item.effect_value
+                    if old_item is not None:
+                        self.data.stats.massive_damage -= old_item.effect_value
                     self.data.equipment[2] = new_item
                     self.data.inventory.items[self.choosen_one-1] = old_item
                     continue

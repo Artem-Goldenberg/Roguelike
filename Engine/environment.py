@@ -10,6 +10,7 @@ from Engine.eventSystem import EventSystem, KeyboardEventSystem
 from Engine.playerStatusGraphics import PlayerStatusBar
 from Engine.playerInventory import InventoryGraphics
 from Engine.mapParse import parseMap
+from Engine.entityData import Inventory
 # from ObjectsFactory.Player.player import Player
 from ObjectsFactory.objectFactory import ObjectFactory
 from ItemFactory.itemFactory import ItemFactory
@@ -62,8 +63,8 @@ class Environment:
         logging.info("Constants inited")
 
         logging.info("Initing factories")
-        self.object_factory = ObjectFactory(self)
         self.item_factory = ItemFactory()
+        self.object_factory = ObjectFactory(self)
         logging.info("Factories inited")
 
         logging.info("Initing chunks")
@@ -72,7 +73,6 @@ class Environment:
 
         parseMap(self)
 
-        print(f"KEKEKK KKEK KKE: {self.available_chunks}")
         for i in range(-1, 2):
             for j in range(-1, 2):
                 new_pos = (
@@ -87,7 +87,7 @@ class Environment:
                             self.grid_step*self.chunk_height*j
                         ]
                     )
-                    # new_chunk.random_init()
+                    new_chunk.random_init()
                     self.available_chunks[new_pos] = new_chunk
                 else:
                     new_chunk = self.available_chunks[new_pos]
@@ -104,12 +104,14 @@ class Environment:
         self.player = self.object_factory.getActiveEntity(
             _meta_logic_name="Player",
             _logic_name="Player",
-            _graphics_name="Player",
+            _graphics_name="Player"
         )
-        self.player.data.inventory.addItem(self.item_factory.getItem("SampleItem"))
-        self.player.data.inventory.addItem(self.item_factory.getItem("HealthRuneLvl1"))
-        self.player.data.inventory.addItem(self.item_factory.getItem("NormalAttackRuneLvl2"))
-        self.player.data.inventory.addItem(self.item_factory.getItem("MassiveAttackRuneLvl3"))
+        inventory = Inventory(_capacity=9)
+        inventory.addItem(self.item_factory.getItem("SampleItem"))
+        inventory.addItem(self.item_factory.getItem("HealthRuneLvl1"))
+        inventory.addItem(self.item_factory.getItem("NormalAttackRuneLvl2"))
+        inventory.addItem(self.item_factory.getItem("MassiveAttackRuneLvl3"))
+        self.player.data.inventory = inventory
         self.playerInventory = InventoryGraphics(self.player.data)
         self.playerHealth = PlayerStatusBar(self.player.data)
         logging.info("Player inited")

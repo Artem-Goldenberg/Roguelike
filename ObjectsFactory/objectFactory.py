@@ -11,6 +11,7 @@ from ObjectsFactory.Shiny.shinyGraphics import ShinyGraphics
 from ObjectsFactory.Shiny.shinyLogic import ShinyLogic
 
 from ObjectsFactory.Player.playerData import PlayerData
+from ObjectsFactory.Player.playerLogic import PlayerLogic
 from ObjectsFactory.Player.playerGraphics import PlayerEntityGraphics
 from ObjectsFactory.Player.playerMetaLogic import PlayerMetaLogic
 
@@ -22,6 +23,7 @@ from Engine.defaultActiveEntityLogic import DefaultEntityLogic
 
 class ObjectFactory:
     def __init__(self, _env):
+        self.env = _env
         self.known_graphics = {
             "Rock": RockGraphics,
             "Fire": FireGraphics,
@@ -36,7 +38,7 @@ class ObjectFactory:
         }
 
         self.known_active_logics = {
-            "Player": DefaultEntityLogic
+            "Player": PlayerLogic
         }
 
         self.known_meta_logics = { 
@@ -56,7 +58,7 @@ class ObjectFactory:
             )
         }
 
-    def getSimpleEntity(self, _logic_name, _graphics_name, _data=None, _pos=None):
+    def getSimpleEntity(self, _logic_name, _graphics_name, _pos=None, _items_names=[]):
         """ Builds new Entity object with with given parameters
 
         Method accepts parameters ids, it then looks them up in the pre-defined dictionaries
@@ -64,29 +66,32 @@ class ObjectFactory:
 
         :param _logic: id of a new entity's logic
         :param _graphics: id for the entity's graphics
-        :param _data: an actual object with all information about entity, default is None
-            if None, the default data will be used
         :param _pos: position on the map, only used if _data is None
 
         :type _logic: str
         :type _graphics: str
-        :type _data: EntityData | None
         :type _pos: tuple of 2 ints | None
         """
         if _logic_name not in self.known_simple_logics:
             logging.critical(f'ObjectsFactory: no known/suitable logic named "{_logic_name}" found')
             raise
+
         if _graphics_name not in self.known_graphics:
             logging.critical(f'ObjectsFactory: no known graphics named "{_graphics_name}" found')
             raise
 
-        if _data is None:
-            if _logic_name not in self.default_data:
-                logging.critical(f'ObjectsFactory: no default data for logic named "{_logic_name}" found')
-                raise
-            _data = copy.copy(self.default_data[_logic_name])
-            if _pos is not None:
-                _data.position = _pos
+        if _logic_name not in self.default_data:
+            logging.critical(f'ObjectsFactory: no default data for logic named "{_logic_name}" found')
+            raise
+
+        _data = copy.copy(self.default_data[_logic_name])
+
+        if _pos is not None:
+            _data.position = _pos
+
+        _data.inventory = Inventory(_capacity=len(_items_names))
+        for item_name in _items_names:
+            _data.inventory.addItem(self.env.item_factory.getItem(item_name))
 
         return Entity(
             _data,
@@ -94,7 +99,7 @@ class ObjectFactory:
             self.known_graphics[_graphics_name](_data)
         )
 
-    def getActiveEntity(self, _meta_logic_name, _logic_name, _graphics_name, _data=None, _pos=None):
+    def getActiveEntity(self, _meta_logic_name, _logic_name, _graphics_name, _pos=None, _items_names=[]):
         """ Builds a new ActiveEntity object with given parameters
 
         Method accepts parameters ids, it then looks them up in the pre-defined dictionaries
@@ -126,13 +131,18 @@ class ObjectFactory:
             logging.critical(f'ObjectsFactory: no known meta logic named "{_meta_logic_name}" found')
             raise
 
-        if _data is None:
-            if _logic_name not in self.default_data:
-                logging.critical(f'ObjectsFactory: no default data for logic named "{_logic_name}" found')
-                raise
-            _data = copy.copy(self.default_data[_logic_name])
-            if _pos is not None:
-                _data.position = _pos
+        if _logic_name not in self.default_data:
+            logging.critical(f'ObjectsFactory: no default data for logic named "{_logic_name}" found')
+            raise
+
+        _data = copy.copy(self.default_data[_logic_name])
+
+        if _pos is not None:
+            _data.position = _pos
+
+        _data.inventory = Inventory(_capacity=len(_items_names))
+        for item_name in _items_names:
+            _data.inventory.addItem(self.env.item_factory.getItem(item_name))
 
         return ActiveEntity(
             _data,

@@ -17,13 +17,15 @@ class Item:
             _cost,
             _texture,
             _quantity=1,
-            _item_type=itemType.Potion
+            _item_type=itemType.Potion,
+            _effect_value=0
     ):
         self.name = _name
         self.cost = _cost
         self.quantity = _quantity
         self.texture = _texture
         self.item_type = _item_type
+        self.effect_value = _effect_value
 
 
 class Inventory:
