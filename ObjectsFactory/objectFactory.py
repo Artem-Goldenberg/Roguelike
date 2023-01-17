@@ -14,24 +14,26 @@ from ObjectsFactory.Player.playerData import PlayerData
 from ObjectsFactory.Player.playerGraphics import PlayerEntityGraphics
 from ObjectsFactory.Player.playerMetaLogic import PlayerMetaLogic
 
-from ObjectsFactory.Enemy.enemyData import EnemyData
-from ObjectsFactory.Enemy.enemyGraphics import EnemyGraphics
+# from ObjectsFactory.Enemy.enemyData import EnemyData
+from ObjectsFactory.Skeleton.skeletonGraphics import SkeletonGraphics
 from ObjectsFactory.Enemy.enemyMetaLogic import EnemyMetaLogic
 
 from Engine.entity import Entity
 from Engine.activeEntity import ActiveEntity
 from Engine.entityData import EntityData, Inventory
+from Engine.activeEntityData import ActiveEntityData
 from Engine.defaultActiveEntityLogic import DefaultEntityLogic
 
 
 class ObjectFactory:
     def __init__(self, _env):
+        self.env = _env
         self.known_graphics = {
             "Rock": RockGraphics,
             "Fire": FireGraphics,
             "Shiny": ShinyGraphics,
             "Player": PlayerEntityGraphics,
-            "Enemy": EnemyGraphics
+            "Skeleton": SkeletonGraphics
         }
 
         self.known_simple_logics = {
@@ -42,12 +44,12 @@ class ObjectFactory:
 
         self.known_active_logics = {
             "Player": DefaultEntityLogic,
-            "Enemy": DefaultEntityLogic
+            "Skeleton": DefaultEntityLogic
         }
 
         self.known_meta_logics = { 
             "Player": PlayerMetaLogic,
-            "Enemy": EnemyMetaLogic
+            "Skeleton": EnemyMetaLogic
         }
 
         self.default_data = {
@@ -61,16 +63,17 @@ class ObjectFactory:
                 _inventory=Inventory(_capacity=9),
                 _custom=(0, 1)
             ),
-            "Enemy": EnemyData(
+            "Skeleton": ActiveEntityData(
                 _env,
                 _state="StandingDown",
                 _meta_state="Aggressive",
                 _inventory=Inventory(_capacity=3),
-                _custom=(0, 1)
+                _custom=(0, 1),
+                _hp=50
             )
         }
 
-    def getSimpleEntity(self, _logic_name, _graphics_name, _data=None, _pos=None):
+    def getSimpleEntity(self, _logic_name, _graphics_name, _pos=None, _items_names=[]):
         """ Builds new Entity object with with given parameters
 
         Method accepts parameters ids, it then looks them up in the pre-defined dictionaries
@@ -78,29 +81,32 @@ class ObjectFactory:
 
         :param _logic: id of a new entity's logic
         :param _graphics: id for the entity's graphics
-        :param _data: an actual object with all information about entity, default is None
-            if None, the default data will be used
         :param _pos: position on the map, only used if _data is None
 
         :type _logic: str
         :type _graphics: str
-        :type _data: EntityData | None
         :type _pos: tuple of 2 ints | None
         """
         if _logic_name not in self.known_simple_logics:
             logging.critical(f'ObjectsFactory: no known/suitable logic named "{_logic_name}" found')
             raise
+
         if _graphics_name not in self.known_graphics:
             logging.critical(f'ObjectsFactory: no known graphics named "{_graphics_name}" found')
             raise
 
-        if _data is None:
-            if _logic_name not in self.default_data:
-                logging.critical(f'ObjectsFactory: no default data for logic named "{_logic_name}" found')
-                raise
-            _data = copy.copy(self.default_data[_logic_name])
-            if _pos is not None:
-                _data.position = _pos
+        if _logic_name not in self.default_data:
+            logging.critical(f'ObjectsFactory: no default data for logic named "{_logic_name}" found')
+            raise
+
+        _data = copy.copy(self.default_data[_logic_name])
+
+        if _pos is not None:
+            _data.position = _pos
+
+        _data.inventory = Inventory(_capacity=len(_items_names))
+        for item_name in _items_names:
+            _data.inventory.addItem(self.env.item_factory.getItem(item_name))
 
         return Entity(
             _data,
@@ -108,7 +114,7 @@ class ObjectFactory:
             self.known_graphics[_graphics_name](_data)
         )
 
-    def getActiveEntity(self, _meta_logic_name, _logic_name, _graphics_name, _data=None, _pos=None):
+    def getActiveEntity(self, _meta_logic_name, _logic_name, _graphics_name, _pos=None, _items_names=[]):
         """ Builds a new ActiveEntity object with given parameters
 
         Method accepts parameters ids, it then looks them up in the pre-defined dictionaries
@@ -140,13 +146,18 @@ class ObjectFactory:
             logging.critical(f'ObjectsFactory: no known meta logic named "{_meta_logic_name}" found')
             raise
 
-        if _data is None:
-            if _logic_name not in self.default_data:
-                logging.critical(f'ObjectsFactory: no default data for logic named "{_logic_name}" found')
-                raise
-            _data = copy.copy(self.default_data[_logic_name])
-            if _pos is not None:
-                _data.position = _pos
+        if _logic_name not in self.default_data:
+            logging.critical(f'ObjectsFactory: no default data for logic named "{_logic_name}" found')
+            raise
+
+        _data = copy.copy(self.default_data[_logic_name])
+
+        if _pos is not None:
+            _data.position = _pos
+
+        _data.inventory = Inventory(_capacity=len(_items_names))
+        for item_name in _items_names:
+            _data.inventory.addItem(self.env.item_factory.getItem(item_name))
 
         return ActiveEntity(
             _data,

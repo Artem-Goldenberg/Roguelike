@@ -10,7 +10,8 @@ class UpgradedItem(Item):
         _cost,
         _texture_name="Default.png",
         _quantity=1,
-        _item_type=itemType.Potion
+        _item_type=itemType.Potion,
+        _effect_value=0
     ):
         image = pygame.image.load("ItemFactory/Textures/" + _texture_name).convert_alpha()
         resized_image = pygame.Surface(
@@ -37,7 +38,8 @@ class UpgradedItem(Item):
             _cost,
             resized_image,
             _quantity,
-            _item_type
+            _item_type,
+            _effect_value
         )
 
 
@@ -46,7 +48,8 @@ class ItemFactory():
         self.known_items = {
             "SampleItem": UpgradedItem(
                 "SampleItem",
-                100
+                100,
+                _effect_value=10
             ),
             "HealthRune": UpgradedItem(
                 "HealthRune",
@@ -60,21 +63,24 @@ class ItemFactory():
                 100,
                 "Rune1lvl1.png",
                 1,
-                itemType.Rune1
+                itemType.Rune1,
+                _effect_value=10
             ),
             "HealthRuneLvl2": UpgradedItem(
                 "HealthRune",
                 100,
                 "Rune1lvl2.png",
                 1,
-                itemType.Rune1
+                itemType.Rune1,
+                _effect_value=20
             ),
             "HealthRuneLvl3": UpgradedItem(
                 "HealthRune",
                 100,
                 "Rune1lvl3.png",
                 1,
-                itemType.Rune1
+                itemType.Rune1,
+                _effect_value=30
             ),
             "NormalAttackRune": UpgradedItem(
                 "NormalAttackRune",
@@ -88,21 +94,24 @@ class ItemFactory():
                 100,
                 "Rune2lvl1.png",
                 1,
-                itemType.Rune2
+                itemType.Rune2,
+                _effect_value=10
             ),
             "NormalAttackRuneLvl2": UpgradedItem(
                 "NormalAttackRune",
                 100,
                 "Rune2lvl2.png",
                 1,
-                itemType.Rune2
+                itemType.Rune2,
+                _effect_value=20
             ),
             "NormalAttackRuneLvl3": UpgradedItem(
                 "NormalAttackRune",
                 100,
                 "Rune2lvl3.png",
                 1,
-                itemType.Rune2
+                itemType.Rune2,
+                _effect_value=30
             ),
             "MassiveAttackRune": UpgradedItem(
                 "MassiveAttackRune",
@@ -116,21 +125,24 @@ class ItemFactory():
                 100,
                 "Rune3lvl1.png",
                 1,
-                itemType.Rune3
+                itemType.Rune3,
+                _effect_value=10
             ),
             "MassiveAttackRuneLvl2": UpgradedItem(
                 "MassiveAttackRune",
                 100,
                 "Rune3lvl3.png",
                 1,
-                itemType.Rune3
+                itemType.Rune3,
+                _effect_value=20
             ),
             "MassiveAttackRuneLvl3": UpgradedItem(
                 "MassiveAttackRune",
                 100,
                 "Rune3lvl3.png",
                 1,
-                itemType.Rune3
+                itemType.Rune3,
+                _effect_value=30
             )
         }
 
@@ -147,5 +159,6 @@ class ItemFactory():
                 item.cost,
                 item.texture,
                 item.quantity,
-                item.item_type
+                item.item_type,
+                item.effect_value
             )

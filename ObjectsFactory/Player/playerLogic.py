@@ -19,7 +19,7 @@ def direction(pos):
         raise
 
 
-class DefaultBehaviourStanding(Behaviour):
+class PlayerBehaviourStanding(Behaviour):
     def __init__(self, _data):
         self.data = _data
         self.state_lasts = 0.0
@@ -85,7 +85,7 @@ class DefaultBehaviourStanding(Behaviour):
                     )
 
 
-class DefaultBehaviourWalking(Behaviour):
+class PlayerBehaviourWalking(Behaviour):
     def __init__(self, _data):
         self.data = _data
         self.state_lasts = 0.0
@@ -155,7 +155,7 @@ class DefaultBehaviourWalking(Behaviour):
             self.data.animation_stage = 0.0
 
 
-class DefaultBehaviourAtacking(Behaviour):
+class PlayerBehaviourAtacking(Behaviour):
     def __init__(self, _data):
         self.data = _data
         self.state_lasts = 0.0
@@ -173,11 +173,22 @@ class DefaultBehaviourAtacking(Behaviour):
         self.data.animation_stage = self.state_lasts / self.duration
 
         if self.state_lasts >= self.duration:
+            self.data.env.futureEvents.sendEvent(
+                Event(
+                    eventType.Atack,
+                    self,
+                    [
+                        self.data.position[0] + self.data.env.grid_step * self.data.custom[0],
+                        self.data.position[1] + self.data.env.grid_step * self.data.custom[1],
+                        self.data.stats.normal_damage
+                    ]
+                )
+            )
             self.data.state = "Standing" + direction(self.data.custom)
             self.data.animation_stage = 0.0
 
 
-class DefaultBehaviourMassiveAtacking(Behaviour):
+class PlayerBehaviourMassiveAtacking(Behaviour):
     def __init__(self, _data):
         self.data = _data
         self.state_lasts = 0.0
@@ -213,7 +224,7 @@ class DefaultBehaviourMassiveAtacking(Behaviour):
             self.data.animation_stage = 0.0
 
 
-class DefaultBehaviourHurt(Behaviour):
+class PlayerBehaviourHurt(Behaviour):
     def __init__(self, _data):
         self.data = _data
         self.state_lasts = 0.0
@@ -232,7 +243,7 @@ class DefaultBehaviourHurt(Behaviour):
                 self.data.animation_stage = 0.0
 
 
-class DefaultBehaviourPickingUp(Behaviour):
+class PlayerBehaviourPickingUp(Behaviour):
     def __init__(self, _data):
         self.data = _data
         self.state_lasts = 0.0
@@ -263,7 +274,7 @@ class DefaultBehaviourPickingUp(Behaviour):
             self.data.animation_stage = 0.0
 
 
-class DefaultBehaviourDying(Behaviour):
+class PlayerBehaviourDying(Behaviour):
     def __init__(self, _data):
         self.data = _data
         self.state_lasts = 0.0
@@ -278,37 +289,37 @@ class DefaultBehaviourDying(Behaviour):
             self.data.animation_stage = self.state_lasts / self.duration
 
 
-class DefaultEntityLogic(EntityLogic):
+class PlayerLogic(EntityLogic):
     def __init__(self, _data):
         behaviours = {
-            "StandingUp": DefaultBehaviourStanding,
-            "StandingDown": DefaultBehaviourStanding,
-            "StandingLeft": DefaultBehaviourStanding,
-            "StandingRight": DefaultBehaviourStanding,
-            "WalkingUp": DefaultBehaviourWalking,
-            "WalkingDown": DefaultBehaviourWalking,
-            "WalkingRight": DefaultBehaviourWalking,
-            "WalkingLeft": DefaultBehaviourWalking,
-            "AtackingUp": DefaultBehaviourAtacking,
-            "AtackingDown": DefaultBehaviourAtacking,
-            "AtackingLeft": DefaultBehaviourAtacking,
-            "AtackingRight": DefaultBehaviourAtacking,
-            "MassiveAtackingUp": DefaultBehaviourMassiveAtacking,
-            "MassiveAtackingDown": DefaultBehaviourMassiveAtacking,
-            "MassiveAtackingLeft": DefaultBehaviourMassiveAtacking,
-            "MassiveAtackingRight": DefaultBehaviourMassiveAtacking,
-            "HurtUp": DefaultBehaviourHurt,
-            "HurtDown": DefaultBehaviourHurt,
-            "HurtLeft": DefaultBehaviourHurt,
-            "HurtRight": DefaultBehaviourHurt,
-            "PickingUpUp": DefaultBehaviourPickingUp,
-            "PickingUpDown": DefaultBehaviourPickingUp,
-            "PickingUpLeft": DefaultBehaviourPickingUp,
-            "PickingUpRight": DefaultBehaviourPickingUp,
-            "DyingUp": DefaultBehaviourDying,
-            "DyingDown": DefaultBehaviourDying,
-            "DyingLeft": DefaultBehaviourDying,
-            "DyingRight": DefaultBehaviourDying
+            "StandingUp": PlayerBehaviourStanding,
+            "StandingDown": PlayerBehaviourStanding,
+            "StandingLeft": PlayerBehaviourStanding,
+            "StandingRight": PlayerBehaviourStanding,
+            "WalkingUp": PlayerBehaviourWalking,
+            "WalkingDown": PlayerBehaviourWalking,
+            "WalkingRight": PlayerBehaviourWalking,
+            "WalkingLeft": PlayerBehaviourWalking,
+            "AtackingUp": PlayerBehaviourAtacking,
+            "AtackingDown": PlayerBehaviourAtacking,
+            "AtackingLeft": PlayerBehaviourAtacking,
+            "AtackingRight": PlayerBehaviourAtacking,
+            "MassiveAtackingUp": PlayerBehaviourMassiveAtacking,
+            "MassiveAtackingDown": PlayerBehaviourMassiveAtacking,
+            "MassiveAtackingLeft": PlayerBehaviourMassiveAtacking,
+            "MassiveAtackingRight": PlayerBehaviourMassiveAtacking,
+            "HurtUp": PlayerBehaviourHurt,
+            "HurtDown": PlayerBehaviourHurt,
+            "HurtLeft": PlayerBehaviourHurt,
+            "HurtRight": PlayerBehaviourHurt,
+            "PickingUpUp": PlayerBehaviourPickingUp,
+            "PickingUpDown": PlayerBehaviourPickingUp,
+            "PickingUpLeft": PlayerBehaviourPickingUp,
+            "PickingUpRight": PlayerBehaviourPickingUp,
+            "DyingUp": PlayerBehaviourDying,
+            "DyingDown": PlayerBehaviourDying,
+            "DyingLeft": PlayerBehaviourDying,
+            "DyingRight": PlayerBehaviourDying
         }
 
         EntityLogic.__init__(self, _data, behaviours)

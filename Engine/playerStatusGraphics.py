@@ -8,7 +8,7 @@ class PlayerStatusBar:
             (
                 30,
                 30,
-                600,
+                600 * self.data.stats.maximum_hp / 100,
                 30
             )
         )
@@ -16,7 +16,7 @@ class PlayerStatusBar:
             (
                 35,
                 35,
-                590,
+                590 * self.data.stats.maximum_hp / 100,
                 20
             )
         )
@@ -51,6 +51,24 @@ class PlayerStatusBar:
         self.equipment_cell.fill((200, 200, 200))
 
     def draw(self):
+        # update length
+        self.health_board = pygame.Rect(
+            (
+                30,
+                30,
+                600 * self.data.stats.maximum_hp / 100,
+                30
+            )
+        )
+        self.health_bg = pygame.Rect(
+            (
+                35,
+                35,
+                590 * self.data.stats.maximum_hp / 100,
+                20
+            )
+        )
+
         # Health bar
         pygame.draw.rect(
             self.data.env.screen,
