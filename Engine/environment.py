@@ -104,7 +104,7 @@ class Environment:
         self.player = self.object_factory.getActiveEntity(
             _meta_logic_name="Player",
             _logic_name="Player",
-            _graphics_name="Skeleton"
+            _graphics_name="Player"
         )
         inventory = Inventory(_capacity=9)
         inventory.addItem(self.item_factory.getItem("SampleItem"))
