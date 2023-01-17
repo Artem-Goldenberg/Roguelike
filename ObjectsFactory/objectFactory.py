@@ -14,6 +14,10 @@ from ObjectsFactory.Player.playerData import PlayerData
 from ObjectsFactory.Player.playerGraphics import PlayerEntityGraphics
 from ObjectsFactory.Player.playerMetaLogic import PlayerMetaLogic
 
+from ObjectsFactory.Enemy.enemyData import EnemyData
+from ObjectsFactory.Enemy.enemyGraphics import EnemyGraphics
+from ObjectsFactory.Enemy.enemyMetaLogic import EnemyMetaLogic
+
 from Engine.entity import Entity
 from Engine.activeEntity import ActiveEntity
 from Engine.entityData import EntityData, Inventory
@@ -26,7 +30,8 @@ class ObjectFactory:
             "Rock": RockGraphics,
             "Fire": FireGraphics,
             "Shiny": ShinyGraphics,
-            "Player": PlayerEntityGraphics
+            "Player": PlayerEntityGraphics,
+            "Enemy": EnemyGraphics
         }
 
         self.known_simple_logics = {
@@ -36,11 +41,13 @@ class ObjectFactory:
         }
 
         self.known_active_logics = {
-            "Player": DefaultEntityLogic
+            "Player": DefaultEntityLogic,
+            "Enemy": DefaultEntityLogic
         }
 
         self.known_meta_logics = { 
-            "Player": PlayerMetaLogic
+            "Player": PlayerMetaLogic,
+            "Enemy": EnemyMetaLogic
         }
 
         self.default_data = {
@@ -52,6 +59,13 @@ class ObjectFactory:
                 _state="StandingDown",
                 _meta_state="Keyboard",
                 _inventory=Inventory(_capacity=9),
+                _custom=(0, 1)
+            ),
+            "Enemy": EnemyData(
+                _env,
+                _state="StandingDown",
+                _meta_state="Aggressive",
+                _inventory=Inventory(_capacity=3),
                 _custom=(0, 1)
             )
         }

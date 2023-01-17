@@ -66,7 +66,7 @@ class Chunk:
 
     def random_init(self):
         random_positions = []
-        while len(random_positions) < 30:
+        while len(random_positions) < 40:
             new_pos = (
                 random.randint((1-self.env.chunk_width) // 2, self.env.chunk_width // 2),
                 random.randint((1-self.env.chunk_height) // 2, self.env.chunk_height // 2)
@@ -98,7 +98,7 @@ class Chunk:
                 )
             )
 
-        for item_pos in random_positions[20:]:
+        for item_pos in random_positions[20:30]:
             shiny = self.env.object_factory.getSimpleEntity(
                 _logic_name="Shiny",
                 _graphics_name="Shiny",
@@ -110,3 +110,18 @@ class Chunk:
                 self.env.item_factory.getItem("SampleItem")
             )
             self.fg_entities.append(shiny)
+
+        for enemy_pos in random_positions[30:]:
+            enemy = self.env.object_factory.getActiveEntity(
+                _meta_logic_name="Enemy",
+                _logic_name="Enemy",
+                _graphics_name="Enemy",
+                _pos=[
+                    enemy_pos[0] * self.env.grid_step + self.pos[0],
+                    enemy_pos[1] * self.env.grid_step + self.pos[1]]
+            )
+            enemy.data.inventory.addItem(
+                self.env.item_factory.getItem("SampleItem")
+            )
+            self.bg_entities.append(enemy)
+
