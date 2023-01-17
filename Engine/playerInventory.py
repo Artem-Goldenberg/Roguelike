@@ -53,9 +53,7 @@ class InventoryGraphics:
                     continue
 
                 if self.data.inventory.items[self.choosen_one-1].item_type == itemType.Potion:
-                    # TODO: use potion
                     if self.choosen_one <= len(self.data.inventory.items):
-                        print(f'Name: {self.data.inventory.items[self.choosen_one-1].name}, Effect value: {self.data.inventory.items[self.choosen_one-1].effect_value}')
                         self.data.hp += self.data.inventory.items[self.choosen_one-1].effect_value
                         self.data.inventory.items[self.choosen_one-1] = None
                         if self.data.hp > self.data.stats.maximum_hp:

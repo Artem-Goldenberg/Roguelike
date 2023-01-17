@@ -22,7 +22,7 @@ def manhattan(pos1, pos2):
 
 def _toCells(_env, pos):
     return (
-            pos[0] // _env.grid_step, 
+            pos[0] // _env.grid_step,
             pos[1] // _env.grid_step
         )
 

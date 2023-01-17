@@ -13,7 +13,8 @@ class eventType(enum.Enum):
     Moved = 6,
     MassiveAttack = 7,
     SomeoneThere = 8,
-    Custom = 9
+    Died = 9,
+    Custom = 10
 
 
 class Event:

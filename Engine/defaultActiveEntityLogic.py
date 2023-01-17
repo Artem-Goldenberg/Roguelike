@@ -100,7 +100,7 @@ class DefaultBehaviourWalking(Behaviour):
         self.data = _data
         self.state_lasts = 0.0
         self.duration = _data.step_duration
-        self.beginning_steady_time = 0.2
+        self.beginning_steady_time = 0.3
 
     def process(self, _dt):
         for event in self.data.env.pastEvents.getEvents(eventType.Move):
@@ -145,9 +145,9 @@ class DefaultBehaviourWalking(Behaviour):
 
         if self.state_lasts <= self.beginning_steady_time:
             for event in self.data.env.pastEvents.getEvents(eventType.Atack):
-                if event.data == self.data.position:
+                if event.data[:2] == self.data.position:
                     self.data.state = "Hurt" + direction(self.data.custom)
-                    self.data.hp -= 10
+                    self.data.hp -= event.data[2]
                     self.data.animation_stage = 0.0
                     return
 
@@ -238,7 +238,7 @@ class DefaultBehaviourMassiveAtacking(Behaviour):
 
     def process(self, _dt):
         for event in self.data.env.pastEvents.getEvents(eventType.Move):
-            if event.data[0] == self.data.position[0] and event.data[1] == self.data.position[1]:
+            if event.data[:2] == self.data.position:
                 self.data.env.futureEvents.sendEvent(
                     Event(
                         eventType.SomeoneThere,
@@ -248,9 +248,9 @@ class DefaultBehaviourMassiveAtacking(Behaviour):
                 )
 
         for event in self.data.env.pastEvents.getEvents(eventType.Atack):
-            if event.data == self.data.position:
+            if event.data[:2] == self.data.position:
                 self.data.state = "Hurt" + direction(self.data.custom)
-                self.data.hp -= 10
+                self.data.hp -= event.data[2]
                 self.data.animation_stage = 0.0
                 return
 
@@ -319,6 +319,12 @@ class DefaultBehaviourHurt(Behaviour):
             else:
                 self.data.state = "Dying" + direction(self.data.custom)
                 self.data.animation_stage = 0.0
+                self.data.env.futureEvents.sendEvent(
+                    Event(
+                        eventType.Died,
+                        self
+                    )
+                )
 
 
 class DefaultBehaviourPickingUp(Behaviour):

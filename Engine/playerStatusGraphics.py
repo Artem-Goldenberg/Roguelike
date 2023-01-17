@@ -1,4 +1,5 @@
 import pygame
+from Engine.eventSystem import eventType
 
 
 class PlayerStatusBar:
@@ -69,6 +70,12 @@ class PlayerStatusBar:
             )
         )
 
+        for event in self.data.env.pastEvents.getEvents(eventType.Died):
+            self.data.exp += 1
+            if self.data.exp == 4:
+                self.data.exp = 0
+                self.data.stats.maximum_hp += 5
+
         # Health bar
         pygame.draw.rect(
             self.data.env.screen,
@@ -131,7 +138,23 @@ class PlayerStatusBar:
             border_bottom_right_radius=7
         )
 
-        # TODO: actual exp line
+        # Exp line (actual)
+        pygame.draw.rect(
+            self.data.env.screen,
+            (0, 0, 200),
+            pygame.Rect(
+                (
+                    35,
+                    65,
+                    490 * self.data.exp / 3,
+                    15
+                )
+            ),
+            border_top_left_radius=7,
+            border_top_right_radius=7,
+            border_bottom_left_radius=7,
+            border_bottom_right_radius=7
+        )
 
         # Equipment bar
         pygame.draw.rect(

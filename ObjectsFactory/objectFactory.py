@@ -13,8 +13,8 @@ from ObjectsFactory.Shiny.shinyLogic import ShinyLogic
 from ObjectsFactory.Player.playerData import PlayerData
 from ObjectsFactory.Player.playerGraphics import PlayerEntityGraphics
 from ObjectsFactory.Player.playerMetaLogic import PlayerMetaLogic
+from ObjectsFactory.Player.playerLogic import PlayerLogic
 
-# from ObjectsFactory.Enemy.enemyData import EnemyData
 from ObjectsFactory.Skeleton.skeletonGraphics import SkeletonGraphics
 from ObjectsFactory.Enemy.enemyMetaLogic import EnemyMetaLogic
 
@@ -43,7 +43,7 @@ class ObjectFactory:
         }
 
         self.known_active_logics = {
-            "Player": DefaultEntityLogic,
+            "Player": PlayerLogic,
             "Skeleton": DefaultEntityLogic
         }
 
