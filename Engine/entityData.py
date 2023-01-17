@@ -1,3 +1,4 @@
+import copy
 import enum
 import logging
 
@@ -94,3 +95,10 @@ class EntityData:
         if self.inventory is None:
             self.inventory = Inventory([])
         self.custom = _custom
+
+    def __copy__(self):
+        cls = self.__class__
+        result = cls.__new__(cls)
+        result.__dict__.update(self.__dict__)
+        result.inventory = copy.deepcopy(self.inventory)
+        return result

@@ -5,10 +5,12 @@ import sys
 
 # from entity import Entity
 from Engine.chunk import Chunk
+from Engine.activeEntity import ActiveEntity
 from Engine.eventSystem import EventSystem, KeyboardEventSystem
-from Player.player import Player
-from Player.playerInventory import InventoryGraphics
-from Player.playerStatusGraphics import PlayerStatusBar
+from Engine.playerStatusGraphics import PlayerStatusBar
+from Engine.playerInventory import InventoryGraphics
+from Engine.mapParse import parseMap
+# from ObjectsFactory.Player.player import Player
 from ObjectsFactory.objectFactory import ObjectFactory
 from ItemFactory.itemFactory import ItemFactory
 
@@ -60,23 +62,35 @@ class Environment:
         logging.info("Constants inited")
 
         logging.info("Initing factories")
-        self.object_factory = ObjectFactory()
+        self.object_factory = ObjectFactory(self)
         self.item_factory = ItemFactory()
         logging.info("Factories inited")
 
         logging.info("Initing chunks")
         self.available_chunks = {}
         self.active_chunks = []
+
+        parseMap(self)
+
+        print(f"KEKEKK KKEK KKE: {self.available_chunks}")
         for i in range(-1, 2):
             for j in range(-1, 2):
-                new_chunk = Chunk(
-                    self,
-                    [
-                        self.grid_step*self.chunk_width*i,
-                        self.grid_step*self.chunk_height*j
-                    ]
+                new_pos = (
+                    self.grid_step*self.chunk_width*i,
+                    self.grid_step*self.chunk_height*j
                 )
-                self.available_chunks[(i, j)] = new_chunk
+                if not self.available_chunks.__contains__(new_pos):
+                    new_chunk = Chunk(
+                        self,
+                        [
+                            self.grid_step*self.chunk_width*i,
+                            self.grid_step*self.chunk_height*j
+                        ]
+                    )
+                    # new_chunk.random_init()
+                    self.available_chunks[new_pos] = new_chunk
+                else:
+                    new_chunk = self.available_chunks[new_pos]
                 self.active_chunks.append(new_chunk)
         logging.info("Chunks inited")
 
@@ -87,11 +101,15 @@ class Environment:
         logging.info("Event systems inited")
 
         logging.info("Initing player")
-        self.player = Player(self)
+        self.player = self.object_factory.getActiveEntity(
+            _meta_logic_name="Player",
+            _logic_name="Player",
+            _graphics_name="Player",
+        )
         self.player.data.inventory.addItem(self.item_factory.getItem("SampleItem"))
-        self.player.data.inventory.addItem(self.item_factory.getItem("HealthRune"))
-        self.player.data.inventory.addItem(self.item_factory.getItem("NormalAttackRune"))
-        self.player.data.inventory.addItem(self.item_factory.getItem("MassiveAttackRune"))
+        self.player.data.inventory.addItem(self.item_factory.getItem("HealthRuneLvl1"))
+        self.player.data.inventory.addItem(self.item_factory.getItem("NormalAttackRuneLvl2"))
+        self.player.data.inventory.addItem(self.item_factory.getItem("MassiveAttackRuneLvl3"))
         self.playerInventory = InventoryGraphics(self.player.data)
         self.playerHealth = PlayerStatusBar(self.player.data)
         logging.info("Player inited")
@@ -159,13 +177,18 @@ class Environment:
         # print("fps: " + str(1/dt))
         self.time = time.time()
 
+        self.player.meta_logic.updateMetaInstructions(dt)
         self.player.logic.handleEvents(dt)
         self.playerInventory.update(dt)
 
         for chunk in self.active_chunks:
             for entity in chunk.bg_entities:
+                if isinstance(entity, ActiveEntity):
+                    entity.meta_logic.updateMetaInstructions(dt)
                 entity.logic.handleEvents(dt)
             for entity in chunk.fg_entities:
+                if isinstance(entity, ActiveEntity):
+                    entity.meta_logic.updateMetaInstructions(dt)
                 entity.logic.handleEvents(dt)
 
         self.pastEvents = self.futureEvents
@@ -230,7 +253,9 @@ class Environment:
         if self.available_chunks.__contains__(pos):
             return self.available_chunks[pos]
         new_chunk = Chunk(self, pos)
+        new_chunk.random_init()
         self.available_chunks[pos] = new_chunk
+        logging.info(f'Environment: new chunk on {pos}')
         return new_chunk
 
     def removeItem(self, _data):
